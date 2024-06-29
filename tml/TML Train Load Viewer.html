@@ -1,0 +1,530 @@
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./TML Train Load Viewer_files/analytics.js" type="text/javascript"></script>
+
+    
+    <link href="./TML Train Load Viewer_files/jquerysctipttop.css" rel="stylesheet" type="text/css">
+   <link rel="stylesheet" href="./TML Train Load Viewer_files/bootstrap.min.css">
+   <link href="./TML Train Load Viewer_files/css" rel="stylesheet" type="text/css">
+    <title>TML Train Load Viewer</title>
+
+    <!-- INCLUDING JQUERY-->
+    <script src="./TML Train Load Viewer_files/jquery-3.5.1.js">
+    </script>
+
+    <!-- CSS FOR STYLING THE PAGE -->
+    <style>
+       table {
+           margin: 0 auto;
+           font-size: medium;
+           border: 1px solid black;
+           width: 80%
+       }
+
+       h1 {
+           text-align: center;
+           color: #006600;
+           font-size: xx-large;
+           font-family: 'Gill Sans',
+               'Gill Sans MT', ' Calibri',
+               'Trebuchet MS', 'sans-serif';
+       }
+       h2 {
+           text-align: right;
+           color: #006600;
+           font-size: large;
+           font-family: 'Gill Sans',
+               'Gill Sans MT', ' Calibri',
+               'Trebuchet MS', 'sans-serif';
+       }
+
+       td {
+           background-color: #E4F5D4;
+           border: 1px solid black;
+       }
+
+       th,
+       td {
+           font-weight: bold;
+           border: 1px solid black;
+           padding: 10px;
+           text-align: center;
+       }
+
+       td {
+           font-weight: lighter;
+       }
+
+       .slider {
+        -webkit-appearance: none;
+        width: 60%;
+        height: 10px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 1;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 32px;
+        height: 24px;
+        border: 0;
+        background: url('https://mtr-viewer.rocteccloud.com/train_ico.png');
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 32px;
+        height: 24px;
+        border: 0;
+        background: url('https://mtr-viewer.rocteccloud.com/train_ico.png');
+        cursor: pointer;
+      }
+
+      .slider_back {
+        -webkit-appearance: none;
+        width: 60%;
+        height: 10px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 1;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+
+
+      .slider_back:hover {
+        opacity: 1;
+      }
+
+      .slider_back::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 32px;
+        height: 24px;
+        border: 0;
+        background: url('https://mtr-viewer.rocteccloud.com/train_ico_back.png');
+        cursor: pointer;
+      }
+
+      .slider_back::-moz-range-thumb {
+        width: 32px;
+        height: 24px;
+        border: 0;
+        background: url('https://mtr-viewer.rocteccloud.com/train_ico_back.png');
+        cursor: pointer;
+      }
+
+      .numberCircle {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding-top: 10px;
+
+        background: #fff;
+        border: 3px solid #666;
+        color: #000;
+        text-align: center;
+
+        font: 13px Arial, sans-serif;
+        font-weight: bold;
+        }
+
+        .numberCircleYellow {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        padding-top: 10px;
+
+        background: #fff;
+        border: 3px solid #dddd00;
+        color: #000;
+        text-align: center;
+
+        font: 13px Arial, sans-serif;
+        font-weight: bold;
+        }
+   </style>
+    <script type="text/javascript">
+        function comparer(index) {
+            return function(a, b) {
+                var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB);
+            }
+        }
+        function getCellValue(row, index){
+            return $(row).children('td').eq(index).text();
+        }
+
+
+        function reload() {
+
+            $.ajax({
+                beforeSend: function(request) {
+                    request.setRequestHeader("x-api-key", 'QkmjCRYvXt6o89UdZAvoXa49543NxOtU2tBhQQDQ');
+                },
+                dataType: "json",
+                url: 'https://8e304x2wjg.execute-api.ap-east-1.amazonaws.com/test/obcs-data-exchanges',
+                success: function(data) {
+                    //Your code
+                    console.log(data);
+                    var train = '';
+                    $.each(data.Items, function (key, value) {
+
+                    //CONSTRUCTION OF ROWS HAVING
+                    // DATA FROM JSON OBJECT
+
+
+
+
+
+                    if (value.isInService|| $('#hideUnknown')[0].checked == false) {
+
+                        var direction = "up";
+
+                        if (covertStationOrder(value.currentStationCode) < covertStationOrder(value.destinationStationCode)) {
+                            direction = "up";
+                        } else {
+                            direction = "down";
+                        }
+
+
+                    if ((direction == "up" && !$('#up_dir')[0].checked) || (direction == "down" && !$('#dn_dir')[0].checked))  {
+                     } else {
+                        var step = 0;
+                        var base = 0;
+                        if (value.train_type == 'SP1900') {
+                            base = 0;
+                            step = (50000.0/255.0);
+                        } else {
+                            base = 0;
+                            step = (70000.0/255.0);
+                        }
+                        //console.log(key);
+                        train += '<tr>';
+                        if (value.currentStationCode == value.destinationStationCode) {
+                            train += '<td>' +
+                            value.trainId + '</td>';
+
+                             train += '<td style="min-width:450px;  font-family: Orbitron, sans-serif;">';
+                               train += '<label class="numberCircleYellow">' + mapStation(value.currentStationCode) + '</label>';
+                              train += '</td>';
+                        } else {
+                            if (direction == "down") {
+                               train += '<td>' +
+                                value.trainId + '</td>';
+
+                                 train += '<td style="min-width:300px;  font-family: Orbitron, sans-serif;">';
+                                   train += '<label class="numberCircleYellow">' + mapStation(value.currentStationCode) + '</label>';
+                                   if (mapStation(value.currentStationCode) !=  mapStation(value.nextStationCode)) {
+                                     train += '---->';
+                                     train += '<label class="numberCircle">' + mapStation(value.nextStationCode) + '</label>';
+                                   }
+                                   if (mapStation(value.nextStationCode) !=  mapStation(value.destinationStationCode) && mapStation(value.destinationStationCode) != "-1") {
+                                     train += '----->';
+                                     train += '<label class="numberCircle">' + mapStation(value.destinationStationCode) + '</label>';
+                                   }
+                                  train += '</td>';
+                              } else {
+                                train += '<td>' +
+                                value.trainId + '</td>';
+
+                                 train += '<td style="min-width:450px;  font-family: Orbitron, sans-serif;">';
+                                 
+                                  if (mapStation(value.nextStationCode) !=  mapStation(value.destinationStationCode) && mapStation(value.destinationStationCode) != "-1") {
+                                     train += '<label class="numberCircle">' + mapStation(value.destinationStationCode) + '</label>';
+                                     train += '<----';
+                                   }
+                                   if (mapStation(value.currentStationCode) !=  mapStation(value.nextStationCode)) {
+                                     train += '<label class="numberCircle">' + mapStation(value.nextStationCode) + '</label>';
+                                     train += '<----';
+                                   }
+                                   train += '<label class="numberCircleYellow">' + mapStation(value.currentStationCode) + '</label>';
+                                 
+                                train += '</td>';
+                              }
+                        }
+
+
+
+                          for (var i = 0 ; i < 8; i++) {
+                                train += '<td ';
+
+
+
+
+                          if (parseInt(value.listCars[i].passengerCount) < 120) {
+                              train += 'style=\'background-color:#00ff00;\'';
+                          } else if (parseInt(value.listCars[i].passengerCount) < 230) {
+                              train += 'style=\'background-color:#ffff00;\'';
+                          } else {
+                              train += 'style=\'background-color:#ff0000;\'';
+                          }
+
+                          if (value.listCars[i].offsetCarLoad != null) {
+                            train +='>';
+                            train += ToInteger(base + ToUint8(parseInt(value.listCars[i].offsetCarLoad))*step/65) +'P<br/>'; 
+
+                           train += '</td>';
+
+                          } else {
+                          train +='>' +
+                              (decimalToHexString(parseInt(value.listCars[i].passengerLoad)))*50 + '-' + (decimalToHexString(parseInt(value.listCars[i].passengerLoad)+1))*50 + ' P</td>';
+                            }
+                          }
+
+
+                        train += '<td><div style="font-family: Orbitron, sans-serif;">';
+                        train += parseInt(value.trainSpeed) + 'km/h</td>';
+                        
+
+                        train += '<td><div style="font-family: Orbitron, sans-serif;">';
+                        train += (value.isDoorOpen?"Open":"Close") + '</td>';
+
+                        
+
+                        train += '<td><div style="font-family: Orbitron, sans-serif;">';
+                        train += value.train_type + '</td>';
+
+                        train += '<td ';
+
+                        var m = new Date(value.receivedTime);
+                        var dateString =
+                            m.getFullYear() + "/" +
+                            ("0" + (m.getMonth()+1)).slice(-2) + "/" +
+                            ("0" + m.getDate()).slice(-2) + " " +
+                            ("0" + m.getHours()).slice(-2) + ":" +
+                            ("0" + m.getMinutes()).slice(-2) + ":" +
+                            ("0" + m.getSeconds()).slice(-2);
+                        train += '<td>' +
+                            dateString + '</td>';
+
+
+
+                        train += '</tr>';
+                    }
+                }
+                });
+                    $('#trainContent').empty();
+                    $('#trainContent').append(train);
+                    filter();
+                }
+            });
+        }
+
+        function filter() {
+            table_search($('#searchInput').val(),$('#table tbody tr'),'0');
+        }
+
+        function ToInteger(x) {
+            x = Number(x);
+            return x < 0 ? Math.ceil(x) : Math.floor(x);
+        }
+
+        function modulo(a, b) {
+            return a - Math.floor(a/b)*b;
+        }
+        function ToUint8(x) {
+            return modulo(ToInteger(x), Math.pow(2, 8));
+        }
+
+        function decimalToHexString(number)
+        {
+          if (number < 0)
+          {
+            number = 0xFF + number + 1;
+          }
+
+          return number.toString(16).toUpperCase();
+        }
+
+        function toBinary(a) { //: String
+            var r = '';
+            var binCounter = 0;
+            while (a > 0) {
+                r = a%2 + r;
+                a = Math.floor(a/2);
+            }
+            return r;
+        }
+
+
+        function twoscompl(a) { //: int
+            var l = toBinaryFill(a).length;
+            var msb = a >>> (l-1);
+
+            if (msb == 0) {
+                return a;
+            }
+
+            a = a-1;
+            var str = toBinary(a);
+            var nstr = '';
+            for (var i = 0; i < str.length; i++) {
+                nstr += str.charAt(i) == '1' ? '0' : '1';
+            }
+            return (-1)*parseInt(nstr);
+        }
+
+        function mapStation(code) {
+            switch (code) {
+                case 1: return 'HUH';
+                case 14: return 'ETS';
+                case 21: return 'TAW';
+                case 22: return 'CKT';
+                case 23: return 'STW';
+                case 24: return 'CIO';
+                case 25: return 'SHM';
+                case 26: return 'TSH';
+                case 27: return 'HEO';
+                case 28: return 'MOS';
+                case 29: return 'WKS';
+                case 41: return 'NAC';
+                case 42: return 'MEF';
+                case 43: return 'TWW';
+                case 44: return 'KSR';
+                case 45: return 'YUL';
+                case 46: return 'LOP';
+                case 47: return 'TIS';
+                case 48: return 'SIH';
+                case 49: return 'TUM';
+                case 50: return 'AUS';
+                case 61: return 'HOM';
+                case 62: return 'TKW';
+                case 63: return 'SUW';
+                case 64: return 'KAT';
+                case 65: return 'DIH';
+                case 66: return 'HIK';
+                case 91: return 'DEP';
+                case 92: return 'OUT';
+                case 93: return 'SPC';
+                case 94: return 'TES';
+                case 95: return 'WR';
+                case 97: return 'MOL';
+
+                default: return 'Unknown(' + code + ')';
+
+            }
+        }
+
+        function covertStationOrder(code) {
+            switch (code) {
+                case 1: return 16;
+                case 14: return 17;
+                case 21: return 9;
+                case 22: return 8;
+                case 23: return 7;
+                case 24: return 6;
+                case 25: return 5;
+                case 26: return 4;
+                case 27: return 3;
+                case 28: return 2;
+                case 29: return 1;
+                case 41: return 19;
+                case 42: return 20;
+                case 43: return 21;
+                case 44: return 22;
+                case 45: return 23;
+                case 46: return 24;
+                case 47: return 25;
+                case 48: return 26;
+                case 49: return 27;
+                case 50: return 18;
+                case 61: return 15;
+                case 62: return 14;
+                case 63: return 13;
+                case 64: return 12;
+                case 65: return 11;
+                case 66: return 10;
+                default: return 0;
+            }
+        }
+    </script>
+<style>.ssBtnDefault{position:absolute;z-index:100000000;background:none;border:none;outline:none;right:0;cursor:pointer;width:26px;height:26px;margin:0;padding:0;top:8px;right:8px;opacity:.6;pointer-events:all;transition-duration:.25s}.ssBtnDefault:hover{opacity:1 !important;transition-duration:.25s}.ssBtnDefault .fade{transition-duration:5s;opacity:0}.ssBtnYouTube{background:none;border:none;margin-right:20px !important;padding-top:0px !important;width:25px !important}.ytp-embed .ssBtnYouTube{width:20px !important;margin-right:15px !important}.ssBtnVimeo{height:2rem !important;width:2rem !important;margin-top:8px !important}.ssBtnVimeo button{width:100% !important;height:100% !important}.ssBtnVimeo button svg{width:19px}.ssBtnNetflix{background:none;border:none;cursor:pointer;width:4rem;margin:0 .5rem;display:inline-block;flex-shrink:0}.ssBtnNetflix>svg{transform:translateY(-0.3rem)}.ssBtnNetflix:hover{transform:scale(1.2);transition-duration:.25s}.ssBtnHulu{width:27px;margin-top:4px;margin-right:10px;opacity:.7;cursor:pointer}.ssBtnHulu:hover{opacity:1}.ssBtnAmazon{margin-right:1.5vw;outline:none;cursor:pointer;opacity:.8}.ssBtnAmazon:hover{opacity:1}@media(min-width: 1200px){.ssBtnAmazon{width:1.6666666667vw;height:1.6666666667vw}}@media(max-width: 1199px){.ssBtnAmazon{width:20px;height:20px}}.ssBtnHBO{width:48px;height:48px;position:relative;opacity:.7;cursor:pointer;display:flex;justify-content:center;align-items:center}.ssBtnHBO:hover{opacity:1;transform:scale(1.2)}.ssBtnHBO svg{width:24px;height:24px}.ssBtnDisney{opacity:.7}.ssBtnDisney:hover{opacity:1}.ssBtnDisney svg{width:25px !important;height:31px !important;padding-top:4px;margin-right:7px}.ssBtnApple{cursor:pointer;opacity:.7}.ssBtnApple:hover{opacity:1}.ssBtnApple svg{width:22px !important;height:22px !important;margin-right:2px !important}body #ssTempHolder{position:fixed;z-index:1000000000000;width:100%;height:100%;top:0;pointer-events:none}body #ssTempHolder video{width:auto !important;height:auto !important;max-width:100% !important;max-height:100% !important;top:0 !important;left:0 !important;transform:none !important}body.ssTakeScreenshot .ssElement{z-index:100000000000 !important}body.ssTakeScreenshot.ssNetflix [data-uia=video-canvas]{z-index:10000000}body.ssTakeScreenshot.ssNetflix video{background-color:#000}body.ssTakeScreenshot.ssNetflix .player-timedtext{display:none !important}body.ssTakeScreenshot.ssNetflix.showSubs .player-timedtext{display:block !important}body.ssTakeScreenshot.ssAmazon .scalingVideoContainer{z-index:99999999 !important}body.ssTakeScreenshot.ssDisney .btm-media-overlays-container{display:none}body.ssTakeScreenshot.ssDisney .dss-hls-subtitle-overlay{display:none}body.ssTakeScreenshot.ssDisney.showSubs .dss-hls-subtitle-overlay{display:block}body.ssTakeScreenshot.ssHulu .ContentPlayer__contentArea{z-index:10000000000;position:relative}body.ssTakeScreenshot.ssHulu .ClosedCaption{display:none}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption{display:block}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption .ClosedCaption__outband{bottom:30px !important}body.ssTakeScreenshot.ssHBO video{z-index:99999999}body.ssTakeScreenshot.ssHBO *:has(video){z-index:99999999}body.ssTakeScreenshot.ssYoutube .html5-video-container,body.ssTakeScreenshot.ssYoutube .ytp-caption-window-container{z-index:999999999 !important}body.ssTakeScreenshot.ssApple #apple-music-video-player{z-index:999999999 !important}body.ssTakeScreenshot.ssApple .scrim{display:none}body .ssWrapper{overflow:hidden}body .ssNotification{display:flex;width:100%;height:4rem;justify-content:center;align-items:center;position:fixed;z-index:1000000000;top:-4rem;animation-name:notification;animation-duration:2s;animation-iteration-count:1}@keyframes notification{0%{top:-4rem}25%{top:3rem}85%{top:3rem}}body .ssNotification .ssNContent{position:absolute;z-index:1000000000;padding:.75rem 1.25em;margin-bottom:1em;border:1px solid rgba(0,0,0,0);border-radius:.25em;font-size:12px;height:fit-content;top:0}body .ssNotification .ssNContent.success{background-color:#d4edda;border-color:#c3e6cb;color:#155724}body .ssNotification .ssNContent.fail{background-color:#edd4d4;border-color:#e6c3c3;color:#b62424}body .ssModal{display:none;position:fixed;z-index:100000000;right:20px;opacity:0;background-color:#fffefa;border-radius:3px;padding:25px;color:#525252;font-family:muli,sans-serif;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);animation-name:animateOn;animation-duration:.2s;animation-fill-mode:forwards}body .ssModal.visible{display:block}body .ssModal *{vertical-align:middle;line-height:normal;font-weight:normal}@keyframes animateOn{from{opacity:0;top:0px}to{opacity:1;top:20px}}body .ssModal .close{position:absolute;right:10px;top:10px;cursor:pointer;opacity:.5;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0NDMuNCA0NDMuNCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDQzLjQgNDQzLjQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHBhdGggZD0iTTYuOCw0MDMuNWwxODEuOC0xODEuOEw2LjgsMzkuOWMtNS45LTUuOS04LjItMTQuNS02LTIyLjZDMyw5LjIsOS4yLDMsMTcuMywwLjhjOC4xLTIuMiwxNi43LDAuMSwyMi42LDZsMTgxLjgsMTgxLjgKCUw0MDMuNSw2LjhjNS45LTUuOSwxNC41LTguMiwyMi42LTZjOC4xLDIuMiwxNC40LDguNCwxNi41LDE2LjVjMi4yLDguMS0wLjEsMTYuNy02LDIyLjZMMjU0LjcsMjIxLjdsMTgxLjgsMTgxLjgKCWM1LjksNS45LDguMiwxNC41LDYsMjIuNmMtMi4yLDguMS04LjQsMTQuNC0xNi41LDE2LjVjLTguMSwyLjItMTYuNy0wLjEtMjIuNi02TDIyMS43LDI1NC43TDM5LjksNDM2LjVjLTUuOSw1LjktMTQuNSw4LjItMjIuNiw2CglDOS4yLDQ0MC40LDMsNDM0LjEsMC44LDQyNkMtMS40LDQxOCwwLjksNDA5LjQsNi44LDQwMy41TDYuOCw0MDMuNXoiLz4KPC9zdmc+Cg==);width:10px;height:10px}body .ssModal .ssButtons{margin-top:25px;text-align:right}body .ssModal .ssButtons .ssButton,body .ssModal .ssButtons a .ssButton{display:inline-block;height:20px;padding:3px 12px 3px;margin-left:14px;border-radius:4px;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);background-color:#fff;font-size:12px;color:#525252;line-height:20px;font-weight:normal;cursor:pointer;text-decoration:none}body .ssModal .ssButtons .ssButton .emoji,body .ssModal .ssButtons a .ssButton .emoji{font-size:15px;vertical-align:bottom}body .ssModal .ssButtons .ssButton.blue,body .ssModal .ssButtons a .ssButton.blue{background-color:#19acef;color:#fff}body .ssModal .icon{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI1LjIuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIKCSBpZD0iTGF5ZXJfMSIgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAxMDAgODMuOSIKCSBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMDAgODMuOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiMwMEFERUY7fQo8L3N0eWxlPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC05NTIuMzYyMTgpIj4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNS42LDk1Mi40Yy0xLjMsMC0yLjQsMS0yLjksMS44bC01LjYsMTEuMUgxMWMtNiwwLTExLDUtMTEsMTF2NDljMCw2LDUsMTEsMTEsMTFoNzhjNiwwLDExLTUsMTEtMTF2LTQ5CgkJYzAtNi01LTExLTExLTExSDcyLjlsLTUuNi0xMS4xYy0wLjUtMS4xLTEuNi0xLjgtMi45LTEuOEwzNS42LDk1Mi40TDM1LjYsOTUyLjR6IE0zNy42LDk1OC44aDI1LjJsNS41LDExLjEKCQljMC41LDEuMSwxLjYsMS44LDIuOSwxLjhoMTguMWMyLjYsMCw0LjUsMS45LDQuNSw0LjV2NDljMCwyLjYtMS45LDQuNS00LjUsNC41SDExLjFjLTIuNiwwLTQuNS0xLjktNC41LTQuNXYtNDkKCQljMC0yLjYsMS45LTQuNSw0LjUtNC41aDE4LjFjMS4xLDAsMi40LTAuOCwyLjktMS44TDM3LjYsOTU4Ljh6IE01MC4yLDk3OS44Yy0xMS42LDAtMjEsOS40LTIxLDIxczkuNCwyMSwyMSwyMXMyMS05LjQsMjEtMjEKCQlTNjEuOCw5NzkuOCw1MC4yLDk3OS44eiBNNTAuMiw5ODYuMmM4LjEsMCwxNC41LDYuNSwxNC41LDE0LjVzLTYuNSwxNC41LTE0LjUsMTQuNXMtMTQuNS02LjUtMTQuNS0xNC41UzQyLjEsOTg2LjIsNTAuMiw5ODYuMnoiLz4KPC9nPgo8L3N2Zz4K);background-repeat:no-repeat;width:30px;height:30px;vertical-align:top;margin-right:22px;margin-top:2px;display:inline-block}body .ssModal .body{display:inline-block;width:315px}body .ssModal .body .title{font-size:15px;font-weight:600;margin-bottom:7px}body .ssModal .body .description{font-size:13px;font-weight:lighter}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX2J1dHRvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX25vdGlmaWNhdGlvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX21vZGFsLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FFQyxpQkFBQSxDQUNBLGlCQUFBLENBQ0EsZUFBQSxDQUNBLFdBQUEsQ0FDQSxZQUFBLENBQ0EsT0FBQSxDQUNBLGNBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUNBLFFBQUEsQ0FDQSxTQUFBLENBQ0EsT0FBQSxDQUNBLFNBQUEsQ0FFQSxVQUFBLENBQ0Esa0JBQUEsQ0FFRyx3QkFBQSxDQUVBLG9CQUNJLG9CQUFBLENBQ0Esd0JBQUEsQ0FHSixvQkFDSSxzQkFBQSxDQUNBLFNBQUEsQ0FRUixjQUVDLGVBQUEsQ0FDQSxXQUFBLENBRUEsNEJBQUEsQ0FDRywwQkFBQSxDQUNBLHFCQUFBLENBRUgseUJBQ0MscUJBQUEsQ0FDQSw0QkFBQSxDQUlGLFlBRUMsc0JBQUEsQ0FDRyxxQkFBQSxDQUVBLHlCQUFBLENBRUgsbUJBRUMscUJBQUEsQ0FDQSxzQkFBQSxDQUVBLHVCQUNDLFVBQUEsQ0FNSCxjQUNDLGVBQUEsQ0FDQSxXQUFBLENBQ0EsY0FBQSxDQUVBLFVBQUEsQ0FFQSxjQUFBLENBR0Esb0JBQUEsQ0FDQSxhQUFBLENBVUEsa0JBRUMsNkJBQUEsQ0FJRSxvQkFDSSxvQkFBQSxDQUNILHdCQUFBLENBSUwsV0FFQyxVQUFBLENBQ0EsY0FBQSxDQUNBLGlCQUFBLENBQ0EsVUFBQSxDQUNBLGNBQUEsQ0FFQSxpQkFDQyxTQUFBLENBSUYsYUFDQyxrQkFBQSxDQUVBLFlBQUEsQ0FFRSxjQUFBLENBQ0EsVUFBQSxDQUlDLG1CQUNJLFNBQUEsQ0FJUiwwQkFBQSxhQUFBLG9CQUFBLENBQUEscUJBQUEsQ0FBQSxDQUNBLDBCQUFBLGFBQUEsVUFBQSxDQUFBLFdBQUEsQ0FBQSxDQUdBLFVBRUksVUFBQSxDQUNBLFdBQUEsQ0FDQSxpQkFBQSxDQUNBLFVBQUEsQ0FDQSxjQUFBLENBQ0EsWUFBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FFSCxnQkFDQyxTQUFBLENBQ0Esb0JBQUEsQ0FHRCxjQUNDLFVBQUEsQ0FDQSxXQUFBLENBSUYsYUFHSSxVQUFBLENBRUgsbUJBQ0MsU0FBQSxDQUdELGlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSxlQUFBLENBQ0EsZ0JBQUEsQ0FJRixZQUlDLGNBQUEsQ0FHRyxVQUFBLENBRUgsa0JBQ0MsU0FBQSxDQUdELGdCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSwyQkFBQSxDQzNMRCxtQkFDQyxjQUFBLENBQ0EscUJBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLEtBQUEsQ0FDQSxtQkFBQSxDQUVBLHlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSx5QkFBQSxDQUNBLDBCQUFBLENBQ0EsZ0JBQUEsQ0FDQSxpQkFBQSxDQUNBLHlCQUFBLENBTUQsaUNBQ0MsK0JBQUEsQ0FLQSx3REFDQyxnQkFBQSxDQUdELHNDQUNDLHFCQUFBLENBSUQsa0RBRUMsdUJBQUEsQ0FLQSwyREFFQyx3QkFBQSxDQVFGLHNEQUNDLDJCQUFBLENBTUQsNkRBQ0MsWUFBQSxDQUdELHlEQUNDLFlBQUEsQ0FLQSxrRUFDQyxhQUFBLENBTUYseURBQ0MsbUJBQUEsQ0FDRyxpQkFBQSxDQUdKLDRDQUNDLFlBQUEsQ0FJQSxxREFDQyxhQUFBLENBRUEsNkVBQ0Msc0JBQUEsQ0FRSCxrQ0FDQyxnQkFBQSxDQUdELHlDQUNDLGdCQUFBLENBT0QscUhBQ0MsNEJBQUEsQ0FLRCx3REFDQyw0QkFBQSxDQUdELHFDQUNDLFlBQUEsQ0FLSCxnQkFDQyxlQUFBLENDcElGLHFCQUVJLFlBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxTQUFBLENBRUEsMkJBQUEsQ0FDQSxxQkFBQSxDQUNBLDJCQUFBLENBRUEsd0JBQ0ksR0FBQSxTQUFBLENBQ0EsSUFBQSxRQUFBLENBQ0EsSUFBQSxRQUFBLENBQUEsQ0FHSixpQ0FFSSxpQkFBQSxDQUNBLGtCQUFBLENBQ0EscUJBQUEsQ0FDQSxpQkFBQSxDQUNBLDhCQUFBLENBQ0EsbUJBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxLQUFBLENBRUEseUNBQ0ksd0JBQUEsQ0FDQSxvQkFBQSxDQUNBLGFBQUEsQ0FHSixzQ0FDSSx3QkFBQSxDQUNBLG9CQUFBLENBQ0EsYUFBQSxDQzFDWixjQUVJLFlBQUEsQ0FNQSxjQUFBLENBQ0EsaUJBQUEsQ0FFQSxVQUFBLENBRUEsU0FBQSxDQUVBLHdCQUFBLENBQ0EsaUJBQUEsQ0FFQSxZQUFBLENBRUEsYUFBQSxDQUNBLDJCQUFBLENBUUEsMENBQUEsQ0FFQSx3QkFBQSxDQUNBLHNCQUFBLENBQ0EsNEJBQUEsQ0E3QkEsc0JBQ0ksYUFBQSxDQWtCSixnQkFDSSxxQkFBQSxDQUNBLGtCQUFBLENBQ0Esa0JBQUEsQ0FTSixxQkFDSSxLQUNJLFNBQUEsQ0FDQSxPQUFBLENBRUosR0FDSSxTQUFBLENBQ0EsUUFBQSxDQUFBLENBSVIscUJBQ0ksaUJBQUEsQ0FDQSxVQUFBLENBQ0EsUUFBQSxDQUNBLGNBQUEsQ0FDQSxVQUFBLENBRUEsd0RBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUlKLHlCQUVJLGVBQUEsQ0FDQSxnQkFBQSxDQUVBLHdFQUNJLG9CQUFBLENBRUEsV0FBQSxDQUVBLG9CQUFBLENBQ0EsZ0JBQUEsQ0FFQSxpQkFBQSxDQUNBLDBDQUFBLENBQ0EscUJBQUEsQ0FFQSxjQUFBLENBQ0EsYUFBQSxDQUNBLGdCQUFBLENBQ0Esa0JBQUEsQ0FFQSxjQUFBLENBRUEsb0JBQUEsQ0FFQSxzRkFDSSxjQUFBLENBQ0EscUJBQUEsQ0FHSixrRkFDSSx3QkFBQSxDQUNBLFVBQUEsQ0FLWixvQkFDSSx3REFBQSxDQUNBLDJCQUFBLENBRUEsVUFBQSxDQUNBLFdBQUEsQ0FFQSxrQkFBQSxDQUNBLGlCQUFBLENBQ0EsY0FBQSxDQUVBLG9CQUFBLENBR0osb0JBRUksb0JBQUEsQ0FDQSxXQUFBLENBRUEsMkJBQ0ksY0FBQSxDQUNBLGVBQUEsQ0FDQSxpQkFBQSxDQUVKLGlDQUNJLGNBQUEsQ0FDQSxtQkFBQSIsInNvdXJjZXNDb250ZW50IjpbIi5zc0J0bkRlZmF1bHQge1xuXHRcblx0cG9zaXRpb246IGFic29sdXRlO1xuXHR6LWluZGV4OiAxMDAwMDAwMDA7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRvdXRsaW5lOiBub25lO1xuXHRyaWdodDowO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHR3aWR0aDogMjZweDtcblx0aGVpZ2h0OiAyNnB4O1xuXHRtYXJnaW46IDA7Ly81JSA4cHggMDtcblx0cGFkZGluZzowO1xuXHR0b3A6OHB4O1xuXHRyaWdodDo4cHg7XG5cdFxuXHRvcGFjaXR5OiAuNjtcblx0cG9pbnRlci1ldmVudHM6IGFsbDtcblx0Lyp0cmFuc2l0aW9uLWZpbGwtbW9kZTogZm9yd2FyZHM7Ki9cbiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAuMjVzO1xuXG4gICAgJjpob3ZlciB7XG4gICAgICAgIG9wYWNpdHk6IDEgIWltcG9ydGFudDsgXG4gICAgICAgIHRyYW5zaXRpb24tZHVyYXRpb246IC4yNXM7XG4gICAgfVxuXG4gICAgLmZhZGUge1xuICAgICAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA1cztcbiAgICAgICAgb3BhY2l0eTogMDtcbiAgICB9XG4gICAgXG4gICAgLypzdmcge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOnJlZDtcbiAgICB9Ki9cbn1cblxuLnNzQnRuWW91VHViZSB7XG5cblx0YmFja2dyb3VuZDpub25lO1xuXHRib3JkZXI6IG5vbmU7XG5cdFxuXHRtYXJnaW4tcmlnaHQ6IDIwcHggIWltcG9ydGFudDtcbiAgICBwYWRkaW5nLXRvcDogMHB4ICFpbXBvcnRhbnQ7XG4gICAgd2lkdGg6IDI1cHggIWltcG9ydGFudDtcblxuXHQueXRwLWVtYmVkICYge1xuXHRcdHdpZHRoOiAyMHB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAxNXB4ICFpbXBvcnRhbnQ7XG5cdH1cbn1cblxuLnNzQnRuVmltZW8ge1xuXG5cdGhlaWdodDogMnJlbSAhaW1wb3J0YW50O1xuICAgIHdpZHRoOiAycmVtICFpbXBvcnRhbnQ7XG4gICAgLy9wYWRkaW5nOiA2cHggIWltcG9ydGFudDtcbiAgICBtYXJnaW4tdG9wOiA4cHggIWltcG9ydGFudDtcblxuXHRidXR0b24ge1xuXG5cdFx0d2lkdGg6IDEwMCUgIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDEwMCUgIWltcG9ydGFudDtcblx0XHRcblx0XHRzdmcge1xuXHRcdFx0d2lkdGg6IDE5cHg7XG5cdFx0fVxuXHR9XG5cbn1cblxuLnNzQnRuTmV0ZmxpeCB7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblx0d2lkdGg6NHJlbTtcblx0XG5cdG1hcmdpbjogMCAwLjVyZW07XG5cdC8vbWFyZ2luOiAwIDJyZW0gMCA0cmVtO1xuXG5cdGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuXHRmbGV4LXNocmluazogMDtcblx0XG5cdC8vbWFyZ2luLXRvcDotMXJlbTtcblx0Ly9oZWlnaHQ6Mi40cmVtO1xuXHQvL3dpZHRoOiA1MHB4O1xuXHQvL2hlaWdodDogMzVweCAhaW1wb3J0YW50O1xuXHQvL3dpZHRoOiAxMDAlOy8vMy42ZW0gIWltcG9ydGFudDtcbiAgICAvL2hlaWdodDogMTAwJTsvLzEuNmVtICFpbXBvcnRhbnQ7XG5cdC8vcGFkZGluZzowIDAgLjZlbSAwO1xuXG5cdCYgPiBzdmcge1xuXHRcdC8vbWFyZ2luLXRvcDotLjNyZW07XG5cdFx0dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLS4zcmVtKTtcblx0XHQvL3RyYW5zZm9ybTogc2NhbGUoLjUpO1xuXHR9XG4gICAgXG4gICAgJjpob3ZlciB7XG4gICAgICAgIHRyYW5zZm9ybTpzY2FsZSgxLjIpO1xuXHQgICAgdHJhbnNpdGlvbi1kdXJhdGlvbjogLjI1cztcbiAgICB9XG59XG5cbi5zc0J0bkh1bHUge1xuXHRcblx0d2lkdGg6IDI3cHg7XG5cdG1hcmdpbi10b3A6IDRweDtcblx0bWFyZ2luLXJpZ2h0OjEwcHg7XG5cdG9wYWNpdHk6IC43O1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG59XG5cbi5zc0J0bkFtYXpvbiB7XG5cdG1hcmdpbi1yaWdodDogMS41dnc7XG4gICAgXG5cdG91dGxpbmU6IG5vbmU7XG5cdFxuICAgY3Vyc29yOiBwb2ludGVyO1xuICAgb3BhY2l0eTogLjg7XG5cbiAgIC8vei1pbmRleDogOTk5OTk5OTk5OTtcblxuICAgICY6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAxO1xuICAgIH1cbn1cblxuQG1lZGlhIChtaW4td2lkdGg6IDEyMDBweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IGhlaWdodDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IH0gfVxuQG1lZGlhIChtYXgtd2lkdGg6IDExOTlweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMjBweDsgaGVpZ2h0OiAyMHB4OyB9IH1cblxuXG4uc3NCdG5IQk8ge1xuXG4gICAgd2lkdGg6IDQ4cHg7XG4gICAgaGVpZ2h0OiA0OHB4O1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICBvcGFjaXR5OiAwLjc7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcblxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHRcdHRyYW5zZm9ybTogc2NhbGUoMS4yKTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI0cHg7XG5cdFx0aGVpZ2h0OiAyNHB4O1xuXHR9XG59XG5cbi5zc0J0bkRpc25leSB7XG5cdC8vd2lkdGg6IDI2cHg7XG4gICAgLy9tYXJnaW4tcmlnaHQ6IDEzcHg7XG4gICAgb3BhY2l0eTogLjc7XG5cblx0Jjpob3ZlciB7XG5cdFx0b3BhY2l0eTogMTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI1cHggIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDMxcHggIWltcG9ydGFudDtcblx0XHRwYWRkaW5nLXRvcDogNHB4O1xuXHRcdG1hcmdpbi1yaWdodDogN3B4O1xuXHR9XG59XG5cbi5zc0J0bkFwcGxlIHtcblx0Ly93aWR0aDogMjZweDtcbiAgICAvL21hcmdpbi1yaWdodDogMTNweDtcblxuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblxuICAgIG9wYWNpdHk6IC43O1xuXG5cdCY6aG92ZXIge1xuXHRcdG9wYWNpdHk6IDE7XG5cdH1cblxuXHRzdmcge1xuXHRcdHdpZHRoOiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0aGVpZ2h0OiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAycHggIWltcG9ydGFudDtcblx0fVxufSIsIkBpbXBvcnQgXCJTY3JlZW5zaG90Q29udHJvbC9idXR0b25zXCI7XG5cbmJvZHkge1xuXG5cdCNzc1RlbXBIb2xkZXIge1xuXHRcdHBvc2l0aW9uOmZpeGVkO1xuXHRcdHotaW5kZXg6MTAwMDAwMDAwMDAwMDtcblx0XHR3aWR0aDoxMDAlO1xuXHRcdGhlaWdodDoxMDAlO1xuXHRcdHRvcDowO1xuXHRcdHBvaW50ZXItZXZlbnRzOiBub25lO1xuXG5cdFx0dmlkZW8ge1xuXHRcdFx0d2lkdGg6YXV0byAhaW1wb3J0YW50O1xuXHRcdFx0aGVpZ2h0OmF1dG8gIWltcG9ydGFudDtcblx0XHRcdG1heC13aWR0aDoxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHRtYXgtaGVpZ2h0OiAxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHR0b3A6IDAgIWltcG9ydGFudDtcblx0XHRcdGxlZnQ6IDAgIWltcG9ydGFudDtcblx0XHRcdHRyYW5zZm9ybTogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXG5cdCYuc3NUYWtlU2NyZWVuc2hvdCB7XG5cdFx0XG5cdFx0LnNzRWxlbWVudCB7XG5cdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDAgIWltcG9ydGFudDtcblx0XHR9XG5cdFx0XG5cdFx0Ji5zc05ldGZsaXgge1xuXHRcblx0XHRcdFtkYXRhLXVpYT12aWRlby1jYW52YXNdIHtcblx0XHRcdFx0ei1pbmRleDogMTAwMDAwMDA7XG5cdFx0XHR9XG5cdFx0XHRcblx0XHRcdHZpZGVvIHtcblx0XHRcdFx0YmFja2dyb3VuZC1jb2xvcjogIzAwMDAwMDtcblx0XHRcdFx0Ly9oZWlnaHQ6IGF1dG8gIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnBsYXllci10aW1lZHRleHQge1xuXG5cdFx0XHRcdGRpc3BsYXk6bm9uZSAhaW1wb3J0YW50O1xuXHRcdFx0fVx0XHRcdFxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0XG5cdFx0XHRcdC5wbGF5ZXItdGltZWR0ZXh0IHtcblxuXHRcdFx0XHRcdGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7XG5cdFx0XHRcdFx0Ly9ib3R0b206IDEwJSAhaW1wb3J0YW50O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FtYXpvbiB7XG5cblx0XHRcdC5zY2FsaW5nVmlkZW9Db250YWluZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OSAhaW1wb3J0YW50O1xuXHRcdFx0fVxuXHRcdH1cblxuXHRcdCYuc3NEaXNuZXkge1xuXG5cdFx0XHQuYnRtLW1lZGlhLW92ZXJsYXlzLWNvbnRhaW5lciB7XG5cdFx0XHRcdGRpc3BsYXk6bm9uZTtcblx0XHRcdH1cblxuXHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdGRpc3BsYXk6IG5vbmU7XG5cdFx0XHR9XG5cblx0XHRcdCYuc2hvd1N1YnMge1xuXHRcdFx0XHRcblx0XHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSHVsdSB7XG5cdFx0XHQuQ29udGVudFBsYXllcl9fY29udGVudEFyZWEge1xuXHRcdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDtcbiAgICBcdFx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0XHR9XG5cblx0XHRcdC5DbG9zZWRDYXB0aW9uIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0LkNsb3NlZENhcHRpb24ge1xuXHRcdFx0XHRcdGRpc3BsYXk6YmxvY2s7XG5cblx0XHRcdFx0XHQuQ2xvc2VkQ2FwdGlvbl9fb3V0YmFuZCB7XG5cdFx0XHRcdFx0XHRib3R0b206IDMwcHggIWltcG9ydGFudDtcblx0XHRcdFx0XHR9XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSEJPIHtcblxuXHRcdFx0dmlkZW8ge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTtcblx0XHRcdH1cblxuXHRcdFx0KjpoYXModmlkZW8pIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk7XG5cdFx0XHR9XG5cblx0XHR9XG5cblx0XHQmLnNzWW91dHViZSB7XG5cblx0XHRcdC5odG1sNS12aWRlby1jb250YWluZXIsIC55dHAtY2FwdGlvbi13aW5kb3ctY29udGFpbmVyIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk5ICFpbXBvcnRhbnQ7XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FwcGxlIHtcblx0XHRcdCNhcHBsZS1tdXNpYy12aWRlby1wbGF5ZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTkgIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnNjcmltIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuXG5cdC5zc1dyYXBwZXIge1xuXHRcdG92ZXJmbG93OiBoaWRkZW47XG5cdH1cblxuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbm90aWZpY2F0aW9uc1wiO1xuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbW9kYWxcIjtcbn0iLCIuc3NOb3RpZmljYXRpb24ge1xuXG4gICAgZGlzcGxheTogZmxleDtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBoZWlnaHQ6IDRyZW07XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgei1pbmRleDogMTAwMDAwMDAwMDtcbiAgICB0b3A6LTRyZW07XG5cbiAgICBhbmltYXRpb24tbmFtZTogbm90aWZpY2F0aW9uO1xuICAgIGFuaW1hdGlvbi1kdXJhdGlvbjogMnM7XG4gICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogMTtcblxuICAgIEBrZXlmcmFtZXMgbm90aWZpY2F0aW9uIHtcbiAgICAgICAgMCUge3RvcDogLTRyZW07fVxuICAgICAgICAyNSUge3RvcDogM3JlbTt9XG4gICAgICAgIDg1JSB7dG9wOiAzcmVtO31cbiAgICB9XG5cbiAgICAuc3NOQ29udGVudCB7XG4gICAgICAgIC8vY29udGVudDogJ1NjcmVlbnNob3QgY29waWVkIHRvIGNsaXBib2FyZCEnO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHotaW5kZXg6IDEwMDAwMDAwMDA7XG4gICAgICAgIHBhZGRpbmc6IC43NXJlbSAxLjI1ZW07XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDFlbTtcbiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IC4yNWVtO1xuICAgICAgICBmb250LXNpemU6IDEycHg7XG4gICAgICAgIGhlaWdodDogZml0LWNvbnRlbnQ7XG4gICAgICAgIHRvcDowO1xuXG4gICAgICAgICYuc3VjY2VzcyB7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZDRlZGRhO1xuICAgICAgICAgICAgYm9yZGVyLWNvbG9yOiAjYzNlNmNiO1xuICAgICAgICAgICAgY29sb3I6ICMxNTU3MjQ7XG4gICAgICAgIH1cbiAgICBcbiAgICAgICAgJi5mYWlsIHtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNlZGQ0ZDQ7XG4gICAgICAgICAgICBib3JkZXItY29sb3I6ICNlNmMzYzM7XG4gICAgICAgICAgICBjb2xvcjogI2I2MjQyNDtcbiAgICAgICAgfVxuICAgIH1cblxufSIsIi5zc01vZGFsIHtcblxuICAgIGRpc3BsYXk6IG5vbmU7XG5cbiAgICAmLnZpc2libGUge1xuICAgICAgICBkaXNwbGF5OmJsb2NrO1xuICAgIH1cblxuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB6LWluZGV4OiAxMDAwMDAwMDA7XG5cbiAgICByaWdodDoyMHB4O1xuICAgIFxuICAgIG9wYWNpdHk6IDA7XG5cbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiNmZmZlZmE7XG4gICAgYm9yZGVyLXJhZGl1czogM3B4O1xuXG4gICAgcGFkZGluZzogMjVweDtcblxuICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgIGZvbnQtZmFtaWx5OiBtdWxpLCBzYW5zLXNlcmlmO1xuICAgIFxuICAgICoge1xuICAgICAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICAgICAgICBsaW5lLWhlaWdodDogbm9ybWFsO1xuICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIH1cblxuICAgIGJveC1zaGFkb3c6IDBweCA0cHggOHB4IDBweCByZ2JhKDAsIDAsIDAsIDAuMTUpO1xuXG4gICAgYW5pbWF0aW9uLW5hbWU6IGFuaW1hdGVPbjtcbiAgICBhbmltYXRpb24tZHVyYXRpb246IC4ycztcbiAgICBhbmltYXRpb24tZmlsbC1tb2RlOiBmb3J3YXJkcztcblxuICAgIEBrZXlmcmFtZXMgYW5pbWF0ZU9uIHtcbiAgICAgICAgZnJvbSB7XG4gICAgICAgICAgICBvcGFjaXR5OiAwO1xuICAgICAgICAgICAgdG9wOiAwcHg7XG4gICAgICAgIH1cbiAgICAgICAgdG8ge1xuICAgICAgICAgICAgb3BhY2l0eTogMTtcbiAgICAgICAgICAgIHRvcDogMjBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIC5jbG9zZSB7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgcmlnaHQ6IDEwcHg7XG4gICAgICAgIHRvcDogMTBweDtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBvcGFjaXR5OiAuNTtcblxuICAgICAgICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJy4uL2ltYWdlcy9jbG9zZS5zdmcnKTtcblxuICAgICAgICB3aWR0aDoxMHB4O1xuICAgICAgICBoZWlnaHQ6MTBweDtcblxuICAgIH1cblxuICAgIC5zc0J1dHRvbnMge1xuXG4gICAgICAgIG1hcmdpbi10b3A6IDI1cHg7XG4gICAgICAgIHRleHQtYWxpZ246IHJpZ2h0O1xuXG4gICAgICAgIC5zc0J1dHRvbiwgYSAuc3NCdXR0b24ge1xuICAgICAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG5cbiAgICAgICAgICAgIGhlaWdodDoyMHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBwYWRkaW5nOjNweCAxMnB4IDNweDtcbiAgICAgICAgICAgIG1hcmdpbi1sZWZ0OiAxNHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgICAgICAgICBib3gtc2hhZG93OiAwcHggNHB4IDhweCAwcHggcmdiYSgwLCAwLCAwLCAwLjE1KTtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICBcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMTJweDtcbiAgICAgICAgICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIFxuICAgICAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuXG4gICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cbiAgICAgICAgICAgIC5lbW9qaSB7XG4gICAgICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgICAgIHZlcnRpY2FsLWFsaWduOiBib3R0b207XG4gICAgICAgICAgICB9XG4gICAgXG4gICAgICAgICAgICAmLmJsdWUge1xuICAgICAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICMxOWFjZWY7XG4gICAgICAgICAgICAgICAgY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAuaWNvbiB7XG4gICAgICAgIGJhY2tncm91bmQtaW1hZ2U6IHVybCgnLi4vaW1hZ2VzL2ljb25CbHVlLnN2ZycpO1xuICAgICAgICBiYWNrZ3JvdW5kLXJlcGVhdDogbm8tcmVwZWF0O1xuXG4gICAgICAgIHdpZHRoOjMwcHg7XG4gICAgICAgIGhlaWdodDozMHB4O1xuXG4gICAgICAgIHZlcnRpY2FsLWFsaWduOiB0b3A7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMjJweDtcbiAgICAgICAgbWFyZ2luLXRvcDoycHg7XG5cbiAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG4gICAgfVxuXG4gICAgLmJvZHkge1xuXG4gICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB3aWR0aDozMTVweDtcblxuICAgICAgICAudGl0bGUge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IDYwMDtcbiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDdweDtcbiAgICAgICAgfVxuICAgICAgICAuZGVzY3JpcHRpb24ge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxM3B4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGxpZ2h0ZXI7XG4gICAgICAgIH1cbiAgICB9XG5cbn0iXSwic291cmNlUm9vdCI6IiJ9 */</style></head>
+
+<body data-new-gr-c-s-check-loaded="14.1185.0" data-gr-ext-installed="">
+ 
+    <section>
+        <h1><img src="./TML Train Load Viewer_files/roctec.jpeg" style="width: 100px;height: 100px"></h1>
+        <h1>TML Train Load Viewer</h1>
+        <div class="row">
+           <div class="column" style="margin-left: 20px">
+               <input type="text" id="searchInput" placeholder="Filter by Car Number" class="form-control">
+           </div>
+           <div class="column" style="margin-left: 20px">
+               <button type="button" id="reload" class="btn btn-primary mb-2" onclick="reload();">Reload</button>
+           </div>
+           <div class="column" style="margin-left: 20px;margin-top: 8px">
+               Hide Not in Service Trains
+               <input type="checkbox" checked="" id="hideUnknown" name="hide_unknown" value="Hide Unknown">
+           </div>
+           <div class="column" style="margin-left: 20px;margin-top: 8px">
+               Show Up Direction
+               <input type="checkbox" checked="" id="up_dir" name="up_dir" value="Show Up Direction">
+           </div>
+           <div class="column" style="margin-left: 20px;margin-top: 8px">
+               Show Down Direction
+               <input type="checkbox" checked="" id="dn_dir" name="dn_dir" value="Show Down Direction">
+           </div>
+       </div>
+
+        <!-- TABLE CONSTRUCTION-->
+        <table id="table" class="table table-bordered table-striped">
+            <!-- HEADING FORMATION -->
+            <thead>
+                <tr>
+                <th>Car Number</th>
+                <th>Journey</th>
+                <th>Car 1</th>
+                <th>Car 2</th>
+                <th>Car 3</th>
+                <th>Car 4</th>
+                <th>Car 5</th>
+                <th>Car 6</th>
+                <th>Car 7</th>
+                <th>Car 8</th>
+                <th>Train Speed</th>
+                <th>Door Status</th>
+                <th>Train Type</th>
+                <th>Last Update</th>                
+                </tr>
+            </thead>
+            <tbody id="trainContent"><tr><td>328</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">NAC</label>&lt;----<label class="numberCircleYellow">AUS</label></td><td style="background-color:#00ff00;">75P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">114P<br></td><td style="background-color:#ffff00;">138P<br></td><td><div style="font-family: Orbitron, sans-serif;">46km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:30</td></tr><tr><td>420</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 05:00:09</td></tr><tr><td>348</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:31</td></tr><tr><td>314</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">SHM</label>&lt;----<label class="numberCircleYellow">TSH</label></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">18P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">96km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:33</td></tr><tr><td>378</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">TWW</label>&lt;----<label class="numberCircleYellow">MEF</label></td><td style="background-color:#ffff00;">132P<br></td><td style="background-color:#00ff00;">90P<br></td><td style="background-color:#00ff00;">117P<br></td><td style="background-color:#ffff00;">159P<br></td><td style="background-color:#00ff00;">111P<br></td><td style="background-color:#00ff00;">111P<br></td><td style="background-color:#ffff00;">126P<br></td><td style="background-color:#00ff00;">84P<br></td><td><div style="font-family: Orbitron, sans-serif;">104km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:32</td></tr><tr><td>344</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">ETS</label>----&gt;<label class="numberCircle">HUH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">60P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">75P<br></td><td style="background-color:#00ff00;">66P<br></td><td style="background-color:#00ff00;">81P<br></td><td style="background-color:#ffff00;">144P<br></td><td><div style="font-family: Orbitron, sans-serif;">30km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:32</td></tr><tr><td>332</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">3P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">18P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">27P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>386</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">SIH</label>&lt;----<label class="numberCircleYellow">TIS</label></td><td style="background-color:#00ff00;">93P<br></td><td style="background-color:#00ff00;">75P<br></td><td style="background-color:#ffff00;">129P<br></td><td style="background-color:#00ff00;">90P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">39P<br></td><td style="background-color:#00ff00;">60P<br></td><td style="background-color:#00ff00;">45P<br></td><td><div style="font-family: Orbitron, sans-serif;">49km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:33</td></tr><tr><td>368</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">HOM</label>&lt;----<label class="numberCircleYellow">TKW</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">18P<br></td><td style="background-color:#00ff00;">33P<br></td><td><div style="font-family: Orbitron, sans-serif;">53km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>316</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TWW</label>----&gt;<label class="numberCircle">MEF</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">69P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">51P<br></td><td><div style="font-family: Orbitron, sans-serif;">100km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>412</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">SIH</label>----&gt;<label class="numberCircle">TIS</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">4P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:31</td></tr><tr><td>352</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label>----&gt;<label class="numberCircle">SIH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">3P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 16:11:58</td></tr><tr><td>342</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">48P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 04:57:08</td></tr><tr><td>422</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">STW</label>----&gt;<label class="numberCircle">CIO</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">76P<br></td><td style="background-color:#00ff00;">63P<br></td><td style="background-color:#00ff00;">67P<br></td><td style="background-color:#00ff00;">67P<br></td><td style="background-color:#00ff00;">50P<br></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">71P<br></td><td style="background-color:#00ff00;">76P<br></td><td><div style="font-family: Orbitron, sans-serif;">62km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:27</td></tr><tr><td>390</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label>----&gt;<label class="numberCircle">SIH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">3P<br></td><td style="background-color:#00ff00;">9P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 02:32:32</td></tr><tr><td>326</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">LOP</label>----&gt;<label class="numberCircle">YUL</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">30P<br></td><td><div style="font-family: Orbitron, sans-serif;">59km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>320</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">CKT</label>&lt;----<label class="numberCircleYellow">STW</label></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">9P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:29</td></tr><tr><td>426</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">MOS</label>&lt;----<label class="numberCircleYellow">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">12P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>306</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">DIH</label>&lt;----<label class="numberCircleYellow">HIK</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">39P<br></td><td style="background-color:#00ff00;">3P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">33P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:29</td></tr><tr><td>324</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">DIH</label>----&gt;<label class="numberCircle">HIK</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:34</td></tr><tr><td>338</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">SIH</label>----&gt;<label class="numberCircle">TIS</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">30P<br></td><td style="background-color:#00ff00;">45P<br></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">81P<br></td><td style="background-color:#00ff00;">51P<br></td><td><div style="font-family: Orbitron, sans-serif;">101km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:45:40</td></tr><tr><td>360</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircleYellow">SIH</label></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">30P<br></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">45P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">33P<br></td><td><div style="font-family: Orbitron, sans-serif;">25km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:27</td></tr><tr><td>346</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">TSH</label>&lt;----<label class="numberCircleYellow">HEO</label></td><td style="background-color:#00ff00;">30P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">57P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">23km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 09:16:34</td></tr><tr><td>404</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">SIH</label>&lt;----<label class="numberCircleYellow">TIS</label></td><td style="background-color:#00ff00;">46P<br></td><td style="background-color:#00ff00;">59P<br></td><td style="background-color:#00ff00;">80P<br></td><td style="background-color:#00ff00;">114P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">101P<br></td><td style="background-color:#00ff00;">59P<br></td><td style="background-color:#00ff00;">46P<br></td><td><div style="font-family: Orbitron, sans-serif;">47km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 18:59:31</td></tr><tr><td>406</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">YUL</label>----&gt;<label class="numberCircle">KSR</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#ffff00;">139P<br></td><td style="background-color:#ffff00;">202P<br></td><td style="background-color:#ffff00;">143P<br></td><td style="background-color:#ffff00;">135P<br></td><td style="background-color:#ffff00;">177P<br></td><td style="background-color:#ffff00;">126P<br></td><td style="background-color:#ffff00;">139P<br></td><td style="background-color:#ffff00;">156P<br></td><td><div style="font-family: Orbitron, sans-serif;">69km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/02 08:36:51</td></tr><tr><td>336</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">LOP</label>&lt;----<label class="numberCircleYellow">YUL</label></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">78P<br></td><td style="background-color:#00ff00;">66P<br></td><td style="background-color:#00ff00;">72P<br></td><td style="background-color:#00ff00;">78P<br></td><td style="background-color:#00ff00;">66P<br></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">48P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 17:19:25</td></tr><tr><td>362</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">18P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:27</td></tr><tr><td>364</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">DIH</label>----&gt;<label class="numberCircle">HIK</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">30P<br></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">72P<br></td><td style="background-color:#00ff00;">75P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">59km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:19:56</td></tr><tr><td>416</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">KAT</label>----&gt;<label class="numberCircle">DIH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">38P<br></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">76P<br></td><td style="background-color:#00ff00;">59P<br></td><td style="background-color:#00ff00;">67P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">105P<br></td><td style="background-color:#00ff00;">71P<br></td><td><div style="font-family: Orbitron, sans-serif;">11km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:28</td></tr><tr><td>388</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label>----&gt;<label class="numberCircle">SIH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:32</td></tr><tr><td>382</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td style="background-color:#ff0000;">0-50 P</td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 02:46:08</td></tr><tr><td>374</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircleYellow">SIH</label></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">45P<br></td><td style="background-color:#00ff00;">78P<br></td><td style="background-color:#00ff00;">60P<br></td><td style="background-color:#00ff00;">45P<br></td><td><div style="font-family: Orbitron, sans-serif;">62km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 08:27:45</td></tr><tr><td>384</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">SIH</label>&lt;----<label class="numberCircleYellow">TIS</label></td><td style="background-color:#00ff00;">54P<br></td><td style="background-color:#00ff00;">45P<br></td><td style="background-color:#00ff00;">30P<br></td><td style="background-color:#00ff00;">9P<br></td><td style="background-color:#00ff00;">84P<br></td><td style="background-color:#00ff00;">63P<br></td><td style="background-color:#00ff00;">15P<br></td><td style="background-color:#00ff00;">9P<br></td><td><div style="font-family: Orbitron, sans-serif;">93km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 12:57:07</td></tr><tr><td>340</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircleYellow">SIH</label></td><td style="background-color:#00ff00;">39P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">45P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">51P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">21km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 10:54:31</td></tr><tr><td>402</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">WKS</label></td><td style="background-color:#00ff00;">8P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">8P<br></td><td style="background-color:#00ff00;">8P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">8P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 05:03:52</td></tr><tr><td>302</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">KSR</label>&lt;----<label class="numberCircleYellow">TWW</label></td><td style="background-color:#ffff00;">147P<br></td><td style="background-color:#ffff00;">126P<br></td><td style="background-color:#ffff00;">162P<br></td><td style="background-color:#ffff00;">174P<br></td><td style="background-color:#ffff00;">174P<br></td><td style="background-color:#ffff00;">141P<br></td><td style="background-color:#ffff00;">144P<br></td><td style="background-color:#00ff00;">96P<br></td><td><div style="font-family: Orbitron, sans-serif;">107km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:32</td></tr><tr><td>424</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">HUH</label>&lt;----<label class="numberCircleYellow">HOM</label></td><td style="background-color:#00ff00;">97P<br></td><td style="background-color:#ffff00;">160P<br></td><td style="background-color:#ffff00;">130P<br></td><td style="background-color:#ffff00;">139P<br></td><td style="background-color:#ffff00;">156P<br></td><td style="background-color:#ffff00;">122P<br></td><td style="background-color:#ffff00;">152P<br></td><td style="background-color:#ffff00;">173P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 08:17:40</td></tr><tr><td>358</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">AUS</label>&lt;----<label class="numberCircleYellow">ETS</label></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">66P<br></td><td style="background-color:#00ff00;">72P<br></td><td style="background-color:#00ff00;">87P<br></td><td style="background-color:#00ff00;">66P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">45P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:31</td></tr><tr><td>414</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">MOS</label>&lt;----<label class="numberCircleYellow">WKS</label></td><td style="background-color:#00ff00;">8P<br></td><td style="background-color:#00ff00;">8P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">0P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:31</td></tr><tr><td>428</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">KSR</label>----&gt;<label class="numberCircle">TWW</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">42P<br></td><td style="background-color:#00ff00;">38P<br></td><td style="background-color:#00ff00;">29P<br></td><td style="background-color:#00ff00;">21P<br></td><td style="background-color:#00ff00;">29P<br></td><td style="background-color:#00ff00;">25P<br></td><td style="background-color:#00ff00;">25P<br></td><td style="background-color:#00ff00;">29P<br></td><td><div style="font-family: Orbitron, sans-serif;">104km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:33</td></tr><tr><td>350</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">YUL</label>&lt;----<label class="numberCircleYellow">KSR</label></td><td style="background-color:#ffff00;">165P<br></td><td style="background-color:#ffff00;">129P<br></td><td style="background-color:#ffff00;">141P<br></td><td style="background-color:#ffff00;">174P<br></td><td style="background-color:#ffff00;">126P<br></td><td style="background-color:#ffff00;">147P<br></td><td style="background-color:#ffff00;">144P<br></td><td style="background-color:#00ff00;">117P<br></td><td><div style="font-family: Orbitron, sans-serif;">71km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:29</td></tr><tr><td>354</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircle">TUM</label>&lt;----<label class="numberCircle">SIH</label>&lt;----<label class="numberCircleYellow">TIS</label></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">36P<br></td><td style="background-color:#00ff00;">33P<br></td><td style="background-color:#00ff00;">57P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">27P<br></td><td style="background-color:#00ff00;">48P<br></td><td style="background-color:#00ff00;">36P<br></td><td><div style="font-family: Orbitron, sans-serif;">68km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 10:39:20</td></tr><tr><td>310</td><td style="min-width:450px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label></td><td style="background-color:#00ff00;">3P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">6P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">24P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">18P<br></td><td style="background-color:#00ff00;">21P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Close</div></td><td><div style="font-family: Orbitron, sans-serif;">SP1900</div></td><td <td="">2023/05/03 21:46:34</td></tr><tr><td>408</td><td style="min-width:300px;  font-family: Orbitron, sans-serif;"><label class="numberCircleYellow">TUM</label>----&gt;<label class="numberCircle">SIH</label>-----&gt;<label class="numberCircle">WKS</label></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">0P<br></td><td style="background-color:#00ff00;">4P<br></td><td style="background-color:#00ff00;">12P<br></td><td style="background-color:#00ff00;">4P<br></td><td><div style="font-family: Orbitron, sans-serif;">0km/h</div></td><td><div style="font-family: Orbitron, sans-serif;">Open</div></td><td><div style="font-family: Orbitron, sans-serif;">T1141A</div></td><td <td="">2023/05/03 21:46:33</td></tr></tbody>
+
+            <script src="./TML Train Load Viewer_files/table_search.js"></script>
+
+            <script>
+
+                $(document).ready(function () {
+
+                    reload();
+
+                    $('th').click(function(){
+                        var table = $(this).parents('table').eq(0)
+                        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                        this.asc = !this.asc
+                        if (!this.asc){rows = rows.reverse()}
+                        for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+                    })
+
+                    $('#searchInput').keyup(function () {
+
+                      table_search($('#searchInput').val(),$('#table tbody tr'),'0');
+
+                    });
+
+                });
+
+                window.setInterval("reload()",6000);
+
+            </script>
+</table></section></body></html>
