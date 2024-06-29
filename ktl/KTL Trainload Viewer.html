@@ -1,0 +1,1829 @@
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./KTL Trainload Viewer_files/analytics.js" type="text/javascript"></script>
+
+	
+
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+
+	<title>KTL Trainload Viewer</title>
+	<!--Axios-->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+	<script src="./KTL Trainload Viewer_files/axios.min.js"></script>
+	<!--Bootstrap-->
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
+
+	<!--fontawesome-->
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+	<!--CSS-->
+	<style>
+		/* css variable */
+		:root {
+			--main-theme-color: var(--ktl-color);
+			--mtr-blue: #00234f;
+			--sil-color: #CDCE00;
+			--isl-color: #007DC5;
+			--twl-color: #ED1C24;
+			--ktl-color: #00AB4E;
+			--tkl-color: #7E499D;
+
+			--web-font: Microsoft JhengHei, Helvetica, Arial, sans-serif, serif;
+		}
+
+		/* css reset */
+		*,
+		::before,
+		::after {
+			font-family: var(--web-font);
+			margin: 0px;
+			box-sizing: border-box;
+		}
+
+		/* bootstrap */
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			margin-top: 0;
+			margin-bottom: 0.5rem;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+
+		h1 {
+			font-size: calc(1.375rem + 1.5vw);
+		}
+
+		.p-3 {
+			padding: 1rem !important;
+		}
+
+		hr {
+			margin: 1rem 0;
+			color: inherit;
+			border: 0;
+			border-top: 1px solid;
+			opacity: .25;
+		}
+
+		.badge {
+			--bs-badge-padding-x: 0.65em;
+			--bs-badge-padding-y: 0.35em;
+			--bs-badge-font-size: 0.75em;
+			--bs-badge-font-weight: 700;
+			--bs-badge-color: #fff;
+			--bs-badge-border-radius: var(--bs-border-radius);
+			display: inline-block;
+			padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+			font-size: var(--bs-badge-font-size);
+			font-weight: var(--bs-badge-font-weight);
+			line-height: 1;
+			color: var(--bs-badge-color);
+			white-space: nowrap;
+			vertical-align: baseline;
+		}
+
+		.btn {
+			--bs-btn-padding-x: 0.75rem;
+			--bs-btn-padding-y: 0.375rem;
+			--bs-btn-font-family: ;
+			--bs-btn-font-size: 1rem;
+			--bs-btn-font-weight: 400;
+			--bs-btn-line-height: 1.5;
+			--bs-btn-color: #212529;
+			--bs-btn-bg: transparent;
+			--bs-btn-border-width: 1px;
+			--bs-btn-border-color: transparent;
+			--bs-btn-border-radius: 0.375rem;
+			--bs-btn-hover-border-color: transparent;
+			--bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+			--bs-btn-disabled-opacity: 0.65;
+			/* --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), .5); */
+			display: inline-block;
+			padding: var(--bs-btn-padding-y) var(--bs-btn-padding-x);
+			font-family: var(--bs-btn-font-family);
+			font-size: var(--bs-btn-font-size);
+			font-weight: var(--bs-btn-font-weight);
+			line-height: var(--bs-btn-line-height);
+			color: var(--bs-btn-color);
+			text-align: center;
+			text-decoration: none;
+			vertical-align: middle;
+			cursor: pointer;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+			border: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+			border-radius: var(--bs-btn-border-radius);
+			background-color: var(--bs-btn-bg);
+			transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+		}
+
+		[type=button],
+		[type=reset],
+		[type=submit],
+		button {
+			-webkit-appearance: button;
+		}
+
+
+
+		.bs-table {
+			border-collapse: collapse;
+			width: 100%;
+			background-color: white;
+
+		}
+
+		.bs-table-striped {}
+
+		.bs-table-striped>tbody>tr:nth-child(odd) {
+			background-color: #EEE;
+		}
+
+
+		.bs-table>thead>tr>th {
+			padding: 8px;
+			border-bottom-width: 2.5px;
+			border-bottom-style: solid;
+			border-bottom-color: rgb(199, 199, 199);
+			position: sticky;
+			top: 0px;
+			/* Don't forget this, required for the stickiness */
+		}
+
+		.bs-table>tbody>tr {
+
+			border-bottom-width: 1px;
+			border-bottom-style: solid;
+			border-bottom-color: lightgrey;
+
+			background-color: rgb(255, 255, 255);
+		}
+
+		.bs-table>tbody>tr>td,
+		.bs-table>tbody>tr>th {
+			padding: 8px;
+			background-color: rgb(255, 255, 255);
+		}
+
+		.bs-table>tbody>tr>td {
+			box-shadow: inset -2px 0px 0px 0px white, inset 2px 0px 0px 0px white;
+		}
+
+		.bs-table-hover>tbody>tr:hover>td {
+			filter: brightness(0.857);
+		}
+
+
+		/* self defined style */
+
+		body {
+			background-color: white;
+			color: black;
+		}
+
+
+		td,
+		th {
+			white-space: nowrap;
+			text-align: center;
+			vertical-align: middle;
+			min-width: 100px;
+		}
+
+		.web-navbar {
+			width: 100%;
+			height: 80px;
+			color: #ffffff;
+			background-color: var(--main-theme-color);
+			overflow: auto;
+
+			display: flex;
+			justify-content: center;
+			align-items: flex-end;
+		}
+
+		.top-navbar {
+			width: 100%;
+			height: 50px;
+			color: #ffffff;
+			background-color: var(--main-theme-color);
+
+		}
+
+		.top-navbar-right {
+			height: 100%;
+			float: right;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0px 5px;
+			padding: 0px 5px;
+		}
+
+		.top-navbar-right * {
+			margin: 5px;
+		}
+
+		.bottom-bar {
+			width: 100%;
+			background-color: red;
+		}
+
+		.tool-bar {
+			margin: 25px 0px;
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.sort-tool {}
+
+		.extend-tool {}
+
+
+
+
+		.trainFilter-input-container {
+			display: flex;
+			align-items: center;
+			position: relative;
+			width: 100%;
+			margin: 0px 3px;
+		}
+
+		.trainFilter-input {
+			display: inline-block;
+			width: 100%;
+			font-size: 14px;
+			padding: 12px 20px 12px 40px;
+			border: 1px solid #ddd;
+			transition: all 0.3s;
+			outline-color: var(--main-theme-color);
+		}
+
+		.trainFilter-placeholder {
+			position: absolute;
+
+			left: 30px;
+			padding: 0px 10px;
+
+			background-color: white;
+			color: #ddd;
+			font-size: 14px;
+
+			transition: all 0.1s;
+		}
+
+		#trainFilter:is(:focus, :valid)~.trainFilter-placeholder {
+			transform: translatey(-25px) translatex(-25px);
+			font-size: 10px;
+			color: var(--main-theme-color);
+
+		}
+
+		.trainFilter-input:focus {
+			box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+		}
+
+		.search-container {
+			display: flex;
+			transition: all 1s;
+		}
+
+
+		.search-container-item {
+			display: flex;
+
+			align-items: center;
+			position: relative;
+			width: 100%;
+		}
+
+		.select-traintype {
+			border-color: var(--main-theme-color);
+			border-radius: 5px;
+			font-size: 14px;
+			padding: 12px 20px 12px 20px;
+			outline-color: var(--main-theme-color);
+
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		.search-icon {
+			height: 100%;
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+
+			padding: 0px 10px 0px 10px;
+			color: #ddd;
+
+			z-index: 99;
+		}
+
+		.search-container-item:hover .search-icon {
+			color: var(--main-theme-color);
+		}
+
+		.cancel-icon-container {
+
+			position: absolute;
+			right: 10px;
+			cursor: pointer;
+			visibility: hidden;
+			z-index: 99;
+		}
+
+		.cancel-icon {
+			height: 20px;
+			width: 20px;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			text-align: center;
+
+			border-radius: 50%;
+			color: #fff;
+			background-color: #ddd;
+
+		}
+
+		.p-left {
+			padding-left: 30px;
+		}
+
+		.reload-btn {
+			color: #ffffff;
+			background-color: var(--main-theme-color);
+			width: 150px;
+
+			transition: 0.5s;
+		}
+
+		.reload-btn>svg {
+			rotate: 0deg;
+			transition: 0.5s;
+		}
+
+		.reload-btn:hover {
+			color: #ffffff;
+			background-color: var(--main-theme-color);
+			width: 170px;
+			filter: brightness(85%);
+		}
+
+		.reload-btn:hover svg {
+			transform: rotate(180deg);
+		}
+
+		.reload-btn:active {
+			color: var(--main-theme-color);
+			background-color: white;
+			filter: brightness(100%);
+			border: 1px solid var(--main-theme-color);
+		}
+
+
+		.btn-sort {
+			cursor: pointer;
+			font-size: 14px;
+			border: 0px solid;
+			border-radius: 5px;
+			padding: 5px 10px;
+			background-color: GhostWhite;
+			transition: 0.3s;
+		}
+
+		.btn-extend {
+			color: #ffffff;
+			background-color: var(--main-theme-color);
+		}
+
+		.btn-sort:hover,
+		.btn-extend:hover {
+			box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+		}
+
+		/* table css */
+		.table-container {
+			overflow-x: auto;
+		}
+
+		/* train load indication signal point */
+
+		.badge {
+			background-color: red;
+			padding: 4px 8px;
+			margin-right: 3px;
+			text-align: center;
+			border-radius: 5px;
+		}
+
+		/* update version */
+		.updated-version {
+			float: left;
+			font-size: 80%;
+		}
+
+		/* update time */
+		.updated-time {
+			float: right;
+			font-size: 80%;
+		}
+
+		/* TABLE COLLAPSE */
+
+
+		.clickRow {
+			cursor: pointer;
+		}
+
+		.hideCheckbox {
+			/* hide the checkbox */
+			display: none;
+		}
+
+		.centerSpan{
+			display: inline-flex;
+			align-items: center;
+			
+		}
+
+		.centerSpan>svg{
+			transition: 0.3s;
+		}
+
+		.rotateArrow{
+			transform: rotate(90deg);
+		}
+
+		.showRow {
+			max-height: 130px !important;
+			opacity: 1 !important;
+			padding: 8px 0px !important;
+			transition: padding 0.5s, max-height 0.5s, opacity 0.3s;
+		}
+
+		.hiddenRow,
+		.hiddenRow * {
+			max-height: 0px !important;
+			opacity: 0 !important;
+			padding: 0px !important;
+			overflow: hidden;
+			line-height: 0 !important;
+			transition: all .5s;
+		}
+
+		.targetRow {
+			filter: brightness(70%);
+		}
+
+		.targetRow td span {
+			max-height: 0px;
+			/* opacity: 0; */
+			overflow: hidden;
+			line-height: 0;
+		}
+
+
+		.pls-invisible {
+			visibility: hidden;
+		}
+
+		/*Connection Status*/
+		.connectionStatus_block {
+			display: flex;
+			flex-direction: row;
+
+		}
+
+		.connectionStatus-item {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column-reverse;
+			flex-grow: 1;
+
+			margin: 1px;
+		}
+
+		.connectionStatus-icon {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		@keyframes opacityLoop {
+			0% {
+				opacity: 0.3;
+			}
+
+			50% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0.3;
+			}
+		}
+
+		.opacity-transition {
+			animation-name: opacityLoop;
+			animation-duration: 1s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+		}
+
+		/* dropdown list */
+
+		.importantHidden {
+			display: none !important;
+		}
+	</style>
+<style>.ssBtnDefault{position:absolute;z-index:100000000;background:none;border:none;outline:none;right:0;cursor:pointer;width:26px;height:26px;margin:0;padding:0;top:8px;right:8px;opacity:.6;pointer-events:all;transition-duration:.25s}.ssBtnDefault:hover{opacity:1 !important;transition-duration:.25s}.ssBtnDefault .fade{transition-duration:5s;opacity:0}.ssBtnYouTube{background:none;border:none;margin-right:20px !important;padding-top:0px !important;width:25px !important}.ytp-embed .ssBtnYouTube{width:20px !important;margin-right:15px !important}.ssBtnVimeo{height:2rem !important;width:2rem !important;margin-top:8px !important}.ssBtnVimeo button{width:100% !important;height:100% !important}.ssBtnVimeo button svg{width:19px}.ssBtnNetflix{background:none;border:none;cursor:pointer;width:4rem;margin:0 .5rem;display:inline-block;flex-shrink:0}.ssBtnNetflix>svg{transform:translateY(-0.3rem)}.ssBtnNetflix:hover{transform:scale(1.2);transition-duration:.25s}.ssBtnHulu{width:27px;margin-top:4px;margin-right:10px;opacity:.7;cursor:pointer}.ssBtnHulu:hover{opacity:1}.ssBtnAmazon{margin-right:1.5vw;outline:none;cursor:pointer;opacity:.8}.ssBtnAmazon:hover{opacity:1}@media(min-width: 1200px){.ssBtnAmazon{width:1.6666666667vw;height:1.6666666667vw}}@media(max-width: 1199px){.ssBtnAmazon{width:20px;height:20px}}.ssBtnHBO{width:48px;height:48px;position:relative;opacity:.7;cursor:pointer;display:flex;justify-content:center;align-items:center}.ssBtnHBO:hover{opacity:1;transform:scale(1.2)}.ssBtnHBO svg{width:24px;height:24px}.ssBtnDisney{opacity:.7}.ssBtnDisney:hover{opacity:1}.ssBtnDisney svg{width:25px !important;height:31px !important;padding-top:4px;margin-right:7px}.ssBtnApple{cursor:pointer;opacity:.7}.ssBtnApple:hover{opacity:1}.ssBtnApple svg{width:22px !important;height:22px !important;margin-right:2px !important}body #ssTempHolder{position:fixed;z-index:1000000000000;width:100%;height:100%;top:0;pointer-events:none}body #ssTempHolder video{width:auto !important;height:auto !important;max-width:100% !important;max-height:100% !important;top:0 !important;left:0 !important;transform:none !important}body.ssTakeScreenshot .ssElement{z-index:100000000000 !important}body.ssTakeScreenshot.ssNetflix [data-uia=video-canvas]{z-index:10000000}body.ssTakeScreenshot.ssNetflix video{background-color:#000}body.ssTakeScreenshot.ssNetflix .player-timedtext{display:none !important}body.ssTakeScreenshot.ssNetflix.showSubs .player-timedtext{display:block !important}body.ssTakeScreenshot.ssAmazon .scalingVideoContainer{z-index:99999999 !important}body.ssTakeScreenshot.ssDisney .btm-media-overlays-container{display:none}body.ssTakeScreenshot.ssDisney .dss-hls-subtitle-overlay{display:none}body.ssTakeScreenshot.ssDisney.showSubs .dss-hls-subtitle-overlay{display:block}body.ssTakeScreenshot.ssHulu .ContentPlayer__contentArea{z-index:10000000000;position:relative}body.ssTakeScreenshot.ssHulu .ClosedCaption{display:none}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption{display:block}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption .ClosedCaption__outband{bottom:30px !important}body.ssTakeScreenshot.ssHBO video{z-index:99999999}body.ssTakeScreenshot.ssHBO *:has(video){z-index:99999999}body.ssTakeScreenshot.ssYoutube .html5-video-container,body.ssTakeScreenshot.ssYoutube .ytp-caption-window-container{z-index:999999999 !important}body.ssTakeScreenshot.ssApple #apple-music-video-player{z-index:999999999 !important}body.ssTakeScreenshot.ssApple .scrim{display:none}body .ssWrapper{overflow:hidden}body .ssNotification{display:flex;width:100%;height:4rem;justify-content:center;align-items:center;position:fixed;z-index:1000000000;top:-4rem;animation-name:notification;animation-duration:2s;animation-iteration-count:1}@keyframes notification{0%{top:-4rem}25%{top:3rem}85%{top:3rem}}body .ssNotification .ssNContent{position:absolute;z-index:1000000000;padding:.75rem 1.25em;margin-bottom:1em;border:1px solid rgba(0,0,0,0);border-radius:.25em;font-size:12px;height:fit-content;top:0}body .ssNotification .ssNContent.success{background-color:#d4edda;border-color:#c3e6cb;color:#155724}body .ssNotification .ssNContent.fail{background-color:#edd4d4;border-color:#e6c3c3;color:#b62424}body .ssModal{display:none;position:fixed;z-index:100000000;right:20px;opacity:0;background-color:#fffefa;border-radius:3px;padding:25px;color:#525252;font-family:muli,sans-serif;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);animation-name:animateOn;animation-duration:.2s;animation-fill-mode:forwards}body .ssModal.visible{display:block}body .ssModal *{vertical-align:middle;line-height:normal;font-weight:normal}@keyframes animateOn{from{opacity:0;top:0px}to{opacity:1;top:20px}}body .ssModal .close{position:absolute;right:10px;top:10px;cursor:pointer;opacity:.5;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0NDMuNCA0NDMuNCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDQzLjQgNDQzLjQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHBhdGggZD0iTTYuOCw0MDMuNWwxODEuOC0xODEuOEw2LjgsMzkuOWMtNS45LTUuOS04LjItMTQuNS02LTIyLjZDMyw5LjIsOS4yLDMsMTcuMywwLjhjOC4xLTIuMiwxNi43LDAuMSwyMi42LDZsMTgxLjgsMTgxLjgKCUw0MDMuNSw2LjhjNS45LTUuOSwxNC41LTguMiwyMi42LTZjOC4xLDIuMiwxNC40LDguNCwxNi41LDE2LjVjMi4yLDguMS0wLjEsMTYuNy02LDIyLjZMMjU0LjcsMjIxLjdsMTgxLjgsMTgxLjgKCWM1LjksNS45LDguMiwxNC41LDYsMjIuNmMtMi4yLDguMS04LjQsMTQuNC0xNi41LDE2LjVjLTguMSwyLjItMTYuNy0wLjEtMjIuNi02TDIyMS43LDI1NC43TDM5LjksNDM2LjVjLTUuOSw1LjktMTQuNSw4LjItMjIuNiw2CglDOS4yLDQ0MC40LDMsNDM0LjEsMC44LDQyNkMtMS40LDQxOCwwLjksNDA5LjQsNi44LDQwMy41TDYuOCw0MDMuNXoiLz4KPC9zdmc+Cg==);width:10px;height:10px}body .ssModal .ssButtons{margin-top:25px;text-align:right}body .ssModal .ssButtons .ssButton,body .ssModal .ssButtons a .ssButton{display:inline-block;height:20px;padding:3px 12px 3px;margin-left:14px;border-radius:4px;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);background-color:#fff;font-size:12px;color:#525252;line-height:20px;font-weight:normal;cursor:pointer;text-decoration:none}body .ssModal .ssButtons .ssButton .emoji,body .ssModal .ssButtons a .ssButton .emoji{font-size:15px;vertical-align:bottom}body .ssModal .ssButtons .ssButton.blue,body .ssModal .ssButtons a .ssButton.blue{background-color:#19acef;color:#fff}body .ssModal .icon{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI1LjIuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIKCSBpZD0iTGF5ZXJfMSIgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAxMDAgODMuOSIKCSBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMDAgODMuOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiMwMEFERUY7fQo8L3N0eWxlPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC05NTIuMzYyMTgpIj4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNS42LDk1Mi40Yy0xLjMsMC0yLjQsMS0yLjksMS44bC01LjYsMTEuMUgxMWMtNiwwLTExLDUtMTEsMTF2NDljMCw2LDUsMTEsMTEsMTFoNzhjNiwwLDExLTUsMTEtMTF2LTQ5CgkJYzAtNi01LTExLTExLTExSDcyLjlsLTUuNi0xMS4xYy0wLjUtMS4xLTEuNi0xLjgtMi45LTEuOEwzNS42LDk1Mi40TDM1LjYsOTUyLjR6IE0zNy42LDk1OC44aDI1LjJsNS41LDExLjEKCQljMC41LDEuMSwxLjYsMS44LDIuOSwxLjhoMTguMWMyLjYsMCw0LjUsMS45LDQuNSw0LjV2NDljMCwyLjYtMS45LDQuNS00LjUsNC41SDExLjFjLTIuNiwwLTQuNS0xLjktNC41LTQuNXYtNDkKCQljMC0yLjYsMS45LTQuNSw0LjUtNC41aDE4LjFjMS4xLDAsMi40LTAuOCwyLjktMS44TDM3LjYsOTU4Ljh6IE01MC4yLDk3OS44Yy0xMS42LDAtMjEsOS40LTIxLDIxczkuNCwyMSwyMSwyMXMyMS05LjQsMjEtMjEKCQlTNjEuOCw5NzkuOCw1MC4yLDk3OS44eiBNNTAuMiw5ODYuMmM4LjEsMCwxNC41LDYuNSwxNC41LDE0LjVzLTYuNSwxNC41LTE0LjUsMTQuNXMtMTQuNS02LjUtMTQuNS0xNC41UzQyLjEsOTg2LjIsNTAuMiw5ODYuMnoiLz4KPC9nPgo8L3N2Zz4K);background-repeat:no-repeat;width:30px;height:30px;vertical-align:top;margin-right:22px;margin-top:2px;display:inline-block}body .ssModal .body{display:inline-block;width:315px}body .ssModal .body .title{font-size:15px;font-weight:600;margin-bottom:7px}body .ssModal .body .description{font-size:13px;font-weight:lighter}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX2J1dHRvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX25vdGlmaWNhdGlvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX21vZGFsLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FFQyxpQkFBQSxDQUNBLGlCQUFBLENBQ0EsZUFBQSxDQUNBLFdBQUEsQ0FDQSxZQUFBLENBQ0EsT0FBQSxDQUNBLGNBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUNBLFFBQUEsQ0FDQSxTQUFBLENBQ0EsT0FBQSxDQUNBLFNBQUEsQ0FFQSxVQUFBLENBQ0Esa0JBQUEsQ0FFRyx3QkFBQSxDQUVBLG9CQUNJLG9CQUFBLENBQ0Esd0JBQUEsQ0FHSixvQkFDSSxzQkFBQSxDQUNBLFNBQUEsQ0FRUixjQUVDLGVBQUEsQ0FDQSxXQUFBLENBRUEsNEJBQUEsQ0FDRywwQkFBQSxDQUNBLHFCQUFBLENBRUgseUJBQ0MscUJBQUEsQ0FDQSw0QkFBQSxDQUlGLFlBRUMsc0JBQUEsQ0FDRyxxQkFBQSxDQUVBLHlCQUFBLENBRUgsbUJBRUMscUJBQUEsQ0FDQSxzQkFBQSxDQUVBLHVCQUNDLFVBQUEsQ0FNSCxjQUNDLGVBQUEsQ0FDQSxXQUFBLENBQ0EsY0FBQSxDQUVBLFVBQUEsQ0FFQSxjQUFBLENBR0Esb0JBQUEsQ0FDQSxhQUFBLENBVUEsa0JBRUMsNkJBQUEsQ0FJRSxvQkFDSSxvQkFBQSxDQUNILHdCQUFBLENBSUwsV0FFQyxVQUFBLENBQ0EsY0FBQSxDQUNBLGlCQUFBLENBQ0EsVUFBQSxDQUNBLGNBQUEsQ0FFQSxpQkFDQyxTQUFBLENBSUYsYUFDQyxrQkFBQSxDQUVBLFlBQUEsQ0FFRSxjQUFBLENBQ0EsVUFBQSxDQUlDLG1CQUNJLFNBQUEsQ0FJUiwwQkFBQSxhQUFBLG9CQUFBLENBQUEscUJBQUEsQ0FBQSxDQUNBLDBCQUFBLGFBQUEsVUFBQSxDQUFBLFdBQUEsQ0FBQSxDQUdBLFVBRUksVUFBQSxDQUNBLFdBQUEsQ0FDQSxpQkFBQSxDQUNBLFVBQUEsQ0FDQSxjQUFBLENBQ0EsWUFBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FFSCxnQkFDQyxTQUFBLENBQ0Esb0JBQUEsQ0FHRCxjQUNDLFVBQUEsQ0FDQSxXQUFBLENBSUYsYUFHSSxVQUFBLENBRUgsbUJBQ0MsU0FBQSxDQUdELGlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSxlQUFBLENBQ0EsZ0JBQUEsQ0FJRixZQUlDLGNBQUEsQ0FHRyxVQUFBLENBRUgsa0JBQ0MsU0FBQSxDQUdELGdCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSwyQkFBQSxDQzNMRCxtQkFDQyxjQUFBLENBQ0EscUJBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLEtBQUEsQ0FDQSxtQkFBQSxDQUVBLHlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSx5QkFBQSxDQUNBLDBCQUFBLENBQ0EsZ0JBQUEsQ0FDQSxpQkFBQSxDQUNBLHlCQUFBLENBTUQsaUNBQ0MsK0JBQUEsQ0FLQSx3REFDQyxnQkFBQSxDQUdELHNDQUNDLHFCQUFBLENBSUQsa0RBRUMsdUJBQUEsQ0FLQSwyREFFQyx3QkFBQSxDQVFGLHNEQUNDLDJCQUFBLENBTUQsNkRBQ0MsWUFBQSxDQUdELHlEQUNDLFlBQUEsQ0FLQSxrRUFDQyxhQUFBLENBTUYseURBQ0MsbUJBQUEsQ0FDRyxpQkFBQSxDQUdKLDRDQUNDLFlBQUEsQ0FJQSxxREFDQyxhQUFBLENBRUEsNkVBQ0Msc0JBQUEsQ0FRSCxrQ0FDQyxnQkFBQSxDQUdELHlDQUNDLGdCQUFBLENBT0QscUhBQ0MsNEJBQUEsQ0FLRCx3REFDQyw0QkFBQSxDQUdELHFDQUNDLFlBQUEsQ0FLSCxnQkFDQyxlQUFBLENDcElGLHFCQUVJLFlBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxTQUFBLENBRUEsMkJBQUEsQ0FDQSxxQkFBQSxDQUNBLDJCQUFBLENBRUEsd0JBQ0ksR0FBQSxTQUFBLENBQ0EsSUFBQSxRQUFBLENBQ0EsSUFBQSxRQUFBLENBQUEsQ0FHSixpQ0FFSSxpQkFBQSxDQUNBLGtCQUFBLENBQ0EscUJBQUEsQ0FDQSxpQkFBQSxDQUNBLDhCQUFBLENBQ0EsbUJBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxLQUFBLENBRUEseUNBQ0ksd0JBQUEsQ0FDQSxvQkFBQSxDQUNBLGFBQUEsQ0FHSixzQ0FDSSx3QkFBQSxDQUNBLG9CQUFBLENBQ0EsYUFBQSxDQzFDWixjQUVJLFlBQUEsQ0FNQSxjQUFBLENBQ0EsaUJBQUEsQ0FFQSxVQUFBLENBRUEsU0FBQSxDQUVBLHdCQUFBLENBQ0EsaUJBQUEsQ0FFQSxZQUFBLENBRUEsYUFBQSxDQUNBLDJCQUFBLENBUUEsMENBQUEsQ0FFQSx3QkFBQSxDQUNBLHNCQUFBLENBQ0EsNEJBQUEsQ0E3QkEsc0JBQ0ksYUFBQSxDQWtCSixnQkFDSSxxQkFBQSxDQUNBLGtCQUFBLENBQ0Esa0JBQUEsQ0FTSixxQkFDSSxLQUNJLFNBQUEsQ0FDQSxPQUFBLENBRUosR0FDSSxTQUFBLENBQ0EsUUFBQSxDQUFBLENBSVIscUJBQ0ksaUJBQUEsQ0FDQSxVQUFBLENBQ0EsUUFBQSxDQUNBLGNBQUEsQ0FDQSxVQUFBLENBRUEsd0RBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUlKLHlCQUVJLGVBQUEsQ0FDQSxnQkFBQSxDQUVBLHdFQUNJLG9CQUFBLENBRUEsV0FBQSxDQUVBLG9CQUFBLENBQ0EsZ0JBQUEsQ0FFQSxpQkFBQSxDQUNBLDBDQUFBLENBQ0EscUJBQUEsQ0FFQSxjQUFBLENBQ0EsYUFBQSxDQUNBLGdCQUFBLENBQ0Esa0JBQUEsQ0FFQSxjQUFBLENBRUEsb0JBQUEsQ0FFQSxzRkFDSSxjQUFBLENBQ0EscUJBQUEsQ0FHSixrRkFDSSx3QkFBQSxDQUNBLFVBQUEsQ0FLWixvQkFDSSx3REFBQSxDQUNBLDJCQUFBLENBRUEsVUFBQSxDQUNBLFdBQUEsQ0FFQSxrQkFBQSxDQUNBLGlCQUFBLENBQ0EsY0FBQSxDQUVBLG9CQUFBLENBR0osb0JBRUksb0JBQUEsQ0FDQSxXQUFBLENBRUEsMkJBQ0ksY0FBQSxDQUNBLGVBQUEsQ0FDQSxpQkFBQSxDQUVKLGlDQUNJLGNBQUEsQ0FDQSxtQkFBQSIsInNvdXJjZXNDb250ZW50IjpbIi5zc0J0bkRlZmF1bHQge1xuXHRcblx0cG9zaXRpb246IGFic29sdXRlO1xuXHR6LWluZGV4OiAxMDAwMDAwMDA7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRvdXRsaW5lOiBub25lO1xuXHRyaWdodDowO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHR3aWR0aDogMjZweDtcblx0aGVpZ2h0OiAyNnB4O1xuXHRtYXJnaW46IDA7Ly81JSA4cHggMDtcblx0cGFkZGluZzowO1xuXHR0b3A6OHB4O1xuXHRyaWdodDo4cHg7XG5cdFxuXHRvcGFjaXR5OiAuNjtcblx0cG9pbnRlci1ldmVudHM6IGFsbDtcblx0Lyp0cmFuc2l0aW9uLWZpbGwtbW9kZTogZm9yd2FyZHM7Ki9cbiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAuMjVzO1xuXG4gICAgJjpob3ZlciB7XG4gICAgICAgIG9wYWNpdHk6IDEgIWltcG9ydGFudDsgXG4gICAgICAgIHRyYW5zaXRpb24tZHVyYXRpb246IC4yNXM7XG4gICAgfVxuXG4gICAgLmZhZGUge1xuICAgICAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA1cztcbiAgICAgICAgb3BhY2l0eTogMDtcbiAgICB9XG4gICAgXG4gICAgLypzdmcge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOnJlZDtcbiAgICB9Ki9cbn1cblxuLnNzQnRuWW91VHViZSB7XG5cblx0YmFja2dyb3VuZDpub25lO1xuXHRib3JkZXI6IG5vbmU7XG5cdFxuXHRtYXJnaW4tcmlnaHQ6IDIwcHggIWltcG9ydGFudDtcbiAgICBwYWRkaW5nLXRvcDogMHB4ICFpbXBvcnRhbnQ7XG4gICAgd2lkdGg6IDI1cHggIWltcG9ydGFudDtcblxuXHQueXRwLWVtYmVkICYge1xuXHRcdHdpZHRoOiAyMHB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAxNXB4ICFpbXBvcnRhbnQ7XG5cdH1cbn1cblxuLnNzQnRuVmltZW8ge1xuXG5cdGhlaWdodDogMnJlbSAhaW1wb3J0YW50O1xuICAgIHdpZHRoOiAycmVtICFpbXBvcnRhbnQ7XG4gICAgLy9wYWRkaW5nOiA2cHggIWltcG9ydGFudDtcbiAgICBtYXJnaW4tdG9wOiA4cHggIWltcG9ydGFudDtcblxuXHRidXR0b24ge1xuXG5cdFx0d2lkdGg6IDEwMCUgIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDEwMCUgIWltcG9ydGFudDtcblx0XHRcblx0XHRzdmcge1xuXHRcdFx0d2lkdGg6IDE5cHg7XG5cdFx0fVxuXHR9XG5cbn1cblxuLnNzQnRuTmV0ZmxpeCB7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblx0d2lkdGg6NHJlbTtcblx0XG5cdG1hcmdpbjogMCAwLjVyZW07XG5cdC8vbWFyZ2luOiAwIDJyZW0gMCA0cmVtO1xuXG5cdGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuXHRmbGV4LXNocmluazogMDtcblx0XG5cdC8vbWFyZ2luLXRvcDotMXJlbTtcblx0Ly9oZWlnaHQ6Mi40cmVtO1xuXHQvL3dpZHRoOiA1MHB4O1xuXHQvL2hlaWdodDogMzVweCAhaW1wb3J0YW50O1xuXHQvL3dpZHRoOiAxMDAlOy8vMy42ZW0gIWltcG9ydGFudDtcbiAgICAvL2hlaWdodDogMTAwJTsvLzEuNmVtICFpbXBvcnRhbnQ7XG5cdC8vcGFkZGluZzowIDAgLjZlbSAwO1xuXG5cdCYgPiBzdmcge1xuXHRcdC8vbWFyZ2luLXRvcDotLjNyZW07XG5cdFx0dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLS4zcmVtKTtcblx0XHQvL3RyYW5zZm9ybTogc2NhbGUoLjUpO1xuXHR9XG4gICAgXG4gICAgJjpob3ZlciB7XG4gICAgICAgIHRyYW5zZm9ybTpzY2FsZSgxLjIpO1xuXHQgICAgdHJhbnNpdGlvbi1kdXJhdGlvbjogLjI1cztcbiAgICB9XG59XG5cbi5zc0J0bkh1bHUge1xuXHRcblx0d2lkdGg6IDI3cHg7XG5cdG1hcmdpbi10b3A6IDRweDtcblx0bWFyZ2luLXJpZ2h0OjEwcHg7XG5cdG9wYWNpdHk6IC43O1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG59XG5cbi5zc0J0bkFtYXpvbiB7XG5cdG1hcmdpbi1yaWdodDogMS41dnc7XG4gICAgXG5cdG91dGxpbmU6IG5vbmU7XG5cdFxuICAgY3Vyc29yOiBwb2ludGVyO1xuICAgb3BhY2l0eTogLjg7XG5cbiAgIC8vei1pbmRleDogOTk5OTk5OTk5OTtcblxuICAgICY6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAxO1xuICAgIH1cbn1cblxuQG1lZGlhIChtaW4td2lkdGg6IDEyMDBweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IGhlaWdodDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IH0gfVxuQG1lZGlhIChtYXgtd2lkdGg6IDExOTlweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMjBweDsgaGVpZ2h0OiAyMHB4OyB9IH1cblxuXG4uc3NCdG5IQk8ge1xuXG4gICAgd2lkdGg6IDQ4cHg7XG4gICAgaGVpZ2h0OiA0OHB4O1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICBvcGFjaXR5OiAwLjc7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcblxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHRcdHRyYW5zZm9ybTogc2NhbGUoMS4yKTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI0cHg7XG5cdFx0aGVpZ2h0OiAyNHB4O1xuXHR9XG59XG5cbi5zc0J0bkRpc25leSB7XG5cdC8vd2lkdGg6IDI2cHg7XG4gICAgLy9tYXJnaW4tcmlnaHQ6IDEzcHg7XG4gICAgb3BhY2l0eTogLjc7XG5cblx0Jjpob3ZlciB7XG5cdFx0b3BhY2l0eTogMTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI1cHggIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDMxcHggIWltcG9ydGFudDtcblx0XHRwYWRkaW5nLXRvcDogNHB4O1xuXHRcdG1hcmdpbi1yaWdodDogN3B4O1xuXHR9XG59XG5cbi5zc0J0bkFwcGxlIHtcblx0Ly93aWR0aDogMjZweDtcbiAgICAvL21hcmdpbi1yaWdodDogMTNweDtcblxuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblxuICAgIG9wYWNpdHk6IC43O1xuXG5cdCY6aG92ZXIge1xuXHRcdG9wYWNpdHk6IDE7XG5cdH1cblxuXHRzdmcge1xuXHRcdHdpZHRoOiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0aGVpZ2h0OiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAycHggIWltcG9ydGFudDtcblx0fVxufSIsIkBpbXBvcnQgXCJTY3JlZW5zaG90Q29udHJvbC9idXR0b25zXCI7XG5cbmJvZHkge1xuXG5cdCNzc1RlbXBIb2xkZXIge1xuXHRcdHBvc2l0aW9uOmZpeGVkO1xuXHRcdHotaW5kZXg6MTAwMDAwMDAwMDAwMDtcblx0XHR3aWR0aDoxMDAlO1xuXHRcdGhlaWdodDoxMDAlO1xuXHRcdHRvcDowO1xuXHRcdHBvaW50ZXItZXZlbnRzOiBub25lO1xuXG5cdFx0dmlkZW8ge1xuXHRcdFx0d2lkdGg6YXV0byAhaW1wb3J0YW50O1xuXHRcdFx0aGVpZ2h0OmF1dG8gIWltcG9ydGFudDtcblx0XHRcdG1heC13aWR0aDoxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHRtYXgtaGVpZ2h0OiAxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHR0b3A6IDAgIWltcG9ydGFudDtcblx0XHRcdGxlZnQ6IDAgIWltcG9ydGFudDtcblx0XHRcdHRyYW5zZm9ybTogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXG5cdCYuc3NUYWtlU2NyZWVuc2hvdCB7XG5cdFx0XG5cdFx0LnNzRWxlbWVudCB7XG5cdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDAgIWltcG9ydGFudDtcblx0XHR9XG5cdFx0XG5cdFx0Ji5zc05ldGZsaXgge1xuXHRcblx0XHRcdFtkYXRhLXVpYT12aWRlby1jYW52YXNdIHtcblx0XHRcdFx0ei1pbmRleDogMTAwMDAwMDA7XG5cdFx0XHR9XG5cdFx0XHRcblx0XHRcdHZpZGVvIHtcblx0XHRcdFx0YmFja2dyb3VuZC1jb2xvcjogIzAwMDAwMDtcblx0XHRcdFx0Ly9oZWlnaHQ6IGF1dG8gIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnBsYXllci10aW1lZHRleHQge1xuXG5cdFx0XHRcdGRpc3BsYXk6bm9uZSAhaW1wb3J0YW50O1xuXHRcdFx0fVx0XHRcdFxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0XG5cdFx0XHRcdC5wbGF5ZXItdGltZWR0ZXh0IHtcblxuXHRcdFx0XHRcdGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7XG5cdFx0XHRcdFx0Ly9ib3R0b206IDEwJSAhaW1wb3J0YW50O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FtYXpvbiB7XG5cblx0XHRcdC5zY2FsaW5nVmlkZW9Db250YWluZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OSAhaW1wb3J0YW50O1xuXHRcdFx0fVxuXHRcdH1cblxuXHRcdCYuc3NEaXNuZXkge1xuXG5cdFx0XHQuYnRtLW1lZGlhLW92ZXJsYXlzLWNvbnRhaW5lciB7XG5cdFx0XHRcdGRpc3BsYXk6bm9uZTtcblx0XHRcdH1cblxuXHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdGRpc3BsYXk6IG5vbmU7XG5cdFx0XHR9XG5cblx0XHRcdCYuc2hvd1N1YnMge1xuXHRcdFx0XHRcblx0XHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSHVsdSB7XG5cdFx0XHQuQ29udGVudFBsYXllcl9fY29udGVudEFyZWEge1xuXHRcdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDtcbiAgICBcdFx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0XHR9XG5cblx0XHRcdC5DbG9zZWRDYXB0aW9uIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0LkNsb3NlZENhcHRpb24ge1xuXHRcdFx0XHRcdGRpc3BsYXk6YmxvY2s7XG5cblx0XHRcdFx0XHQuQ2xvc2VkQ2FwdGlvbl9fb3V0YmFuZCB7XG5cdFx0XHRcdFx0XHRib3R0b206IDMwcHggIWltcG9ydGFudDtcblx0XHRcdFx0XHR9XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSEJPIHtcblxuXHRcdFx0dmlkZW8ge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTtcblx0XHRcdH1cblxuXHRcdFx0KjpoYXModmlkZW8pIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk7XG5cdFx0XHR9XG5cblx0XHR9XG5cblx0XHQmLnNzWW91dHViZSB7XG5cblx0XHRcdC5odG1sNS12aWRlby1jb250YWluZXIsIC55dHAtY2FwdGlvbi13aW5kb3ctY29udGFpbmVyIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk5ICFpbXBvcnRhbnQ7XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FwcGxlIHtcblx0XHRcdCNhcHBsZS1tdXNpYy12aWRlby1wbGF5ZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTkgIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnNjcmltIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuXG5cdC5zc1dyYXBwZXIge1xuXHRcdG92ZXJmbG93OiBoaWRkZW47XG5cdH1cblxuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbm90aWZpY2F0aW9uc1wiO1xuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbW9kYWxcIjtcbn0iLCIuc3NOb3RpZmljYXRpb24ge1xuXG4gICAgZGlzcGxheTogZmxleDtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBoZWlnaHQ6IDRyZW07XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgei1pbmRleDogMTAwMDAwMDAwMDtcbiAgICB0b3A6LTRyZW07XG5cbiAgICBhbmltYXRpb24tbmFtZTogbm90aWZpY2F0aW9uO1xuICAgIGFuaW1hdGlvbi1kdXJhdGlvbjogMnM7XG4gICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogMTtcblxuICAgIEBrZXlmcmFtZXMgbm90aWZpY2F0aW9uIHtcbiAgICAgICAgMCUge3RvcDogLTRyZW07fVxuICAgICAgICAyNSUge3RvcDogM3JlbTt9XG4gICAgICAgIDg1JSB7dG9wOiAzcmVtO31cbiAgICB9XG5cbiAgICAuc3NOQ29udGVudCB7XG4gICAgICAgIC8vY29udGVudDogJ1NjcmVlbnNob3QgY29waWVkIHRvIGNsaXBib2FyZCEnO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHotaW5kZXg6IDEwMDAwMDAwMDA7XG4gICAgICAgIHBhZGRpbmc6IC43NXJlbSAxLjI1ZW07XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDFlbTtcbiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IC4yNWVtO1xuICAgICAgICBmb250LXNpemU6IDEycHg7XG4gICAgICAgIGhlaWdodDogZml0LWNvbnRlbnQ7XG4gICAgICAgIHRvcDowO1xuXG4gICAgICAgICYuc3VjY2VzcyB7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZDRlZGRhO1xuICAgICAgICAgICAgYm9yZGVyLWNvbG9yOiAjYzNlNmNiO1xuICAgICAgICAgICAgY29sb3I6ICMxNTU3MjQ7XG4gICAgICAgIH1cbiAgICBcbiAgICAgICAgJi5mYWlsIHtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNlZGQ0ZDQ7XG4gICAgICAgICAgICBib3JkZXItY29sb3I6ICNlNmMzYzM7XG4gICAgICAgICAgICBjb2xvcjogI2I2MjQyNDtcbiAgICAgICAgfVxuICAgIH1cblxufSIsIi5zc01vZGFsIHtcblxuICAgIGRpc3BsYXk6IG5vbmU7XG5cbiAgICAmLnZpc2libGUge1xuICAgICAgICBkaXNwbGF5OmJsb2NrO1xuICAgIH1cblxuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB6LWluZGV4OiAxMDAwMDAwMDA7XG5cbiAgICByaWdodDoyMHB4O1xuICAgIFxuICAgIG9wYWNpdHk6IDA7XG5cbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiNmZmZlZmE7XG4gICAgYm9yZGVyLXJhZGl1czogM3B4O1xuXG4gICAgcGFkZGluZzogMjVweDtcblxuICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgIGZvbnQtZmFtaWx5OiBtdWxpLCBzYW5zLXNlcmlmO1xuICAgIFxuICAgICoge1xuICAgICAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICAgICAgICBsaW5lLWhlaWdodDogbm9ybWFsO1xuICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIH1cblxuICAgIGJveC1zaGFkb3c6IDBweCA0cHggOHB4IDBweCByZ2JhKDAsIDAsIDAsIDAuMTUpO1xuXG4gICAgYW5pbWF0aW9uLW5hbWU6IGFuaW1hdGVPbjtcbiAgICBhbmltYXRpb24tZHVyYXRpb246IC4ycztcbiAgICBhbmltYXRpb24tZmlsbC1tb2RlOiBmb3J3YXJkcztcblxuICAgIEBrZXlmcmFtZXMgYW5pbWF0ZU9uIHtcbiAgICAgICAgZnJvbSB7XG4gICAgICAgICAgICBvcGFjaXR5OiAwO1xuICAgICAgICAgICAgdG9wOiAwcHg7XG4gICAgICAgIH1cbiAgICAgICAgdG8ge1xuICAgICAgICAgICAgb3BhY2l0eTogMTtcbiAgICAgICAgICAgIHRvcDogMjBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIC5jbG9zZSB7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgcmlnaHQ6IDEwcHg7XG4gICAgICAgIHRvcDogMTBweDtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBvcGFjaXR5OiAuNTtcblxuICAgICAgICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJy4uL2ltYWdlcy9jbG9zZS5zdmcnKTtcblxuICAgICAgICB3aWR0aDoxMHB4O1xuICAgICAgICBoZWlnaHQ6MTBweDtcblxuICAgIH1cblxuICAgIC5zc0J1dHRvbnMge1xuXG4gICAgICAgIG1hcmdpbi10b3A6IDI1cHg7XG4gICAgICAgIHRleHQtYWxpZ246IHJpZ2h0O1xuXG4gICAgICAgIC5zc0J1dHRvbiwgYSAuc3NCdXR0b24ge1xuICAgICAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG5cbiAgICAgICAgICAgIGhlaWdodDoyMHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBwYWRkaW5nOjNweCAxMnB4IDNweDtcbiAgICAgICAgICAgIG1hcmdpbi1sZWZ0OiAxNHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgICAgICAgICBib3gtc2hhZG93OiAwcHggNHB4IDhweCAwcHggcmdiYSgwLCAwLCAwLCAwLjE1KTtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICBcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMTJweDtcbiAgICAgICAgICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIFxuICAgICAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuXG4gICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cbiAgICAgICAgICAgIC5lbW9qaSB7XG4gICAgICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgICAgIHZlcnRpY2FsLWFsaWduOiBib3R0b207XG4gICAgICAgICAgICB9XG4gICAgXG4gICAgICAgICAgICAmLmJsdWUge1xuICAgICAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICMxOWFjZWY7XG4gICAgICAgICAgICAgICAgY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAuaWNvbiB7XG4gICAgICAgIGJhY2tncm91bmQtaW1hZ2U6IHVybCgnLi4vaW1hZ2VzL2ljb25CbHVlLnN2ZycpO1xuICAgICAgICBiYWNrZ3JvdW5kLXJlcGVhdDogbm8tcmVwZWF0O1xuXG4gICAgICAgIHdpZHRoOjMwcHg7XG4gICAgICAgIGhlaWdodDozMHB4O1xuXG4gICAgICAgIHZlcnRpY2FsLWFsaWduOiB0b3A7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMjJweDtcbiAgICAgICAgbWFyZ2luLXRvcDoycHg7XG5cbiAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG4gICAgfVxuXG4gICAgLmJvZHkge1xuXG4gICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB3aWR0aDozMTVweDtcblxuICAgICAgICAudGl0bGUge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IDYwMDtcbiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDdweDtcbiAgICAgICAgfVxuICAgICAgICAuZGVzY3JpcHRpb24ge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxM3B4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGxpZ2h0ZXI7XG4gICAgICAgIH1cbiAgICB9XG5cbn0iXSwic291cmNlUm9vdCI6IiJ9 */</style></head>
+
+
+
+
+
+
+
+
+
+
+<body data-new-gr-c-s-check-loaded="14.1185.0" data-gr-ext-installed="">
+ 
+
+	<div class="web-navbar">
+		<h1 id="web-title">KTL Train Load Viewer</h1>
+	</div>
+	<div class="top-navbar">
+		<!--
+		<div class="top-navbar-right">
+			<span id="colorToggler" style="cursor: pointer;"><i class="fa fa-adjust"></i></span>
+			<span id="languageToggler" style="cursor: pointer;"><i class="fa fa-language"></i></span>
+		</div>
+		-->
+		<div class="top-navbar-right">
+
+		</div>
+	</div>
+
+	<div class="p-3">
+		<!--Search bar-->
+		<div class="search-container">
+
+			<div class="search-container-item">
+				<select id="select-traintype" class="select-traintype">
+					<option value="All" hidden="" selected="">Train Type</option>
+					<option value="All">All</option>
+					<option value="C-train">C-train</option>
+					<option value="Q-train">Q-train</option>
+				</select>
+
+				<div class="trainFilter-input-container">
+					<div class="search-icon">
+						<div>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512">
+								<path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6 .1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path>
+							</svg>
+						</div>
+					</div>
+					<input type="text" id="trainFilter" class="trainFilter-input p-left" placeholder="" aria-label="trainset" aria-describedby="basic-addon1" required="">
+					<label for="trainFilter" class="trainFilter-placeholder">
+						Filtering by Train ID or TD
+					</label>
+				</div>
+
+				<div id="cancelBtn" class="cancel-icon-container">
+					<div class="cancel-icon">
+						<!-- <i class="fa fa-close"></i> -->
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 352 512">
+							<path d="M242.7 256l100.1-100.1c12.3-12.3 12.3-32.2 0-44.5l-22.2-22.2c-12.3-12.3-32.2-12.3-44.5 0L176 189.3 75.9 89.2c-12.3-12.3-32.2-12.3-44.5 0L9.2 111.5c-12.3 12.3-12.3 32.2 0 44.5L109.3 256 9.2 356.1c-12.3 12.3-12.3 32.2 0 44.5l22.2 22.2c12.3 12.3 32.2 12.3 44.5 0L176 322.7l100.1 100.1c12.3 12.3 32.2 12.3 44.5 0l22.2-22.2c12.3-12.3 12.3-32.2 0-44.5L242.7 256z"></path>
+						</svg>
+					</div>
+				</div>
+			</div>
+			<button id="reloadBtn" class="btn reload-btn">
+
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 512 512">
+					<path d="M142.9 142.9c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5c0 0 0 0 0 0H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5c7.7-21.8 20.2-42.3 37.8-59.8zM16 312v7.6 .7V440c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l41.6-41.6c87.6 86.5 228.7 86.2 315.8-1c24.4-24.4 42.1-53.1 52.9-83.7c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.2 62.2-162.7 62.5-225.3 1L185 329c6.9-6.9 8.9-17.2 5.2-26.2s-12.5-14.8-22.2-14.8H48.4h-.7H40c-13.3 0-24 10.7-24 24z"></path>
+				</svg>
+				 
+				Reload
+			</button>
+		</div>
+
+		<hr>
+
+
+
+		<div class="tool-bar">
+			<div class="sort-tool">
+
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByTrainId" class="hideCheckbox">
+					Sort by Train ID
+				</label>
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByTD" class="hideCheckbox">
+					Sort by TD
+				</label>
+
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByLastUpdate" class="hideCheckbox">
+					Sort by Last Update
+				</label>
+			</div>
+
+		</div>
+
+
+
+		<!--Badge-->
+		<div id="badge"><span></span><span class="badge" style="background-color: lightgreen;">below 110 People</span><span class="badge" style="background-color: gold;">over 110 People to 240 People</span><span class="badge" style="background-color: tomato;">over 240 People</span></div>
+
+		<!--Table-->
+		<div id="dataTable" class="table-container">
+
+
+
+
+
+
+		<table class="bs-table bs-table-hover"><thead><tr><th onclick="clickSortByTrainId()" style="cursor: pointer;">Train ID<svg xmlns="http://www.w3.org/2000/svg" width="10" height="20" fill="currentColor" viewBox="100 -300 50 812"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg></th><th onclick="clickSortByTD()" style="cursor: pointer;">TD<svg xmlns="http://www.w3.org/2000/svg" width="10" height="20" fill="currentColor" viewBox="100 -300 50 812"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg></th><th>Type</th><th>Train Speed</th><th>Door</th><th>Current Station</th><th>Next Station</th><th>Destination</th><th>Car 1</th><th>Car 2</th><th>Car 3</th><th>Car 4</th><th>Car 5</th><th>Car 6</th><th>Car 7</th><th>Car 8</th><th onclick="clickSortByLastUpdate()" style="cursor: pointer;">Last Update<svg xmlns="http://www.w3.org/2000/svg" width="10" height="20" fill="currentColor" viewBox="100 -300 50 812"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"></path></svg></th></tr></thead><tbody><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A369</td><td>017</td><td>C-train</td><td>0</td><td>DO</td><td>TIK</td><td>TIK</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>42</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>21</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>51</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>42</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>39</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>54</span></td><td>2024-06-09 15:23:45</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-759</td><td>05</td><td>Q-train</td><td>-</td><td>-</td><td>WHA</td><td>WHA</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>21</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>21</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>39</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>27</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-760</td><td class="hiddenRow">05</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">TIK_PLT</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow">2024-06-09 14:47:24</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-757</td><td>16</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>TIK</td><td>WHA</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-758</td><td class="hiddenRow">16</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow">2024-06-09 15:22:05</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-767</td><td>11</td><td>Q-train</td><td>-</td><td>-</td><td>DIH</td><td>DIH</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>87</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-768</td><td class="hiddenRow">11</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">TIK_PLT</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow">2024-06-09 15:07:08</td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A363</td><td>022</td><td>C-train</td><td>0</td><td>DO</td><td>WTS</td><td>WTS</td><td>TIK</td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>111</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>102</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>84</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>114</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>108</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>114</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>123</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>99</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-753</td><td>14</td><td>Q-train</td><td>-</td><td>-</td><td>KWT</td><td>KWT</td><td>HOM</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>66</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>105</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>96</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-754</td><td class="hiddenRow">14</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">TIK_PLT</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow">2024-06-09 15:15:17</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-766</td><td>01</td><td>Q-train</td><td>-</td><td>-</td><td>SKM</td><td>SKM</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>102</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>99</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>102</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>108</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>87</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-765</td><td class="hiddenRow">01</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">WHA</td><td class="hiddenRow">WHA</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>18</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>15</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>21</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>21</span></td><td class="hiddenRow">2024-06-09 15:10:55</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-772</td><td>21</td><td>Q-train</td><td>-</td><td>-</td><td>CHH</td><td>CHH</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>66</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>66</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>117</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>96</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>54</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-771</td><td class="hiddenRow">21</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">WHA</td><td class="hiddenRow">HOM</td><td class="hiddenRow">HOM</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>15</span></td><td class="hiddenRow">2024-06-09 15:02:00</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-755</td><td>NA</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>KWT</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-756</td><td class="hiddenRow">NA</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">KWT</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow">2024-06-09 15:19:39</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-751</td><td>06</td><td>Q-train</td><td>-</td><td>-</td><td>HOM wha</td><td>HOM</td><td>HOM</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>15</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-752</td><td class="hiddenRow">06</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">TIK_PLT</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td class="hiddenRow">2024-06-09 14:50:30</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-762</td><td>02</td><td>Q-train</td><td>-</td><td>-</td><td>PRE</td><td>PRE</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>42</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>18</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-761</td><td class="hiddenRow">02</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">WHA</td><td class="hiddenRow">HOM</td><td class="hiddenRow">HOM</td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td class="hiddenRow">2024-06-09 15:14:32</td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A361</td><td>000</td><td>C-train</td><td>0</td><td>DO</td><td>-</td><td>-</td><td>-</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td>2024-06-09 15:23:44</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A387</td><td>015</td><td>C-train</td><td>26</td><td>DC</td><td>TIK</td><td>YAT</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>33</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>39</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td>2024-06-09 15:23:43</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A375</td><td>010</td><td>C-train</td><td>0</td><td>DO</td><td>WTS</td><td>WTS</td><td>HOM</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>87</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>87</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>42</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td>2024-06-09 15:23:43</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A351</td><td>009</td><td>C-train</td><td>69</td><td>DC</td><td>LOF</td><td>KOT</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>84</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>75</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td>2024-06-09 15:23:43</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A391</td><td>018</td><td>C-train</td><td>74</td><td>DC</td><td>LAT</td><td>YAT</td><td>TIK</td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>123</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>102</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>75</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>75</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td>2024-06-09 15:23:42</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A383</td><td>012</td><td>C-train</td><td>49</td><td>DC</td><td>KOB</td><td>CHH</td><td>HOM</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>105</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>42</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>75</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>93</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td>2024-06-09 15:23:42</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A385</td><td>101</td><td>C-train</td><td>0</td><td>DC</td><td>KOB</td><td>KOB</td><td>TIK</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 15:23:41</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A393</td><td>019</td><td>C-train</td><td>53</td><td>DC</td><td>NTK</td><td>KWT</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>75</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>99</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>93</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td>2024-06-09 15:23:41</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A377</td><td>023</td><td>C-train</td><td>58</td><td>DC</td><td>KOT</td><td>LOF</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>81</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>72</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>66</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>72</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>51</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>60</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td>2024-06-09 15:23:41</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A357</td><td>000</td><td>C-train</td><td>0</td><td>DO</td><td>-</td><td>-</td><td>-</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 15:23:41</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A355</td><td>004</td><td>C-train</td><td>0</td><td>DO</td><td>HOM</td><td>HOM</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>33</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 15:23:41</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A389</td><td>003</td><td>C-train</td><td>0</td><td>DC</td><td>YMT</td><td>YMT</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>18</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A373</td><td>007</td><td>C-train</td><td>0</td><td>DO</td><td>MOK</td><td>MOK</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>105</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>72</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>54</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>51</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>63</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A371</td><td>020</td><td>C-train</td><td>48</td><td>DC</td><td>KOB</td><td>NTK</td><td>TIK</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>27</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>45</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>30</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>36</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>27</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A379</td><td>008</td><td>C-train</td><td>8</td><td>DC</td><td>KOT</td><td>SKM</td><td>HOM</td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>126</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>141</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>102</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>87</span></td><td style="background-color: gold;"><span>2</span>&nbsp; | &nbsp;<span>120</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>105</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>78</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A353</td><td>095</td><td>C-train</td><td>0</td><td>DO</td><td>KOB</td><td>KOB</td><td>WHA</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A367</td><td>013</td><td>C-train</td><td>51</td><td>DC</td><td>KWT</td><td>NTK</td><td>WHA</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>57</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>39</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>24</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>69</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>48</span></td><td>2024-06-09 15:23:40</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A359</td><td>000</td><td>C-train</td><td>1</td><td>DC</td><td>-</td><td>-</td><td>-</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>12</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>6</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 13:23:10</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-773</td><td>28</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>KOB</td><td>NTK</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 10:08:21</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-774</td><td class="hiddenRow">28</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">KOB</td><td class="hiddenRow">WHA</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow">2024-06-09 04:13:27</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-764</td><td>16</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>KOB</td><td>WHA</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 10:06:49</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-763</td><td class="hiddenRow">16</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">KOB</td><td class="hiddenRow">NTK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow">2024-06-09 09:33:31</td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A381</td><td>053</td><td>C-train</td><td>0</td><td>DC</td><td>TIK</td><td>TIK</td><td>NOP</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 08:46:07</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-776</td><td>11</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>KOB</td><td>WHA</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-09 07:37:45</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-775</td><td class="hiddenRow">11</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">KOB</td><td class="hiddenRow">NTK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow">2024-06-09 02:14:31</td></tr><tr class="clickRow"><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A-777</td><td>03</td><td>Q-train</td><td>-</td><td>-</td><td>NA</td><td>KOB</td><td>NTK</td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td>2024-06-09 03:09:50</td></tr><tr class="targetRow hiddenRow"><td class="hiddenRow"><input type="checkbox" class="hideCheckbox">A-778</td><td class="hiddenRow">03</td><td class="hiddenRow">Q-train</td><td class="hiddenRow">-</td><td class="hiddenRow">-</td><td class="hiddenRow">NA</td><td class="hiddenRow">TIK</td><td class="hiddenRow">TIK</td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>3</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow" style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td class="hiddenRow">2024-06-09 00:13:45</td></tr><tr><td><input type="checkbox" class="hideCheckbox"><span class="centerSpan pls-invisible"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"></path></svg></span>A365</td><td>888</td><td>C-train</td><td>0</td><td>DO</td><td>CHH</td><td>CHH</td><td>YMT</td><td style="background-color: lightgreen;"><span>1</span>&nbsp; | &nbsp;<span>9</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td style="background-color: lightgreen;"><span>0</span>&nbsp; | &nbsp;<span>0</span></td><td>2024-06-06 09:08:48</td></tr><tr class="targetRow hiddenRow importantHidden"><td></td></tr></tbody></table></div>
+
+
+		<div class="bottom-bar">
+			<!--Update Version-->
+			<div class="updated-version">
+				<pre>version: 2024-05-02_11</pre>
+			</div>
+
+			<!--Update Time-->
+			<div class="updated-time">
+				Updated: <span id="updatedTime"> </span>
+			</div>
+		</div>
+
+
+	</div>
+
+
+
+
+
+	<script>
+
+
+		let isToggleLanguage = true;
+		let isShowPassengerCount = true; // show PassengerCount if true; show Floor Remaining Rate if False
+
+		//Passenger Count
+		const lowerCuttingPoint = 110;
+		const upperCuttingPoint = 240;
+
+		// const lightLoadColor = "LightGreen";
+		// const middleLoadColor = "Gold";
+		// const heavyLoadColor = "Tomato";
+		// const undefinedColor = "Gainsboro";
+		// const columnPosition = [6, 7, 8];
+
+		//Floor Remaining Rate
+		const lowerCuttingPoint_frr = 60;
+		const upperCuttingPoint_frr = 80;
+		const lightLoadColor_frr = "LightGreen";
+		const middleLoadColor_frr = "Gold";
+		const heavyLoadColor_frr = "Tomato";
+		const undefinedColor_frr = "Gainsboro";
+		const columnPosition_frr = [8, 9, 10, 11, 12, 13, 14, 15];
+		const columnPositionTargetRow_frr = [2, 3, 4];
+
+		let dir = "asc";
+		let sortOrder = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		let sortOrderIconType = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
+		const sortSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="20" fill="currentColor" viewBox="100 -300 50 812"><path d="M137.4 41.4c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9s-16.6 19.8-29.6 19.8H32c-12.9 0-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9l128-128zm0 429.3l-128-128c-9.2-9.2-11.9-22.9-6.9-34.9s16.6-19.8 29.6-19.8H288c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9l-128 128c-12.5 12.5-32.8 12.5-45.3 0z"/></svg>';
+		const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" fill="currentColor" viewBox="0 0 256 512"><path d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z"/></svg>';
+
+		let dropdownList_selected = "all";
+
+		const language = {
+			"en": {
+				"title": "KTL Train Load Viewer",
+				"tableHeader": ["Train ID", "TD", "Type", "Train Speed", "Door", "Current Station", "Next Station", "Destination", "Car 1", "Car 2", "Car 3", "Car 4", "Car 5", "Car 6", "Car 7", "Car 8", "Last Update"],
+			},
+			"zh": {
+				"title": "觀塘綫列車客運量",
+				"tableHeader": ["列車編號", "TD", "車款", "列車速度", "車門", "目前車站", "下一車站", "終點站", "車廂 1", "車廂 2", "車廂 3", "車廂 4", "車廂 5", "車廂 6", "車廂 7", "車廂 8", "最後更新"],
+			}
+		}
+
+		let trainDictionary = {}; // key:value trainid:Array[Array,number]
+		let orderArray = [];
+
+		let CtrainMap_idArray = {};
+
+		let QtrainMap_idArray = {};
+
+		const Qtrain_headTailMap = {
+			"A-751": "A-752",
+			"A-753": "A-754",
+			"A-755": "A-756",
+			"A-757": "A-758",
+			"A-759": "A-760",
+			"A-761": "A-762",
+			"A-763": "A-764",
+			"A-765": "A-766",
+			"A-767": "A-768",
+			"A-771": "A-772",
+			"A-773": "A-774",
+			"A-775": "A-776",
+			"A-777": "A-778",
+
+			"A-752": "A-751",
+			"A-754": "A-753",
+			"A-756": "A-755",
+			"A-758": "A-757",
+			"A-760": "A-759",
+			"A-762": "A-761",
+			"A-764": "A-763",
+			"A-766": "A-765",
+			"A-768": "A-767",
+			"A-772": "A-771",
+			"A-774": "A-773",
+			"A-776": "A-775",
+			"A-778": "A-777",
+		};
+
+		//Fetching data
+		const url = "https://3nx7c25ob6.execute-api.ap-east-1.amazonaws.com/trainLoads";
+		//const url = "http://127.0.0.1:3000/data";
+
+		async function fetchTrainLoadData() {
+			const response = await axios.get(url);
+			console.log(response.data);
+			return response.data;
+		}
+
+
+
+
+		/* ON PAGE LOAD */
+		window.addEventListener("DOMContentLoaded", () => {
+
+
+			// while(true){
+			// 	let login = prompt("Password:");
+			// 	if (window.btoa(login) == "ODc2Mjg3NjU=") {
+			// 		break;
+			// 	} else {
+			// 		continue;
+			// 	}
+			// }
+
+
+			renderTable(); //create the table 
+			renderBadge();
+
+			fetchTrainLoadData()
+				.then((data) => {
+					sortAndRender(data, "desc", "time");
+					//showDataToTable(data);
+				}
+				);
+
+		});
+
+		/* CREATE TABLE */
+		function createTableHeader() {
+			let tableHeader = isToggleLanguage ? language.en.tableHeader : language.zh.tableHeader;
+
+			const trElement = document.createElement("tr");
+			//create table header
+			for (item in tableHeader) {
+				if (tableHeader[item] == "&emsp;") {
+					var thElement = document.createElement("th");
+					thElement.innerHTML = tableHeader[item];
+					trElement.appendChild(thElement);
+				} else if (tableHeader[item] == "TD") {
+					var thElement = document.createElement("th");
+					thElement.innerHTML = tableHeader[item] + sortSVG;
+					thElement.setAttribute("onclick", "clickSortByTD()");
+					thElement.style.cursor = "pointer";
+					trElement.appendChild(thElement);
+				} else if (tableHeader[item] == "Train ID") {
+					var thElement = document.createElement("th");
+					thElement.innerHTML = tableHeader[item] + sortSVG;
+					thElement.setAttribute("onclick", "clickSortByTrainId()");
+					thElement.style.cursor = "pointer";
+					trElement.appendChild(thElement);
+				} else if (tableHeader[item] == "Last Update") {
+					var thElement = document.createElement("th");
+					thElement.innerHTML = tableHeader[item] + sortSVG;
+					thElement.setAttribute("onclick", "clickSortByLastUpdate()");
+					thElement.style.cursor = "pointer";
+					trElement.appendChild(thElement);
+				} else {
+					var thElement = document.createElement("th");
+					//thElement.innerHTML = tableHeader[item] + " <i class='" + sortOrderIconType[sortOrder[item]] + "'></i>";
+					thElement.innerHTML = tableHeader[item];
+					//console.log("TEST: "+item);
+					//thElement.setAttribute("onclick", `sortTable( ${item} )`);
+					trElement.appendChild(thElement);
+				}
+
+			}
+
+			return trElement;
+		}
+
+		function renderTable(classNameForTable = ["bs-table", "bs-table-hover"]) {
+			let dataTable = document.getElementById("dataTable");
+
+			// create <table>
+			const tableElement = document.createElement("table");
+
+			// add className to <table>
+			for (className in classNameForTable) {
+				tableElement.classList.add(classNameForTable[className]);
+			}
+
+			const theadElement = document.createElement("thead");
+			theadElement.appendChild(createTableHeader()); // create and add table headers
+
+			tableElement.appendChild(theadElement);
+
+			const tbodyElement = document.createElement("tbody");
+
+			tableElement.appendChild(tbodyElement);
+			dataTable.appendChild(tableElement);
+
+		}
+
+		function renderBadge() {
+			let badge = document.getElementById("badge");
+
+			// clear first
+			badge.innerHTML = '';
+
+			const badgeName_2 = document.createElement("span");
+
+			// new feature: determine show frr or PassengerCount
+			firstBadge_2_Content = isShowPassengerCount ? ("below " + lowerCuttingPoint + " People") : ("below " + lowerCuttingPoint_frr + "%");
+			secondBadge_2_Content = isShowPassengerCount ? ("over " + lowerCuttingPoint + " People to " + upperCuttingPoint + " People") : ("over " + lowerCuttingPoint_frr + "% to " + upperCuttingPoint_frr + "%");
+			thirdBadge_2_Content = isShowPassengerCount ? ("over " + upperCuttingPoint + " People") : ("over " + upperCuttingPoint_frr + "%");
+
+			const firstBadge_2 = document.createElement("span");
+			firstBadge_2.classList.add("badge");
+			firstBadge_2.style.backgroundColor = lightLoadColor_frr;
+			firstBadge_2.innerHTML = firstBadge_2_Content;
+
+			const secondBadge_2 = document.createElement("span");
+			secondBadge_2.classList.add("badge");
+			secondBadge_2.style.backgroundColor = middleLoadColor_frr;
+			secondBadge_2.innerHTML = secondBadge_2_Content;
+
+			const thirdBadge_2 = document.createElement("span");
+			thirdBadge_2.classList.add("badge");
+			thirdBadge_2.style.backgroundColor = heavyLoadColor_frr;
+			thirdBadge_2.innerHTML = thirdBadge_2_Content;
+
+
+			badge.appendChild(badgeName_2);
+			badge.appendChild(firstBadge_2);
+			badge.appendChild(secondBadge_2);
+			badge.appendChild(thirdBadge_2);
+
+		}
+
+
+
+
+		/* INSERT the DATA TO TABLE CONTENT FROM API */
+		//this function updates the whole train load data included Train ID for web initial onload and clicking reload button
+		function showDataToTable(trainLoadDataObject) {
+			//console.log(trainLoadDataObject);
+
+			const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+
+			// clear tbodyElement's context
+			tbodyElement.innerHTML = '';
+
+			// console.log(trainLoadDataObject.length);
+			for (obj in trainLoadDataObject) {
+				// console.log(trainLoadDataObject[obj]);
+				var objDataList_first = [
+					trainLoadDataObject[obj].trainId,
+					trainLoadDataObject[obj].td,
+					trainLoadDataObject[obj].trainType,
+					checkReceivedNotNumberData(trainLoadDataObject[obj].trainSpeed),
+					checkDoorStatus((trainLoadDataObject[obj]?.doorStatus === undefined) ? "-" : trainLoadDataObject[obj]?.doorStatus),
+					trainLoadDataObject[obj].currentStationCode,
+					trainLoadDataObject[obj].nextStationCode,
+					trainLoadDataObject[obj].destinationStationCode,
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[0].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[0].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[1].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[1].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[2].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[2].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[3].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[3].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[4].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[4].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[5].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[5].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[6].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[6].passengerLoad) + "</span>",
+					"<span>" + ((trainLoadDataObject[obj].carLoads)[7].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject[obj].carLoads)[7].passengerLoad) + "</span>",
+					convertTime(trainLoadDataObject[obj].lambdaDateTime),
+				];
+
+				// classify Q-train dictionary and C-train dictionary
+				/*
+				if (trainLoadDataObject[obj].trainType == "Q-train") { // assign to Q-train dictionary
+					QtrainMap_idArray[trainLoadDataObject[obj].trainId] = [objDataList_first, trainLoadDataObject[obj].lambdaDateTime];
+				} else if(trainLoadDataObject[obj].trainType == "C-train"){ // assign to C-train dictionary
+					CtrainMap_idArray[trainLoadDataObject[obj].trainId] = [objDataList_first, trainLoadDataObject[obj].lambdaDateTime];
+				}
+				*/
+
+				trainDictionary[trainLoadDataObject[obj].trainId] = [objDataList_first, trainLoadDataObject[obj].lambdaDateTime];
+				// trainid:[Array[], number]
+				orderArray.push(trainLoadDataObject[obj].trainId); // put the new one to the end of array
+
+			}
+
+			//console.log(trainDictionary);
+			//console.log(orderArray);
+
+			/*
+
+			//loop Qtrain_headTailMap's key value
+			for (const key in Qtrain_headTailMap) {
+				console.log(`${key}: ${Qtrain_headTailMap[key]}`); //key: value
+				console.log(QtrainMap_idArray[key]); // trainMap_idArray["A-751"]
+				console.log(QtrainMap_idArray[Qtrain_headTailMap[key]]); // trainMap_idArray["A-752"]
+
+				// compare time of QtrainMap_idArray[key] and QtrainMap_idArray[Qtrain_headTailMap[key]]
+
+
+			}
+
+			*/
+
+			while (orderArray.length) {
+
+				let item_trainid = orderArray.shift(); // the first item in the array
+				// check if the item in Qtrain_headTailMap, if yes, it means it is a Q-train
+				if (Qtrain_headTailMap.hasOwnProperty(item_trainid)) { // e.g. A-751
+
+					let runningQ, stoppingQ;
+
+
+					var objDataList = trainDictionary[item_trainid][0];
+
+					let friend_id = Qtrain_headTailMap[item_trainid]; // e.g.A-752
+
+					if (trainDictionary[item_trainid][1] > trainDictionary[friend_id][1]) {
+						runningQ = trainDictionary[item_trainid][0];
+						stoppingQ = trainDictionary[friend_id][0];
+					} else {
+						runningQ = trainDictionary[friend_id][0];
+						stoppingQ = trainDictionary[item_trainid][0];
+					}
+
+					// === handle Running Train - Show Row ===
+
+					var dataTrElement = document.createElement("tr");
+					dataTrElement.classList.add("clickRow");
+
+					for (item in runningQ) {
+						var el = document.createElement("td");
+						// console.log(item);
+						if (item == 0) {
+
+							var checkboxElement = document.createElement("input");
+							checkboxElement.setAttribute("type", "checkbox");
+							checkboxElement.checked = true;
+							checkboxElement.classList.add("hideCheckbox");
+							el.appendChild(checkboxElement);
+
+							var spanEL = document.createElement("span");
+							spanEL.classList.add("centerSpan");
+							spanEL.innerHTML = arrowSVG;
+
+							el.appendChild(spanEL);
+
+							var dFrag = document.createDocumentFragment();
+							dFrag.textContent = runningQ[item];
+							el.appendChild(dFrag);
+						} else {
+							el.innerHTML = runningQ[item];
+						}
+
+
+						dataTrElement.appendChild(el);
+					}
+					tbodyElement.appendChild(dataTrElement);
+
+					// === handle Stopping Train - Hide Row ===
+
+					var dataTrElement_2 = document.createElement("tr");
+					dataTrElement_2.classList.add("targetRow", "hiddenRow");
+
+					for (item in stoppingQ) {
+						var el = document.createElement("td");
+						el.classList.add("hiddenRow");
+						// console.log(item);
+						if (item == 0) {
+
+							var checkboxElement = document.createElement("input");
+							checkboxElement.setAttribute("type", "checkbox");
+							checkboxElement.checked = true;
+							checkboxElement.classList.add("hideCheckbox");
+							el.appendChild(checkboxElement);
+
+							var dFrag = document.createDocumentFragment();
+							dFrag.textContent = stoppingQ[item];
+							el.appendChild(dFrag);
+						} else {
+							el.innerHTML = stoppingQ[item];
+						}
+
+
+						dataTrElement_2.appendChild(el);
+					}
+					tbodyElement.appendChild(dataTrElement_2);
+
+					// ===
+					orderArray.splice(orderArray.indexOf(friend_id), 1);
+
+				} else { // it is C-train
+
+					var dataTrElement = document.createElement("tr");
+					var objDataList = trainDictionary[item_trainid][0];
+
+					for (item in objDataList) {
+						var el = document.createElement("td");
+						// console.log(item);
+						if (item == 0) {
+
+							var checkboxElement = document.createElement("input");
+							checkboxElement.setAttribute("type", "checkbox");
+							checkboxElement.checked = true;
+							checkboxElement.classList.add("hideCheckbox");
+							el.appendChild(checkboxElement);
+
+							var spanEL = document.createElement("span");
+							spanEL.classList.add("centerSpan");
+							spanEL.classList.add("pls-invisible");
+							spanEL.innerHTML = arrowSVG;
+
+							el.appendChild(spanEL);
+
+							var dFrag = document.createDocumentFragment();
+							dFrag.textContent = objDataList[item];
+							el.appendChild(dFrag);
+						} else {
+							el.innerHTML = objDataList[item];
+						}
+
+
+						dataTrElement.appendChild(el);
+					}
+					tbodyElement.appendChild(dataTrElement);
+
+					var dataTrElement_2 = document.createElement("tr");
+					dataTrElement_2.classList.add("targetRow", "hiddenRow");
+
+
+					var el = document.createElement("td");
+					dataTrElement_2.appendChild(el);
+
+					tbodyElement.appendChild(dataTrElement_2);
+				}
+
+			}
+
+
+			// var dataTrElement = document.createElement("tr");
+
+			// for (item in objDataList_first) {
+			// 	var el = document.createElement("td");
+			// 	// console.log(item);
+			// 	if (item == 0) {
+
+			// 		var checkboxElement = document.createElement("input");
+			// 		checkboxElement.setAttribute("type", "checkbox");
+			// 		checkboxElement.checked = true;
+			// 		// checkboxElement.classList.add("hideCheckbox");
+			// 		el.appendChild(checkboxElement);
+
+			// 		var dFrag = document.createDocumentFragment();
+			// 		dFrag.textContent = objDataList_first[item];
+			// 		el.appendChild(dFrag);
+			// 	} else {
+			// 		el.innerHTML = objDataList_first[item];
+			// 	}
+
+
+			// 	dataTrElement.appendChild(el);
+			// }
+			// tbodyElement.appendChild(dataTrElement);
+
+			// add click to expand function to each clickRow
+			var clickRows = document.getElementsByClassName("clickRow");
+			// console.log(clickRows.length);
+
+			for (let i = 0; i < clickRows.length; i++) {
+				// console.log("HAHA");
+				clickRows[i].addEventListener('click', collapseRow, false);
+			}
+
+
+
+			//determinateTrainLoadFloorRemainingRateColor();
+			determinateTrainLoadPassengerCountColor();
+
+
+
+		}
+
+		function sortAndRender(trainLoadDataObject3, order, type = "") {
+			// console.log("sortAndRender");
+			const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+
+			// clear tbodyElement's context
+			tbodyElement.innerHTML = '';
+
+			// sort the Data
+			if (type == "td") {
+				// console.log("sortAndRender: td");
+				// Sort by String td
+				if (order == "asc") {
+					trainLoadDataObject3.sort(function (a, b) {
+						let x = ((a.td == undefined) ? (a.trainId) : (a.td)).toLowerCase();
+						let y = ((b.td == undefined) ? (b.trainId) : (b.td)).toLowerCase();
+						if (x < y) { return -1; }
+						if (x > y) { return 1; }
+						return 0;
+					});
+				} else {
+					trainLoadDataObject3.sort(function (a, b) {
+						let x = ((a.td == undefined) ? (a.trainId) : (a.td)).toLowerCase();
+						let y = ((b.td == undefined) ? (b.trainId) : (b.td)).toLowerCase();
+						if (x > y) { return -1; }
+						if (x < y) { return 1; }
+						return 0;
+					});
+				}
+			} else if (type == "trainid") {
+				// console.log("sortAndRender: trainid");
+				// Sort by String trainID
+				if (order == "asc") {
+					trainLoadDataObject3.sort(function (a, b) {
+						let x = a.trainId.toLowerCase();
+						let y = b.trainId.toLowerCase();
+						if (x < y) { return -1; }
+						if (x > y) { return 1; }
+						return 0;
+					});
+				} else {
+					trainLoadDataObject3.sort(function (a, b) {
+						let x = a.trainId.toLowerCase();
+						let y = b.trainId.toLowerCase();
+						if (x > y) { return -1; }
+						if (x < y) { return 1; }
+						return 0;
+					});
+				}
+			} else if (type == "time") {
+				// console.log("sortAndRender: time");
+				if (order == "asc") {
+					trainLoadDataObject3.sort(function (a, b) {
+						return parseInt(a.lambdaDateTime) - parseInt(b.lambdaDateTime);
+					});
+				} else {
+					trainLoadDataObject3.sort(function (a, b) {
+						return parseInt(b.lambdaDateTime) - parseInt(a.lambdaDateTime);
+					});
+				}
+			}
+
+
+
+
+			//console.log(trainLoadDataObject3);
+
+
+			// render into table
+			showDataToTable(trainLoadDataObject3);
+
+			// dropdown list
+			filterFunction_byDropdownList();
+		}
+
+		// this function only updates the train load data except Train ID for "interval update"
+		function fetchAndMatch(trainLoadDataObject2) {
+
+			//get the Train ID column from dataTable
+			const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+
+			for (i = 0; i < tbodyElement.children.length; i++) {
+				//console.log("HERE: "+tbodyElement.children[i].children[0]);
+				for (obj in trainLoadDataObject2) {
+					//console.log(trainLoadDataObject2[obj].trainId);
+					//console.log(tbodyElement.children[i].children[0].textContent);
+					//console.log(trainLoadDataObject2[obj].trainId);
+					var trainId = checkReceivedNotNumberData(trainLoadDataObject2[obj].trainId);
+					if (trainId == tbodyElement.children[i].children[0].textContent) {
+						//console.log("msg");
+						// clickRow
+						// tbodyElement.children[i].children[0].innerHTML = checkReceivedNotNumberData(trainLoadDataObject2[obj].trainId);
+						tbodyElement.children[i].children[1].innerHTML = (checkReceivedNotNumberData(trainLoadDataObject2[obj]?.td));
+						tbodyElement.children[i].children[2].innerHTML = (checkReceivedNotNumberData(trainLoadDataObject2[obj]?.trainType));
+						tbodyElement.children[i].children[3].innerHTML = (checkReceivedNotNumberData(trainLoadDataObject2[obj]?.trainSpeed));
+						tbodyElement.children[i].children[4].innerHTML = checkDoorStatus((trainLoadDataObject2[obj]?.doorStatus === undefined) ? "-" : trainLoadDataObject2[obj]?.doorStatus);
+
+						tbodyElement.children[i].children[5].innerHTML = trainLoadDataObject2[obj].currentStationCode;
+						tbodyElement.children[i].children[6].innerHTML = trainLoadDataObject2[obj].nextStationCode;
+						tbodyElement.children[i].children[7].innerHTML = trainLoadDataObject2[obj].destinationStationCode;
+						tbodyElement.children[i].children[8].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[0].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[0].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[9].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[1].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[1].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[10].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[2].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[2].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[11].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[3].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[3].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[12].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[4].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[4].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[13].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[5].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[5].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[14].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[6].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[6].passengerLoad) + "</span>";
+						tbodyElement.children[i].children[15].innerHTML = "<span>" + ((trainLoadDataObject2[obj].carLoads)[7].passengerCount) + "</span>" + "&nbsp; | &nbsp;" + "<span>" + checkNegative((trainLoadDataObject2[obj].carLoads)[7].passengerLoad) + "</span>";
+
+						tbodyElement.children[i].children[16].innerHTML = convertTime(trainLoadDataObject2[obj].lambdaDateTime);
+						//tbodyElement.children[i].children[10].innerHTML = convertTime(trainLoadDataObject2[obj].ttl);
+					}
+				}
+			}
+
+			determinateTrainLoadPassengerCountColor();
+			//determinateTrainLoadFloorRemainingRateColor();
+		}
+
+		/* new Sort Function */
+
+		// sort by td
+		document.getElementById("sortByTD").addEventListener("change", () => {
+			var order = "";
+			var isCheck = document.getElementById("sortByTD").checked;
+			resumeSortButton();
+
+			if (isCheck) {
+				document.getElementById("sortByTD").checked = true;
+				document.getElementById("sortByTD").parentElement.style.backgroundColor = "DodgerBlue";
+				order = "asc";
+			} else {
+				document.getElementById("sortByTD").checked = false;
+				document.getElementById("sortByTD").parentElement.style.backgroundColor = "MediumPurple";
+				order = "desc";
+			}
+			//console.log(order);
+
+			// release other sort  conditiion
+
+			fetchTrainLoadData()
+				.then((data) => {
+					sortAndRender(data, order, "td");
+					document.getElementById('updatedTime').innerHTML = getNowDateTime();
+				}
+				);
+		});
+
+
+		// sort by train id
+		document.getElementById("sortByTrainId").addEventListener("change", () => {
+			var order = "";
+			var isCheck = document.getElementById("sortByTrainId").checked;
+			resumeSortButton();
+
+			if (isCheck) {
+				document.getElementById("sortByTrainId").checked = true;
+				document.getElementById("sortByTrainId").parentElement.style.backgroundColor = "DodgerBlue";
+				order = "asc";
+			} else {
+				document.getElementById("sortByTrainId").checked = false;
+				document.getElementById("sortByTrainId").parentElement.style.backgroundColor = "MediumPurple";
+				order = "desc";
+			}
+			//console.log(order);
+
+			// release other sort  conditiion
+
+			fetchTrainLoadData()
+				.then((data) => {
+					sortAndRender(data, order, "trainid");
+					document.getElementById('updatedTime').innerHTML = getNowDateTime();
+				}
+				);
+		});
+
+		// sort by time
+		document.getElementById("sortByLastUpdate").addEventListener("change", () => {
+			var order = "";
+			var isCheck = document.getElementById("sortByLastUpdate").checked;
+			resumeSortButton();
+
+			if (isCheck) {
+				document.getElementById("sortByLastUpdate").checked = true;
+				document.getElementById("sortByLastUpdate").parentElement.style.backgroundColor = "DodgerBlue";
+				order = "asc";
+			} else {
+				document.getElementById("sortByLastUpdate").checked = false;
+				document.getElementById("sortByLastUpdate").parentElement.style.backgroundColor = "MediumPurple";
+				order = "desc";
+			}
+			//console.log(order);
+
+			// release other sort  conditiion
+
+			fetchTrainLoadData()
+				.then((data) => {
+					sortAndRender(data, order, "time");
+					document.getElementById('updatedTime').innerHTML = getNowDateTime();
+				}
+				);
+		});
+
+		function clickSortByTD() {
+			document.getElementById('sortByTD').click();
+		}
+
+		function clickSortByTrainId() {
+			document.getElementById('sortByTrainId').click();
+		}
+
+		function clickSortByLastUpdate() {
+			document.getElementById('sortByLastUpdate').click();
+		}
+
+		function resumeSortButton() {
+			var sortBtnCollection = document.querySelectorAll(".btn-sort");
+			for (let i = 0; i < sortBtnCollection.length; i++) {
+				//console.log(sortBtnCollection[i]);
+				sortBtnCollection[i].children[0].checked = false;
+				sortBtnCollection[i].style.backgroundColor = "GhostWhite";
+			}
+		}
+
+		function determinateTrainLoadPassengerCountColor() {
+			const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+			// console.log(tbodyElement.children); //tr
+			// console.log(tbodyElement.children.length); //72
+			for (i = 0; i < tbodyElement.children.length; i++) {
+				// console.log(tbodyElement.children[i].children.length); // 1 or 17
+
+				if (tbodyElement.children[i].children.length <= 1) {
+					// it is a blank tr for C-train
+				} else {
+
+					for (j = 0; j < columnPosition_frr.length; j++) {
+						//console.log(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML));
+						//console.log(tbodyElement.children[i].children[columnPosition_frr[j]].children[1].innerHTML);
+
+						// console.log(tbodyElement.children[i]); //tr
+
+						if (tbodyElement.children[i].children == "") {
+
+						} else if ((tbodyElement.children[i].children[columnPosition_frr[j]].children[1].innerHTML) == "&nbsp;") {
+							//console.log(tbodyElement.children[i]);
+							tbodyElement.children[i].classList.add('table-secondary');
+							//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.color = "red";
+							//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.fontWeight = "400";
+							//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.fontSize = "x-large";
+						} else {
+							tbodyElement.children[i].classList.remove('table-secondary');
+							if (parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 0 || parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 1) {
+								tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = lightLoadColor_frr;
+							} else if (parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 2) {
+								tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = middleLoadColor_frr;
+							} else if (parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 3 || parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 4) {
+								tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = heavyLoadColor_frr;
+							} else { // undefined
+								tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = undefinedColor_frr;
+							}
+						}
+
+
+					}
+				}
+
+
+			}
+		}
+
+
+
+
+
+
+		/* Train Load Data Handling */
+
+		//1. Map Station to Code
+		function mapStation(code) {
+
+			code = (typeof code !== "number") ? parseInt(code) : code;
+
+			switch (code) {
+				case 7:
+					return 'KET';
+				case 8:
+					return 'HKU';
+				case 9:
+					return 'SYP';
+				case 10:
+					return 'SHW';
+				case 11:
+					return 'CEN';
+				case 12:
+					return 'ADM';
+				case 13:
+					return 'WAC';
+				case 14:
+					return 'CAB';
+				case 15:
+					return 'TIH';
+				case 16:
+					return 'FOH';
+				case 17:
+					return 'NOP';
+				case 18:
+					return 'QUB';
+				case 19:
+					return 'TAK';
+				case 20:
+					return 'SWH';
+				case 21:
+					return 'SKW';
+				case 22:
+					return 'HFC';
+				case 23:
+					return 'CHW';
+				case 30:
+					return 'TSW';
+				case 31:
+					return 'TWH';
+				case 32:
+					return 'KWH';
+				case 33:
+					return 'KWF';
+				case 34:
+					return 'LAK';
+				case 35:
+					return 'MEF';
+				case 36:
+					return 'LCK';
+				case 37:
+					return 'CSW';
+				case 38:
+					return 'SSP';
+				case 39:
+					return 'PRE';
+				case 40:
+					return 'MOK';
+				case 41:
+					return 'YMT';
+				case 42:
+					return 'JOR';
+				case 43:
+					return 'TST';
+				case 52:
+					return 'LAT';
+				case 53:
+					return 'KWT';
+				case 54:
+					return 'NTK';
+				case 55:
+					return 'KOB';
+				case 56:
+					return 'CHH';
+				case 57:
+					return 'DIH';
+				case 58:
+					return 'WTS';
+				case 59:
+					return 'LOF';
+				case 60:
+					return 'KOT';
+				case 61:
+					return 'SKM';
+				case 65:
+					return 'HOM';
+				case 66:
+					return 'WHA';
+				case 81:
+					return 'LHP';
+				case 82:
+					return 'POA';
+				case 83:
+					return 'HAH';
+				case 84:
+					return 'TKO';
+				case 85:
+					return 'TIK';
+				case 86:
+					return 'YAT';
+				case 99:
+					return 'DPT';
+				default:
+					return '-';
+			}
+		}
+
+		//2. Convert time
+
+		function convertTime(time) { //receive number parameter
+			time = (typeof time !== "number") ? parseInt(time) : time;
+			// console.log(time);
+			var m = new Date(time * 1000);
+			//console.log(m);
+
+
+			var dateString =
+				m.getFullYear() + "-" +
+				("0" + (m.getMonth() + 1)).slice(-2) + "-" +
+				("0" + m.getDate()).slice(-2) + " " +
+				("0" + m.getHours()).slice(-2) + ":" +
+				("0" + m.getMinutes()).slice(-2) + ":" +
+				("0" + m.getSeconds()).slice(-2);
+			//console.log(dateString);
+
+			returnValue = (time == 0) ? "-" : dateString;
+
+			return returnValue;
+		}
+
+		function checkDoorStatus(ds) {
+			if (typeof ds === "string") {
+				return "-";
+			} else if (ds === true) {
+				return "DO";
+			} else if (ds === false) {
+				return "DC";
+			} else {
+				return "-";
+			}
+		}
+
+		function checkReceivedNotNumberData(data) {
+			if (data === undefined || data < 0) {
+				return "-";
+			} else {
+				return data
+			}
+		}
+
+		function checkNegative(data) {
+			if (data === undefined || data < 0) {
+				return 0;
+			} else {
+				return data
+			}
+		}
+
+		/*Search and Filter*/
+
+		function handleFilter() {
+			var x = (document.getElementById("trainFilter").value).trim();
+			//console.log(x.length);
+			//console.log(x);
+			isOnTextState = (x.length === 0) ? false : true;
+			document.getElementById("cancelBtn").style.visibility = isOnTextState ? "visible" : "hidden";
+			//document.getElementById("demo").innerHTML = x;
+		}
+
+		document.getElementById("trainFilter").addEventListener("keyup", () => {
+			handleFilter();
+			filterFunction();
+		});
+
+		document.getElementById("cancelBtn").addEventListener("click", () => {
+			document.getElementById("trainFilter").value = '';
+			handleFilter();
+			filterFunction();
+		});
+
+		document.getElementById("reloadBtn").addEventListener("click", () => {
+
+			clickReloadBtn();
+
+		});
+
+		function clickReloadBtn(){
+			//console.log("Click reload button");
+			fetchTrainLoadData()
+				.then((data) => {
+					sortAndRender(data, "desc", "time");
+					document.getElementById('updatedTime').innerHTML = getNowDateTime();
+				}
+				);
+			document.getElementById("cancelBtn").click();
+
+			//restore the sort icons
+			// var column = document.getElementById("dataTable").children[0].children[0].children[0].children;
+			// console.log("MSG: " + column.length); //9
+			// console.log(column[0].children[0]); 
+			// for (i = 0; i < column.length; i++) {
+			// 	if (column[i].children[0] == undefined) { // not have fa fa-sort
+			// 		// no <i></i>
+			// 	} else { // has fa fa-sort
+			// 		column[i].children[0].className = "fa fa-sort";
+			// 	}
+
+			// }
+
+			resumeSortButton();
+
+			console.log("run refresh");
+		}
+
+		function filterFunction() {
+			var input, filter, tbody, tr, td, i, txtValue, filterCriteria;
+			input = document.getElementById("trainFilter");
+			filter = input.value.trim().toUpperCase();
+			tbody = document.getElementById("dataTable").children[0].children[1]; //tbody
+			tr = tbody.getElementsByTagName("tr");
+
+
+			for (i = 0; i < tr.length; i+=2) {
+
+				var td_td = tr[i].getElementsByTagName("td")[0]; //TD column
+
+				var td_tid = tr[i].getElementsByTagName("td")[1] || ""; //train id column
+
+				var td_td2 = tr[i+1].getElementsByTagName("td")[0]; //TD column
+
+				var td_tid2 = tr[i+1].getElementsByTagName("td")[1] || ""; //train id column
+
+				// console.log(td_td);
+				// console.log(td_tid);
+				if (td_td || td_id) {
+					txtValue_td = td_td.textContent || td_td.innerText;
+					txtValue_tid = td_tid.textContent || td_tid.innerText;
+					txtValue_td2 = td_td2.textContent || td_td2.innerText;
+					txtValue_tid2 = td_tid2.textContent || td_tid2.innerText;
+
+					txtValue = txtValue_td+" "+txtValue_tid+" "+txtValue_td2+" "+txtValue_tid2;
+
+					if (txtValue.toUpperCase().indexOf(filter) > -1) {
+						tr[i].style.display = "";
+						tr[i+1].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+						tr[i+1].style.display = "none";
+					}
+				}
+			}
+		}
+
+		/* Dropdown List */
+		document.getElementById("select-traintype").addEventListener("change", (event) => {
+			// console.log(document.getElementById("select-traintype").value);
+			filterFunction_byDropdownList();
+		});
+
+		function filterFunction_byDropdownList() {
+			let tbody = document.getElementById("dataTable").children[0].children[1]; //tbody
+			let tr = tbody.getElementsByTagName("tr");
+
+			let filterCriteria = document.getElementById("select-traintype").value; //selected option
+
+			for (i = 0; i < tr.length; i++) {
+				var train_type = tr[i].getElementsByTagName("td")[2]; //train type column
+
+				if (train_type == undefined) {
+					tr[i].classList.add("importantHidden");
+					continue;
+				}
+
+				// console.log(train_type.innerHTML);
+				if (filterCriteria == "All") {
+					tr[i].classList.remove("importantHidden");
+				} else {
+					if (train_type.innerHTML == filterCriteria) {
+						tr[i].classList.remove("importantHidden");
+					} else {
+						tr[i].classList.add("importantHidden");
+					}
+				}
+
+			}
+		}
+
+
+
+		var collapseRow = function (event) {
+			elNext = event.currentTarget.nextElementSibling;
+			el = event.currentTarget.children[0].children[0];
+			el.checked = !el.checked
+			//console.log(event.currentTarget.children[0].children[1].children[0]);
+			arrow = event.currentTarget.children[0].children[1].children[0];
+
+			if (el.checked == true) {
+				//console.log(elNext);
+				elNext.classList.remove('showRow');
+				elNext.classList.add('hiddenRow');
+				//console.log(elNext.children.length);
+
+				arrow.classList.remove('rotateArrow');
+
+				for (var i = 0; i < elNext.children.length; i++) {
+					var child = elNext.children[i];
+					child.classList.remove('showRow');
+					child.classList.add('hiddenRow');
+
+					for (var j = 0; j < child.children.length; j++) {
+						var childchild = child.children[j];
+						childchild.classList.remove('showRow');
+						childchild.classList.add('hiddenRow');
+					}
+				}
+
+			} else {
+				elNext.classList.remove('hiddenRow');
+				elNext.classList.add('showRow');
+				//console.log(elNext.children.length);
+
+				arrow.classList.add('rotateArrow');
+
+				for (var i = 0; i < elNext.children.length; i++) {
+					var child = elNext.children[i];
+					child.classList.remove('hiddenRow');
+					child.classList.add('showRow');
+
+					for (var j = 0; j < child.children.length; j++) {
+						var childchild = child.children[j];
+						childchild.classList.remove('hiddenRow');
+						childchild.classList.add('showRow');
+					}
+				}
+			}
+		};
+
+
+		/* Show data last update time */
+
+		function getNowDateTime() {
+			var m = new Date();
+			var dateString =
+				m.getFullYear() + "/" +
+				("0" + (m.getMonth() + 1)).slice(-2) + "/" +
+				("0" + m.getDate()).slice(-2) + " " +
+				("0" + m.getHours()).slice(-2) + ":" +
+				("0" + m.getMinutes()).slice(-2) + ":" +
+				("0" + m.getSeconds()).slice(-2);
+			return dateString;
+		}
+
+		/* reload data per certain time */
+
+		function reload() {
+			fetchTrainLoadData()
+				.then((data) => {
+					fetchAndMatch(data);
+					document.getElementById('updatedTime').innerHTML = getNowDateTime();
+				}
+				);
+			console.log("run update");
+
+		}
+
+		window.setInterval("reload()", 5000); // 5 sec to reload
+
+		window.setInterval("clickReloadBtn()", 300001); // 5 mins to refesh
+
+	</script>
+
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
