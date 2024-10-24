@@ -40,7 +40,7 @@ jobs:
       - name: Inject secret into HTML
         run: |
           API_KEY="${{ secrets.API_KEY }}"
-          sed -i "s/YOUR_API_KEY_PLACEHOLDER/${API_KEY}/g" index.html # Replace index.html and YOUR_API_KEY_PLACEHOLDER accordingly
+          sed -i "s/YOUR_API_KEY_PLACEHOLDER/${API_KEY}/g" test.html # Replace index.html and YOUR_API_KEY_PLACEHOLDER accordingly
 
   # Deployment job
   deploy:
