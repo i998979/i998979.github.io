@@ -37,6 +37,11 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+      - name: Inject secret into HTML
+        run: |
+          API_KEY="${{ secrets.API_KEY }}"
+          sed -i "s/YOUR_API_KEY_PLACEHOLDER/${API_KEY}/g" index.html # Replace index.html and YOUR_API_KEY_PLACEHOLDER accordingly
+          # Repeat for other files as needed
 
   # Deployment job
   deploy:
