@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Animated Marker</title>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<style>
+  #map {
+    height: 400px;
+    width: 100%;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  // Replace "YOUR_API_KEY" with your actual API key
+  const API_KEY = 'AIzaSyAr8gjWiJ1mc9_rKayfrFwYUV5J06a-458';
+
+  // Coordinates
+  const startLatLng = { lat: 22.27842143101926, lng: 114.166390605818 };
+  const endLatLng = { lat: 22.28169297793509, lng: 114.1755542180408 };
+
+  // Animation parameters
+  const animationDuration = 1000; // 1 second in milliseconds
+  const animationSteps = 100; // Number of steps for smoother animation
+
+  function initMap() {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: startLatLng,
+      zoom: 15,
+    });
+
+    const marker = new google.maps.Marker({
+      position: startLatLng,
+      map: map,
+    });
+
+    // Calculate intermediate points for animation
+    const latDiff = (endLatLng.lat - startLatLng.lat) / animationSteps;
+    const lngDiff = (endLatLng.lng - startLatLng.lng) / animationSteps;
+
+    let currentLatLng = { ...startLatLng }; // Create a copy to avoid modifying the original
+
+    // Animate the marker
+    const animationInterval = setInterval(() => {
+      currentLatLng.lat += latDiff;
+      currentLatLng.lng += lngDiff;
+      marker.setPosition(currentLatLng);
+
+      // Stop animation when reaching the end point
+      if (Math.abs(currentLatLng.lat - endLatLng.lat) < 0.00001 && Math.abs(currentLatLng.lng - endLatLng.lng) < 0.00001) {
+        clearInterval(animationInterval);
+      }
+    }, animationDuration / animationSteps);
+
+
+    //Error Handling for API key
+    if (!API_KEY) {
+      alert("Please provide a valid Google Maps API key.");
+    }
+  }
+
+  // Load the Google Maps JavaScript API
+  function loadScript() {
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&callback=initMap`;
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  loadScript();
+</script>
+</body>
+</html>
