@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<!-- saved from url=(0101)https://mtr-viewer.rocteccloud.com/sil_trainload_full.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- is_embed=False -->
+<script>
+  const observer = new PerformanceObserver((list) => {
+    list.getEntries().forEach((entry) => {
+      console.log('%o', entry);
+    })
+  });
+  observer.observe({type: "navigation", buffered: true});
+</script>
+<script src="./SIL Train Load Viewer_files/athena.js" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app221.us.archive.org';v.server_ms=239;archive_analytics.send_pageview({});});</script>
+<script type="text/javascript" src="./SIL Train Load Viewer_files/bundle-playback.js" charset="utf-8"></script>
+<script type="text/javascript" src="./SIL Train Load Viewer_files/wombat.js" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden"};</script>
+<script type="text/javascript" src="./SIL Train Load Viewer_files/ruffle.js"></script>
+<!-- <script type="text/javascript"> -->
+    <!-- __wm.init("https://web.archive.org/web"); -->
+  <!-- __wm.wombat("https://mtr-viewer.rocteccloud.com/sil_trainload_full.html","20240609072557","https://web.archive.org/","web","/_static/", -->
+	      <!-- "1717917957"); -->
+<!-- </script> -->
+<link rel="stylesheet" type="text/css" href="./SIL Train Load Viewer_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./SIL Train Load Viewer_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SIL Train Load Viewer</title>
+    <!--Axios-->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> -->
+	<script src="./SIL Train Load Viewer_files/axios.min.js"></script>
+	<!--Bootstrap-->
+	<link rel="stylesheet" href="./SIL Train Load Viewer_files/bootstrap.min.css">
+	<script src="./SIL Train Load Viewer_files/bootstrap.min.js"></script>
+	<!--fontawesome-->
+	<link rel="stylesheet" href="./SIL Train Load Viewer_files/font-awesome.min.css">
+	<!--CSS-->
+	<style>
+	/* css variable */
+	:root {
+	  --mtr-blue: #00234f;
+	  --sil-color: #CDCE00;
+	  
+	  --web-font: Microsoft JhengHei, Helvetica , Arial , sans-serif , serif;
+	}
+	
+	/* css reset */
+	*{
+		font-family: var(--web-font);
+	}
+	
+	body{
+		background-color: white;
+		color: black;
+	}
+
+
+	td, th {
+	  white-space:nowrap;
+	  text-align: center;
+	  vertical-align: middle;
+	}
+	
+	.web-navbar {
+	  width: 100%;
+	  height: 80px;
+	  color: #ffffff;
+	  background-color: var(--mtr-blue);
+	  overflow: auto;
+
+	  display: flex;
+	  justify-content: center;
+	  align-items: flex-end;
+	}
+	
+	.top-navbar{
+	  width: 100%;
+	  height: 50px;
+	  color: #ffffff;
+	  background-color: var(--mtr-blue);
+	  
+	}
+	
+	.top-navbar-right {
+	  height: 100%;
+	  float: right;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  margin: 0px 5px;
+	  padding: 0px 5px;
+	}
+	
+	.top-navbar-right * {
+	  margin: 5px;
+	}
+	
+	.bottom-bar{
+	  width: 100%;
+	  background-color: red;
+	}
+	
+	.tool-bar{
+	  margin: 25px 0px;
+	  display: flex;
+	  justify-content: space-between;
+	}
+	
+	.sort-tool{
+	  
+	}
+	
+	.extend-tool{
+	  
+	}
+	
+
+
+	
+	.trainFilter-input-container{
+		display: flex;
+		align-items: center;
+		position: relative;
+		width: 100%;
+	}
+	
+	.trainFilter-input{
+	  display: inline-block;
+	  width: 100%;
+	  font-size: 14px;
+	  padding: 12px 20px 12px 40px;
+	  border: 1px solid #ddd;
+	  transition: all 0.3s ;
+	}
+	
+	.trainFilter-placeholder{
+	  position: absolute;
+
+	  left: 30px;
+	  padding: 0px 10px;
+	  
+	  background-color: white;
+	  color: #ddd;
+	  font-size: 14px;
+		
+	  transition: all 0.1s ;
+	}
+	
+	#trainFilter:is(:focus, :valid) ~ .trainFilter-placeholder {
+		transform: translatey(-25px) translatex(-25px) ;
+		font-size: 10px;
+		color: var(--mtr-blue);
+		
+	}
+	
+	.trainFilter-input:focus{
+		box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	}
+	
+	.search-container{
+		display: flex;
+		transition: all 1s ;
+	}
+	
+
+	.search-container-item{
+		display: flex; 
+
+		align-items: center;
+		position: relative;
+		width: 100%;
+	}
+	
+	.search-icon{
+		height: 100%;
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+
+		padding: 0px 10px 0px 10px;
+		color: #ddd;
+		
+		z-index: 99;
+	}
+
+	.search-container-item:hover .search-icon{
+		color: var(--mtr-blue);
+	}
+
+	.cancel-icon-container{
+		
+		position: absolute;
+		right: 10px;
+		cursor: pointer;
+		visibility: hidden;
+		z-index: 99;
+	}
+	
+	.cancel-icon{
+		height: 20px;
+		width: 20px;
+		
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		
+		text-align: center;
+		
+		border-radius: 50%;
+		color: #fff;
+		background-color: #ddd;
+
+	}
+	
+	.p-left{
+		padding-left:30px;
+	}
+	
+	.reload-btn {
+	  width: 50px;
+	  
+	  transition: 0.5s;
+	}
+	
+	.reload-btn:hover{
+	  width: 100px;
+	}
+	
+	
+	.reload-btn::before {
+	  content: "";
+	  
+	}
+	
+	.reload-btn:hover ::before{
+	  content: "Reload ";
+	  font-family: var(--web-font);
+	}
+	
+	.btn-sort{
+	  cursor: pointer;
+	  font-size: 14px;
+	  border: 0px solid;
+	  border-radius: 5px;
+	  padding: 5px 10px;
+	  background-color: GhostWhite;
+	  transition: 0.3s;
+	}
+	
+
+	
+	.btn-sort:hover, .btn-extend:hover{
+	  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	}
+	
+	/* table css */
+	.table-container{
+		overflow-x:auto;
+	}
+	
+	/* train load indication signal point */
+	
+	.badge {
+	  background-color: red;
+	  padding: 4px 8px;
+	  margin-right: 3px;
+	  text-align: center;
+	  border-radius: 5px;
+	}
+	
+	/* update version */
+	.updated-version{
+		float: left;
+		font-size: 80%;
+	}
+	
+	/* update time */
+	.updated-time{
+		float: right;
+		font-size: 80%;
+	}
+	
+	/* TABLE COLLAPSE */
+	
+	.clickRow{
+		cursor: pointer;
+	}
+	
+	.hideCheckbox {
+	 /* hide the checkbox */
+	 display: none
+	}
+
+	.showRow{
+		max-height: 130px !important;
+		opacity: 1 !important;
+		padding: 8px !important;
+		transition: padding 0.5s , max-height 0.5s, opacity 0.3s;  
+	}
+
+	.hiddenRow{
+		max-height: 0px !important;
+		opacity: 0 !important;
+		padding: 0px !important;
+		overflow: hidden;
+		transition: all .5s;
+	}
+	
+	.targetRow td div{
+		max-height: 0px;
+		opacity: 0;
+		overflow: hidden;
+		
+	}
+	
+	.pls-invisible{
+		visibility: hidden;
+	}
+	
+	</style>
+  <style>.ssBtnDefault{position:absolute;z-index:100000000;background:none;border:none;outline:none;right:0;cursor:pointer;width:26px;height:26px;margin:0;padding:0;top:8px;right:8px;opacity:.6;pointer-events:all;transition-duration:.25s}.ssBtnDefault:hover{opacity:1 !important;transition-duration:.25s}.ssBtnDefault .fade{transition-duration:5s;opacity:0}.ssBtnYouTube{background:none;border:none;margin-right:20px !important;padding-top:0px !important;width:25px !important}.ytp-embed .ssBtnYouTube{width:20px !important;margin-right:15px !important}.ssBtnVimeo{height:2rem !important;width:2rem !important;margin-top:8px !important}.ssBtnVimeo button{width:100% !important;height:100% !important}.ssBtnVimeo button svg{width:19px}.ssBtnNetflix{background:none;border:none;cursor:pointer;width:4rem;margin:0 .5rem;display:inline-block;flex-shrink:0}.ssBtnNetflix>svg{transform:translateY(-0.3rem)}.ssBtnNetflix:hover{transform:scale(1.2);transition-duration:.25s}.ssBtnHulu{width:27px;margin-top:4px;margin-right:10px;opacity:.7;cursor:pointer}.ssBtnHulu:hover{opacity:1}.ssBtnAmazon{margin-right:1.5vw;outline:none;cursor:pointer;opacity:.8}.ssBtnAmazon:hover{opacity:1}@media(min-width: 1200px){.ssBtnAmazon{width:1.6666666667vw;height:1.6666666667vw}}@media(max-width: 1199px){.ssBtnAmazon{width:20px;height:20px}}.ssBtnHBO{width:48px;height:48px;position:relative;opacity:.7;cursor:pointer;display:flex;justify-content:center;align-items:center}.ssBtnHBO:hover{opacity:1;transform:scale(1.2)}.ssBtnHBO svg{width:24px;height:24px}.ssBtnDisney{opacity:.7}.ssBtnDisney:hover{opacity:1}.ssBtnDisney svg{width:25px !important;height:31px !important;padding-top:4px;margin-right:7px}.ssBtnApple{cursor:pointer;opacity:.7}.ssBtnApple:hover{opacity:1}.ssBtnApple svg{width:22px !important;height:22px !important;margin-right:2px !important}body #ssTempHolder{position:fixed;z-index:1000000000000;width:100%;height:100%;top:0;pointer-events:none}body #ssTempHolder video{width:auto !important;height:auto !important;max-width:100% !important;max-height:100% !important;top:0 !important;left:0 !important;transform:none !important}body.ssTakeScreenshot .ssElement{z-index:100000000000 !important}body.ssTakeScreenshot.ssNetflix [data-uia=video-canvas]{z-index:10000000}body.ssTakeScreenshot.ssNetflix video{background-color:#000}body.ssTakeScreenshot.ssNetflix .player-timedtext{display:none !important}body.ssTakeScreenshot.ssNetflix.showSubs .player-timedtext{display:block !important}body.ssTakeScreenshot.ssAmazon .scalingVideoContainer{z-index:99999999 !important}body.ssTakeScreenshot.ssDisney .btm-media-overlays-container{display:none}body.ssTakeScreenshot.ssDisney .dss-hls-subtitle-overlay{display:none}body.ssTakeScreenshot.ssDisney.showSubs .dss-hls-subtitle-overlay{display:block}body.ssTakeScreenshot.ssHulu .ContentPlayer__contentArea{z-index:10000000000;position:relative}body.ssTakeScreenshot.ssHulu .ClosedCaption{display:none}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption{display:block}body.ssTakeScreenshot.ssHulu.showSubs .ClosedCaption .ClosedCaption__outband{bottom:30px !important}body.ssTakeScreenshot.ssHBO video{z-index:99999999}body.ssTakeScreenshot.ssHBO *:has(video){z-index:99999999}body.ssTakeScreenshot.ssYoutube .html5-video-container,body.ssTakeScreenshot.ssYoutube .ytp-caption-window-container{z-index:999999999 !important}body.ssTakeScreenshot.ssApple #apple-music-video-player{z-index:999999999 !important}body.ssTakeScreenshot.ssApple .scrim{display:none}body .ssWrapper{overflow:hidden}body .ssNotification{display:flex;width:100%;height:4rem;justify-content:center;align-items:center;position:fixed;z-index:1000000000;top:-4rem;animation-name:notification;animation-duration:2s;animation-iteration-count:1}@keyframes notification{0%{top:-4rem}25%{top:3rem}85%{top:3rem}}body .ssNotification .ssNContent{position:absolute;z-index:1000000000;padding:.75rem 1.25em;margin-bottom:1em;border:1px solid rgba(0,0,0,0);border-radius:.25em;font-size:12px;height:fit-content;top:0}body .ssNotification .ssNContent.success{background-color:#d4edda;border-color:#c3e6cb;color:#155724}body .ssNotification .ssNContent.fail{background-color:#edd4d4;border-color:#e6c3c3;color:#b62424}body .ssModal{display:none;position:fixed;z-index:100000000;right:20px;opacity:0;background-color:#fffefa;border-radius:3px;padding:25px;color:#525252;font-family:muli,sans-serif;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);animation-name:animateOn;animation-duration:.2s;animation-fill-mode:forwards}body .ssModal.visible{display:block}body .ssModal *{vertical-align:middle;line-height:normal;font-weight:normal}@keyframes animateOn{from{opacity:0;top:0px}to{opacity:1;top:20px}}body .ssModal .close{position:absolute;right:10px;top:10px;cursor:pointer;opacity:.5;background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI3LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCA0NDMuNCA0NDMuNCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDQzLjQgNDQzLjQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHBhdGggZD0iTTYuOCw0MDMuNWwxODEuOC0xODEuOEw2LjgsMzkuOWMtNS45LTUuOS04LjItMTQuNS02LTIyLjZDMyw5LjIsOS4yLDMsMTcuMywwLjhjOC4xLTIuMiwxNi43LDAuMSwyMi42LDZsMTgxLjgsMTgxLjgKCUw0MDMuNSw2LjhjNS45LTUuOSwxNC41LTguMiwyMi42LTZjOC4xLDIuMiwxNC40LDguNCwxNi41LDE2LjVjMi4yLDguMS0wLjEsMTYuNy02LDIyLjZMMjU0LjcsMjIxLjdsMTgxLjgsMTgxLjgKCWM1LjksNS45LDguMiwxNC41LDYsMjIuNmMtMi4yLDguMS04LjQsMTQuNC0xNi41LDE2LjVjLTguMSwyLjItMTYuNy0wLjEtMjIuNi02TDIyMS43LDI1NC43TDM5LjksNDM2LjVjLTUuOSw1LjktMTQuNSw4LjItMjIuNiw2CglDOS4yLDQ0MC40LDMsNDM0LjEsMC44LDQyNkMtMS40LDQxOCwwLjksNDA5LjQsNi44LDQwMy41TDYuOCw0MDMuNXoiLz4KPC9zdmc+Cg==);width:10px;height:10px}body .ssModal .ssButtons{margin-top:25px;text-align:right}body .ssModal .ssButtons .ssButton,body .ssModal .ssButtons a .ssButton{display:inline-block;height:20px;padding:3px 12px 3px;margin-left:14px;border-radius:4px;box-shadow:0px 4px 8px 0px rgba(0,0,0,.15);background-color:#fff;font-size:12px;color:#525252;line-height:20px;font-weight:normal;cursor:pointer;text-decoration:none}body .ssModal .ssButtons .ssButton .emoji,body .ssModal .ssButtons a .ssButton .emoji{font-size:15px;vertical-align:bottom}body .ssModal .ssButtons .ssButton.blue,body .ssModal .ssButtons a .ssButton.blue{background-color:#19acef;color:#fff}body .ssModal .icon{background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI1LjIuMywgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIKCSBpZD0iTGF5ZXJfMSIgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIiB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCgkgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAxMDAgODMuOSIKCSBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxMDAgODMuOTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPgoJLnN0MHtmaWxsOiMwMEFERUY7fQo8L3N0eWxlPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLC05NTIuMzYyMTgpIj4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0zNS42LDk1Mi40Yy0xLjMsMC0yLjQsMS0yLjksMS44bC01LjYsMTEuMUgxMWMtNiwwLTExLDUtMTEsMTF2NDljMCw2LDUsMTEsMTEsMTFoNzhjNiwwLDExLTUsMTEtMTF2LTQ5CgkJYzAtNi01LTExLTExLTExSDcyLjlsLTUuNi0xMS4xYy0wLjUtMS4xLTEuNi0xLjgtMi45LTEuOEwzNS42LDk1Mi40TDM1LjYsOTUyLjR6IE0zNy42LDk1OC44aDI1LjJsNS41LDExLjEKCQljMC41LDEuMSwxLjYsMS44LDIuOSwxLjhoMTguMWMyLjYsMCw0LjUsMS45LDQuNSw0LjV2NDljMCwyLjYtMS45LDQuNS00LjUsNC41SDExLjFjLTIuNiwwLTQuNS0xLjktNC41LTQuNXYtNDkKCQljMC0yLjYsMS45LTQuNSw0LjUtNC41aDE4LjFjMS4xLDAsMi40LTAuOCwyLjktMS44TDM3LjYsOTU4Ljh6IE01MC4yLDk3OS44Yy0xMS42LDAtMjEsOS40LTIxLDIxczkuNCwyMSwyMSwyMXMyMS05LjQsMjEtMjEKCQlTNjEuOCw5NzkuOCw1MC4yLDk3OS44eiBNNTAuMiw5ODYuMmM4LjEsMCwxNC41LDYuNSwxNC41LDE0LjVzLTYuNSwxNC41LTE0LjUsMTQuNXMtMTQuNS02LjUtMTQuNS0xNC41UzQyLjEsOTg2LjIsNTAuMiw5ODYuMnoiLz4KPC9nPgo8L3N2Zz4K);background-repeat:no-repeat;width:30px;height:30px;vertical-align:top;margin-right:22px;margin-top:2px;display:inline-block}body .ssModal .body{display:inline-block;width:315px}body .ssModal .body .title{font-size:15px;font-weight:600;margin-bottom:7px}body .ssModal .body .description{font-size:13px;font-weight:lighter}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX2J1dHRvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX25vdGlmaWNhdGlvbnMuc2NzcyIsIndlYnBhY2s6Ly8uL3Njc3MvU2NyZWVuc2hvdENvbnRyb2wvX21vZGFsLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FFQyxpQkFBQSxDQUNBLGlCQUFBLENBQ0EsZUFBQSxDQUNBLFdBQUEsQ0FDQSxZQUFBLENBQ0EsT0FBQSxDQUNBLGNBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUNBLFFBQUEsQ0FDQSxTQUFBLENBQ0EsT0FBQSxDQUNBLFNBQUEsQ0FFQSxVQUFBLENBQ0Esa0JBQUEsQ0FFRyx3QkFBQSxDQUVBLG9CQUNJLG9CQUFBLENBQ0Esd0JBQUEsQ0FHSixvQkFDSSxzQkFBQSxDQUNBLFNBQUEsQ0FRUixjQUVDLGVBQUEsQ0FDQSxXQUFBLENBRUEsNEJBQUEsQ0FDRywwQkFBQSxDQUNBLHFCQUFBLENBRUgseUJBQ0MscUJBQUEsQ0FDQSw0QkFBQSxDQUlGLFlBRUMsc0JBQUEsQ0FDRyxxQkFBQSxDQUVBLHlCQUFBLENBRUgsbUJBRUMscUJBQUEsQ0FDQSxzQkFBQSxDQUVBLHVCQUNDLFVBQUEsQ0FNSCxjQUNDLGVBQUEsQ0FDQSxXQUFBLENBQ0EsY0FBQSxDQUVBLFVBQUEsQ0FFQSxjQUFBLENBR0Esb0JBQUEsQ0FDQSxhQUFBLENBVUEsa0JBRUMsNkJBQUEsQ0FJRSxvQkFDSSxvQkFBQSxDQUNILHdCQUFBLENBSUwsV0FFQyxVQUFBLENBQ0EsY0FBQSxDQUNBLGlCQUFBLENBQ0EsVUFBQSxDQUNBLGNBQUEsQ0FFQSxpQkFDQyxTQUFBLENBSUYsYUFDQyxrQkFBQSxDQUVBLFlBQUEsQ0FFRSxjQUFBLENBQ0EsVUFBQSxDQUlDLG1CQUNJLFNBQUEsQ0FJUiwwQkFBQSxhQUFBLG9CQUFBLENBQUEscUJBQUEsQ0FBQSxDQUNBLDBCQUFBLGFBQUEsVUFBQSxDQUFBLFdBQUEsQ0FBQSxDQUdBLFVBRUksVUFBQSxDQUNBLFdBQUEsQ0FDQSxpQkFBQSxDQUNBLFVBQUEsQ0FDQSxjQUFBLENBQ0EsWUFBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FFSCxnQkFDQyxTQUFBLENBQ0Esb0JBQUEsQ0FHRCxjQUNDLFVBQUEsQ0FDQSxXQUFBLENBSUYsYUFHSSxVQUFBLENBRUgsbUJBQ0MsU0FBQSxDQUdELGlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSxlQUFBLENBQ0EsZ0JBQUEsQ0FJRixZQUlDLGNBQUEsQ0FHRyxVQUFBLENBRUgsa0JBQ0MsU0FBQSxDQUdELGdCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSwyQkFBQSxDQzNMRCxtQkFDQyxjQUFBLENBQ0EscUJBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLEtBQUEsQ0FDQSxtQkFBQSxDQUVBLHlCQUNDLHFCQUFBLENBQ0Esc0JBQUEsQ0FDQSx5QkFBQSxDQUNBLDBCQUFBLENBQ0EsZ0JBQUEsQ0FDQSxpQkFBQSxDQUNBLHlCQUFBLENBTUQsaUNBQ0MsK0JBQUEsQ0FLQSx3REFDQyxnQkFBQSxDQUdELHNDQUNDLHFCQUFBLENBSUQsa0RBRUMsdUJBQUEsQ0FLQSwyREFFQyx3QkFBQSxDQVFGLHNEQUNDLDJCQUFBLENBTUQsNkRBQ0MsWUFBQSxDQUdELHlEQUNDLFlBQUEsQ0FLQSxrRUFDQyxhQUFBLENBTUYseURBQ0MsbUJBQUEsQ0FDRyxpQkFBQSxDQUdKLDRDQUNDLFlBQUEsQ0FJQSxxREFDQyxhQUFBLENBRUEsNkVBQ0Msc0JBQUEsQ0FRSCxrQ0FDQyxnQkFBQSxDQUdELHlDQUNDLGdCQUFBLENBT0QscUhBQ0MsNEJBQUEsQ0FLRCx3REFDQyw0QkFBQSxDQUdELHFDQUNDLFlBQUEsQ0FLSCxnQkFDQyxlQUFBLENDcElGLHFCQUVJLFlBQUEsQ0FDQSxVQUFBLENBQ0EsV0FBQSxDQUNBLHNCQUFBLENBQ0Esa0JBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxTQUFBLENBRUEsMkJBQUEsQ0FDQSxxQkFBQSxDQUNBLDJCQUFBLENBRUEsd0JBQ0ksR0FBQSxTQUFBLENBQ0EsSUFBQSxRQUFBLENBQ0EsSUFBQSxRQUFBLENBQUEsQ0FHSixpQ0FFSSxpQkFBQSxDQUNBLGtCQUFBLENBQ0EscUJBQUEsQ0FDQSxpQkFBQSxDQUNBLDhCQUFBLENBQ0EsbUJBQUEsQ0FDQSxjQUFBLENBQ0Esa0JBQUEsQ0FDQSxLQUFBLENBRUEseUNBQ0ksd0JBQUEsQ0FDQSxvQkFBQSxDQUNBLGFBQUEsQ0FHSixzQ0FDSSx3QkFBQSxDQUNBLG9CQUFBLENBQ0EsYUFBQSxDQzFDWixjQUVJLFlBQUEsQ0FNQSxjQUFBLENBQ0EsaUJBQUEsQ0FFQSxVQUFBLENBRUEsU0FBQSxDQUVBLHdCQUFBLENBQ0EsaUJBQUEsQ0FFQSxZQUFBLENBRUEsYUFBQSxDQUNBLDJCQUFBLENBUUEsMENBQUEsQ0FFQSx3QkFBQSxDQUNBLHNCQUFBLENBQ0EsNEJBQUEsQ0E3QkEsc0JBQ0ksYUFBQSxDQWtCSixnQkFDSSxxQkFBQSxDQUNBLGtCQUFBLENBQ0Esa0JBQUEsQ0FTSixxQkFDSSxLQUNJLFNBQUEsQ0FDQSxPQUFBLENBRUosR0FDSSxTQUFBLENBQ0EsUUFBQSxDQUFBLENBSVIscUJBQ0ksaUJBQUEsQ0FDQSxVQUFBLENBQ0EsUUFBQSxDQUNBLGNBQUEsQ0FDQSxVQUFBLENBRUEsd0RBQUEsQ0FFQSxVQUFBLENBQ0EsV0FBQSxDQUlKLHlCQUVJLGVBQUEsQ0FDQSxnQkFBQSxDQUVBLHdFQUNJLG9CQUFBLENBRUEsV0FBQSxDQUVBLG9CQUFBLENBQ0EsZ0JBQUEsQ0FFQSxpQkFBQSxDQUNBLDBDQUFBLENBQ0EscUJBQUEsQ0FFQSxjQUFBLENBQ0EsYUFBQSxDQUNBLGdCQUFBLENBQ0Esa0JBQUEsQ0FFQSxjQUFBLENBRUEsb0JBQUEsQ0FFQSxzRkFDSSxjQUFBLENBQ0EscUJBQUEsQ0FHSixrRkFDSSx3QkFBQSxDQUNBLFVBQUEsQ0FLWixvQkFDSSx3REFBQSxDQUNBLDJCQUFBLENBRUEsVUFBQSxDQUNBLFdBQUEsQ0FFQSxrQkFBQSxDQUNBLGlCQUFBLENBQ0EsY0FBQSxDQUVBLG9CQUFBLENBR0osb0JBRUksb0JBQUEsQ0FDQSxXQUFBLENBRUEsMkJBQ0ksY0FBQSxDQUNBLGVBQUEsQ0FDQSxpQkFBQSxDQUVKLGlDQUNJLGNBQUEsQ0FDQSxtQkFBQSIsInNvdXJjZXNDb250ZW50IjpbIi5zc0J0bkRlZmF1bHQge1xuXHRcblx0cG9zaXRpb246IGFic29sdXRlO1xuXHR6LWluZGV4OiAxMDAwMDAwMDA7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRvdXRsaW5lOiBub25lO1xuXHRyaWdodDowO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHR3aWR0aDogMjZweDtcblx0aGVpZ2h0OiAyNnB4O1xuXHRtYXJnaW46IDA7Ly81JSA4cHggMDtcblx0cGFkZGluZzowO1xuXHR0b3A6OHB4O1xuXHRyaWdodDo4cHg7XG5cdFxuXHRvcGFjaXR5OiAuNjtcblx0cG9pbnRlci1ldmVudHM6IGFsbDtcblx0Lyp0cmFuc2l0aW9uLWZpbGwtbW9kZTogZm9yd2FyZHM7Ki9cbiAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiAuMjVzO1xuXG4gICAgJjpob3ZlciB7XG4gICAgICAgIG9wYWNpdHk6IDEgIWltcG9ydGFudDsgXG4gICAgICAgIHRyYW5zaXRpb24tZHVyYXRpb246IC4yNXM7XG4gICAgfVxuXG4gICAgLmZhZGUge1xuICAgICAgICB0cmFuc2l0aW9uLWR1cmF0aW9uOiA1cztcbiAgICAgICAgb3BhY2l0eTogMDtcbiAgICB9XG4gICAgXG4gICAgLypzdmcge1xuICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOnJlZDtcbiAgICB9Ki9cbn1cblxuLnNzQnRuWW91VHViZSB7XG5cblx0YmFja2dyb3VuZDpub25lO1xuXHRib3JkZXI6IG5vbmU7XG5cdFxuXHRtYXJnaW4tcmlnaHQ6IDIwcHggIWltcG9ydGFudDtcbiAgICBwYWRkaW5nLXRvcDogMHB4ICFpbXBvcnRhbnQ7XG4gICAgd2lkdGg6IDI1cHggIWltcG9ydGFudDtcblxuXHQueXRwLWVtYmVkICYge1xuXHRcdHdpZHRoOiAyMHB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAxNXB4ICFpbXBvcnRhbnQ7XG5cdH1cbn1cblxuLnNzQnRuVmltZW8ge1xuXG5cdGhlaWdodDogMnJlbSAhaW1wb3J0YW50O1xuICAgIHdpZHRoOiAycmVtICFpbXBvcnRhbnQ7XG4gICAgLy9wYWRkaW5nOiA2cHggIWltcG9ydGFudDtcbiAgICBtYXJnaW4tdG9wOiA4cHggIWltcG9ydGFudDtcblxuXHRidXR0b24ge1xuXG5cdFx0d2lkdGg6IDEwMCUgIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDEwMCUgIWltcG9ydGFudDtcblx0XHRcblx0XHRzdmcge1xuXHRcdFx0d2lkdGg6IDE5cHg7XG5cdFx0fVxuXHR9XG5cbn1cblxuLnNzQnRuTmV0ZmxpeCB7XG5cdGJhY2tncm91bmQ6bm9uZTtcblx0Ym9yZGVyOiBub25lO1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblx0d2lkdGg6NHJlbTtcblx0XG5cdG1hcmdpbjogMCAwLjVyZW07XG5cdC8vbWFyZ2luOiAwIDJyZW0gMCA0cmVtO1xuXG5cdGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuXHRmbGV4LXNocmluazogMDtcblx0XG5cdC8vbWFyZ2luLXRvcDotMXJlbTtcblx0Ly9oZWlnaHQ6Mi40cmVtO1xuXHQvL3dpZHRoOiA1MHB4O1xuXHQvL2hlaWdodDogMzVweCAhaW1wb3J0YW50O1xuXHQvL3dpZHRoOiAxMDAlOy8vMy42ZW0gIWltcG9ydGFudDtcbiAgICAvL2hlaWdodDogMTAwJTsvLzEuNmVtICFpbXBvcnRhbnQ7XG5cdC8vcGFkZGluZzowIDAgLjZlbSAwO1xuXG5cdCYgPiBzdmcge1xuXHRcdC8vbWFyZ2luLXRvcDotLjNyZW07XG5cdFx0dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLS4zcmVtKTtcblx0XHQvL3RyYW5zZm9ybTogc2NhbGUoLjUpO1xuXHR9XG4gICAgXG4gICAgJjpob3ZlciB7XG4gICAgICAgIHRyYW5zZm9ybTpzY2FsZSgxLjIpO1xuXHQgICAgdHJhbnNpdGlvbi1kdXJhdGlvbjogLjI1cztcbiAgICB9XG59XG5cbi5zc0J0bkh1bHUge1xuXHRcblx0d2lkdGg6IDI3cHg7XG5cdG1hcmdpbi10b3A6IDRweDtcblx0bWFyZ2luLXJpZ2h0OjEwcHg7XG5cdG9wYWNpdHk6IC43O1xuXHRjdXJzb3I6IHBvaW50ZXI7XG5cdFxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHR9XG59XG5cbi5zc0J0bkFtYXpvbiB7XG5cdG1hcmdpbi1yaWdodDogMS41dnc7XG4gICAgXG5cdG91dGxpbmU6IG5vbmU7XG5cdFxuICAgY3Vyc29yOiBwb2ludGVyO1xuICAgb3BhY2l0eTogLjg7XG5cbiAgIC8vei1pbmRleDogOTk5OTk5OTk5OTtcblxuICAgICY6aG92ZXIge1xuICAgICAgICBvcGFjaXR5OiAxO1xuICAgIH1cbn1cblxuQG1lZGlhIChtaW4td2lkdGg6IDEyMDBweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IGhlaWdodDogMS42NjY2NjY2NjY2NjY2NjY1dnc7IH0gfVxuQG1lZGlhIChtYXgtd2lkdGg6IDExOTlweCkgeyAuc3NCdG5BbWF6b24geyB3aWR0aDogMjBweDsgaGVpZ2h0OiAyMHB4OyB9IH1cblxuXG4uc3NCdG5IQk8ge1xuXG4gICAgd2lkdGg6IDQ4cHg7XG4gICAgaGVpZ2h0OiA0OHB4O1xuICAgIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgICBvcGFjaXR5OiAwLjc7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcblxuXHQmOmhvdmVyIHtcblx0XHRvcGFjaXR5OiAxO1xuXHRcdHRyYW5zZm9ybTogc2NhbGUoMS4yKTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI0cHg7XG5cdFx0aGVpZ2h0OiAyNHB4O1xuXHR9XG59XG5cbi5zc0J0bkRpc25leSB7XG5cdC8vd2lkdGg6IDI2cHg7XG4gICAgLy9tYXJnaW4tcmlnaHQ6IDEzcHg7XG4gICAgb3BhY2l0eTogLjc7XG5cblx0Jjpob3ZlciB7XG5cdFx0b3BhY2l0eTogMTtcblx0fVxuXG5cdHN2ZyB7XG5cdFx0d2lkdGg6IDI1cHggIWltcG9ydGFudDtcblx0XHRoZWlnaHQ6IDMxcHggIWltcG9ydGFudDtcblx0XHRwYWRkaW5nLXRvcDogNHB4O1xuXHRcdG1hcmdpbi1yaWdodDogN3B4O1xuXHR9XG59XG5cbi5zc0J0bkFwcGxlIHtcblx0Ly93aWR0aDogMjZweDtcbiAgICAvL21hcmdpbi1yaWdodDogMTNweDtcblxuXHRjdXJzb3I6IHBvaW50ZXI7XG5cblxuICAgIG9wYWNpdHk6IC43O1xuXG5cdCY6aG92ZXIge1xuXHRcdG9wYWNpdHk6IDE7XG5cdH1cblxuXHRzdmcge1xuXHRcdHdpZHRoOiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0aGVpZ2h0OiAyMnB4ICFpbXBvcnRhbnQ7XG5cdFx0bWFyZ2luLXJpZ2h0OiAycHggIWltcG9ydGFudDtcblx0fVxufSIsIkBpbXBvcnQgXCJTY3JlZW5zaG90Q29udHJvbC9idXR0b25zXCI7XG5cbmJvZHkge1xuXG5cdCNzc1RlbXBIb2xkZXIge1xuXHRcdHBvc2l0aW9uOmZpeGVkO1xuXHRcdHotaW5kZXg6MTAwMDAwMDAwMDAwMDtcblx0XHR3aWR0aDoxMDAlO1xuXHRcdGhlaWdodDoxMDAlO1xuXHRcdHRvcDowO1xuXHRcdHBvaW50ZXItZXZlbnRzOiBub25lO1xuXG5cdFx0dmlkZW8ge1xuXHRcdFx0d2lkdGg6YXV0byAhaW1wb3J0YW50O1xuXHRcdFx0aGVpZ2h0OmF1dG8gIWltcG9ydGFudDtcblx0XHRcdG1heC13aWR0aDoxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHRtYXgtaGVpZ2h0OiAxMDAlICFpbXBvcnRhbnQ7XG5cdFx0XHR0b3A6IDAgIWltcG9ydGFudDtcblx0XHRcdGxlZnQ6IDAgIWltcG9ydGFudDtcblx0XHRcdHRyYW5zZm9ybTogbm9uZSAhaW1wb3J0YW50O1xuXHRcdH1cblx0fVxuXG5cdCYuc3NUYWtlU2NyZWVuc2hvdCB7XG5cdFx0XG5cdFx0LnNzRWxlbWVudCB7XG5cdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDAgIWltcG9ydGFudDtcblx0XHR9XG5cdFx0XG5cdFx0Ji5zc05ldGZsaXgge1xuXHRcblx0XHRcdFtkYXRhLXVpYT12aWRlby1jYW52YXNdIHtcblx0XHRcdFx0ei1pbmRleDogMTAwMDAwMDA7XG5cdFx0XHR9XG5cdFx0XHRcblx0XHRcdHZpZGVvIHtcblx0XHRcdFx0YmFja2dyb3VuZC1jb2xvcjogIzAwMDAwMDtcblx0XHRcdFx0Ly9oZWlnaHQ6IGF1dG8gIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnBsYXllci10aW1lZHRleHQge1xuXG5cdFx0XHRcdGRpc3BsYXk6bm9uZSAhaW1wb3J0YW50O1xuXHRcdFx0fVx0XHRcdFxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0XG5cdFx0XHRcdC5wbGF5ZXItdGltZWR0ZXh0IHtcblxuXHRcdFx0XHRcdGRpc3BsYXk6IGJsb2NrICFpbXBvcnRhbnQ7XG5cdFx0XHRcdFx0Ly9ib3R0b206IDEwJSAhaW1wb3J0YW50O1xuXHRcdFx0XHR9XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FtYXpvbiB7XG5cblx0XHRcdC5zY2FsaW5nVmlkZW9Db250YWluZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OSAhaW1wb3J0YW50O1xuXHRcdFx0fVxuXHRcdH1cblxuXHRcdCYuc3NEaXNuZXkge1xuXG5cdFx0XHQuYnRtLW1lZGlhLW92ZXJsYXlzLWNvbnRhaW5lciB7XG5cdFx0XHRcdGRpc3BsYXk6bm9uZTtcblx0XHRcdH1cblxuXHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdGRpc3BsYXk6IG5vbmU7XG5cdFx0XHR9XG5cblx0XHRcdCYuc2hvd1N1YnMge1xuXHRcdFx0XHRcblx0XHRcdFx0LmRzcy1obHMtc3VidGl0bGUtb3ZlcmxheSB7XG5cdFx0XHRcdFx0ZGlzcGxheTogYmxvY2s7XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSHVsdSB7XG5cdFx0XHQuQ29udGVudFBsYXllcl9fY29udGVudEFyZWEge1xuXHRcdFx0XHR6LWluZGV4OiAxMDAwMDAwMDAwMDtcbiAgICBcdFx0XHRwb3NpdGlvbjogcmVsYXRpdmU7XG5cdFx0XHR9XG5cblx0XHRcdC5DbG9zZWRDYXB0aW9uIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXG5cdFx0XHQmLnNob3dTdWJzIHtcblx0XHRcdFx0LkNsb3NlZENhcHRpb24ge1xuXHRcdFx0XHRcdGRpc3BsYXk6YmxvY2s7XG5cblx0XHRcdFx0XHQuQ2xvc2VkQ2FwdGlvbl9fb3V0YmFuZCB7XG5cdFx0XHRcdFx0XHRib3R0b206IDMwcHggIWltcG9ydGFudDtcblx0XHRcdFx0XHR9XG5cdFx0XHRcdH1cblx0XHRcdH1cblx0XHR9XG5cblx0XHQmLnNzSEJPIHtcblxuXHRcdFx0dmlkZW8ge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTtcblx0XHRcdH1cblxuXHRcdFx0KjpoYXModmlkZW8pIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk7XG5cdFx0XHR9XG5cblx0XHR9XG5cblx0XHQmLnNzWW91dHViZSB7XG5cblx0XHRcdC5odG1sNS12aWRlby1jb250YWluZXIsIC55dHAtY2FwdGlvbi13aW5kb3ctY29udGFpbmVyIHtcblx0XHRcdFx0ei1pbmRleDogOTk5OTk5OTk5ICFpbXBvcnRhbnQ7XG5cdFx0XHR9XG5cdFx0fVxuXG5cdFx0Ji5zc0FwcGxlIHtcblx0XHRcdCNhcHBsZS1tdXNpYy12aWRlby1wbGF5ZXIge1xuXHRcdFx0XHR6LWluZGV4OiA5OTk5OTk5OTkgIWltcG9ydGFudDtcblx0XHRcdH1cblxuXHRcdFx0LnNjcmltIHtcblx0XHRcdFx0ZGlzcGxheTpub25lO1xuXHRcdFx0fVxuXHRcdH1cblx0fVxuXG5cdC5zc1dyYXBwZXIge1xuXHRcdG92ZXJmbG93OiBoaWRkZW47XG5cdH1cblxuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbm90aWZpY2F0aW9uc1wiO1xuXHRAaW1wb3J0IFwiU2NyZWVuc2hvdENvbnRyb2wvbW9kYWxcIjtcbn0iLCIuc3NOb3RpZmljYXRpb24ge1xuXG4gICAgZGlzcGxheTogZmxleDtcbiAgICB3aWR0aDogMTAwJTtcbiAgICBoZWlnaHQ6IDRyZW07XG4gICAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBwb3NpdGlvbjogZml4ZWQ7XG4gICAgei1pbmRleDogMTAwMDAwMDAwMDtcbiAgICB0b3A6LTRyZW07XG5cbiAgICBhbmltYXRpb24tbmFtZTogbm90aWZpY2F0aW9uO1xuICAgIGFuaW1hdGlvbi1kdXJhdGlvbjogMnM7XG4gICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogMTtcblxuICAgIEBrZXlmcmFtZXMgbm90aWZpY2F0aW9uIHtcbiAgICAgICAgMCUge3RvcDogLTRyZW07fVxuICAgICAgICAyNSUge3RvcDogM3JlbTt9XG4gICAgICAgIDg1JSB7dG9wOiAzcmVtO31cbiAgICB9XG5cbiAgICAuc3NOQ29udGVudCB7XG4gICAgICAgIC8vY29udGVudDogJ1NjcmVlbnNob3QgY29waWVkIHRvIGNsaXBib2FyZCEnO1xuICAgICAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgICAgIHotaW5kZXg6IDEwMDAwMDAwMDA7XG4gICAgICAgIHBhZGRpbmc6IC43NXJlbSAxLjI1ZW07XG4gICAgICAgIG1hcmdpbi1ib3R0b206IDFlbTtcbiAgICAgICAgYm9yZGVyOiAxcHggc29saWQgdHJhbnNwYXJlbnQ7XG4gICAgICAgIGJvcmRlci1yYWRpdXM6IC4yNWVtO1xuICAgICAgICBmb250LXNpemU6IDEycHg7XG4gICAgICAgIGhlaWdodDogZml0LWNvbnRlbnQ7XG4gICAgICAgIHRvcDowO1xuXG4gICAgICAgICYuc3VjY2VzcyB7XG4gICAgICAgICAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZDRlZGRhO1xuICAgICAgICAgICAgYm9yZGVyLWNvbG9yOiAjYzNlNmNiO1xuICAgICAgICAgICAgY29sb3I6ICMxNTU3MjQ7XG4gICAgICAgIH1cbiAgICBcbiAgICAgICAgJi5mYWlsIHtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNlZGQ0ZDQ7XG4gICAgICAgICAgICBib3JkZXItY29sb3I6ICNlNmMzYzM7XG4gICAgICAgICAgICBjb2xvcjogI2I2MjQyNDtcbiAgICAgICAgfVxuICAgIH1cblxufSIsIi5zc01vZGFsIHtcblxuICAgIGRpc3BsYXk6IG5vbmU7XG5cbiAgICAmLnZpc2libGUge1xuICAgICAgICBkaXNwbGF5OmJsb2NrO1xuICAgIH1cblxuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB6LWluZGV4OiAxMDAwMDAwMDA7XG5cbiAgICByaWdodDoyMHB4O1xuICAgIFxuICAgIG9wYWNpdHk6IDA7XG5cbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiNmZmZlZmE7XG4gICAgYm9yZGVyLXJhZGl1czogM3B4O1xuXG4gICAgcGFkZGluZzogMjVweDtcblxuICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgIGZvbnQtZmFtaWx5OiBtdWxpLCBzYW5zLXNlcmlmO1xuICAgIFxuICAgICoge1xuICAgICAgICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xuICAgICAgICBsaW5lLWhlaWdodDogbm9ybWFsO1xuICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIH1cblxuICAgIGJveC1zaGFkb3c6IDBweCA0cHggOHB4IDBweCByZ2JhKDAsIDAsIDAsIDAuMTUpO1xuXG4gICAgYW5pbWF0aW9uLW5hbWU6IGFuaW1hdGVPbjtcbiAgICBhbmltYXRpb24tZHVyYXRpb246IC4ycztcbiAgICBhbmltYXRpb24tZmlsbC1tb2RlOiBmb3J3YXJkcztcblxuICAgIEBrZXlmcmFtZXMgYW5pbWF0ZU9uIHtcbiAgICAgICAgZnJvbSB7XG4gICAgICAgICAgICBvcGFjaXR5OiAwO1xuICAgICAgICAgICAgdG9wOiAwcHg7XG4gICAgICAgIH1cbiAgICAgICAgdG8ge1xuICAgICAgICAgICAgb3BhY2l0eTogMTtcbiAgICAgICAgICAgIHRvcDogMjBweDtcbiAgICAgICAgfVxuICAgIH1cblxuICAgIC5jbG9zZSB7XG4gICAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgICAgcmlnaHQ6IDEwcHg7XG4gICAgICAgIHRvcDogMTBweDtcbiAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuICAgICAgICBvcGFjaXR5OiAuNTtcblxuICAgICAgICBiYWNrZ3JvdW5kLWltYWdlOiB1cmwoJy4uL2ltYWdlcy9jbG9zZS5zdmcnKTtcblxuICAgICAgICB3aWR0aDoxMHB4O1xuICAgICAgICBoZWlnaHQ6MTBweDtcblxuICAgIH1cblxuICAgIC5zc0J1dHRvbnMge1xuXG4gICAgICAgIG1hcmdpbi10b3A6IDI1cHg7XG4gICAgICAgIHRleHQtYWxpZ246IHJpZ2h0O1xuXG4gICAgICAgIC5zc0J1dHRvbiwgYSAuc3NCdXR0b24ge1xuICAgICAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG5cbiAgICAgICAgICAgIGhlaWdodDoyMHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBwYWRkaW5nOjNweCAxMnB4IDNweDtcbiAgICAgICAgICAgIG1hcmdpbi1sZWZ0OiAxNHB4O1xuICAgICAgICAgICAgXG4gICAgICAgICAgICBib3JkZXItcmFkaXVzOiA0cHg7XG4gICAgICAgICAgICBib3gtc2hhZG93OiAwcHggNHB4IDhweCAwcHggcmdiYSgwLCAwLCAwLCAwLjE1KTtcbiAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICBcbiAgICAgICAgICAgIGZvbnQtc2l6ZTogMTJweDtcbiAgICAgICAgICAgIGNvbG9yOiAjNTI1MjUyO1xuICAgICAgICAgICAgbGluZS1oZWlnaHQ6IDIwcHg7XG4gICAgICAgICAgICBmb250LXdlaWdodDogbm9ybWFsO1xuICAgIFxuICAgICAgICAgICAgY3Vyc29yOiBwb2ludGVyO1xuXG4gICAgICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG5cbiAgICAgICAgICAgIC5lbW9qaSB7XG4gICAgICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgICAgIHZlcnRpY2FsLWFsaWduOiBib3R0b207XG4gICAgICAgICAgICB9XG4gICAgXG4gICAgICAgICAgICAmLmJsdWUge1xuICAgICAgICAgICAgICAgIGJhY2tncm91bmQtY29sb3I6ICMxOWFjZWY7XG4gICAgICAgICAgICAgICAgY29sb3I6ICNGRkZGRkY7XG4gICAgICAgICAgICB9XG4gICAgICAgIH1cbiAgICB9XG5cbiAgICAuaWNvbiB7XG4gICAgICAgIGJhY2tncm91bmQtaW1hZ2U6IHVybCgnLi4vaW1hZ2VzL2ljb25CbHVlLnN2ZycpO1xuICAgICAgICBiYWNrZ3JvdW5kLXJlcGVhdDogbm8tcmVwZWF0O1xuXG4gICAgICAgIHdpZHRoOjMwcHg7XG4gICAgICAgIGhlaWdodDozMHB4O1xuXG4gICAgICAgIHZlcnRpY2FsLWFsaWduOiB0b3A7XG4gICAgICAgIG1hcmdpbi1yaWdodDogMjJweDtcbiAgICAgICAgbWFyZ2luLXRvcDoycHg7XG5cbiAgICAgICAgZGlzcGxheTppbmxpbmUtYmxvY2s7XG4gICAgfVxuXG4gICAgLmJvZHkge1xuXG4gICAgICAgIGRpc3BsYXk6aW5saW5lLWJsb2NrO1xuICAgICAgICB3aWR0aDozMTVweDtcblxuICAgICAgICAudGl0bGUge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxNXB4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IDYwMDtcbiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDdweDtcbiAgICAgICAgfVxuICAgICAgICAuZGVzY3JpcHRpb24ge1xuICAgICAgICAgICAgZm9udC1zaXplOiAxM3B4O1xuICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGxpZ2h0ZXI7XG4gICAgICAgIH1cbiAgICB9XG5cbn0iXSwic291cmNlUm9vdCI6IiJ9 */</style></head>
+<body>
+	<div class="web-navbar">
+		<h1 id="web-title">SIL Train Load Viewer</h1>
+	</div>
+	<div class="top-navbar">
+		<!--
+		<div class="top-navbar-right">
+			<span id="colorToggler" style="cursor: pointer;"><i class="fa fa-adjust"></i></span>
+			<span id="languageToggler" style="cursor: pointer;"><i class="fa fa-language"></i></span>
+		</div>
+		-->
+		<div class="top-navbar-right">
+			<button id="toggleDataBtn" class="btn btn-sm btn-light">Show Crowdedness Index</button>
+		</div>
+	</div>
+
+	<div class="p-3">
+		<!--Search bar-->
+		<div class="search-container mb-3">
+
+			<div class="search-container-item">
+			  <div class="search-icon"><div><i class="fa fa-search"></i></div></div>
+			  <div class="trainFilter-input-container">
+				<input type="text" id="trainFilter" class="trainFilter-input p-left" placeholder="" aria-label="trainset" aria-describedby="basic-addon1" required="">
+				<label for="trainFilter" class="trainFilter-placeholder">
+					Filtering by Train Set or Train ID
+				</label>
+			  </div>
+			  
+			  <div id="cancelBtn" class="cancel-icon-container">
+				  <div class="cancel-icon">
+				  <i class="fa fa-close"></i>
+				  </div>
+			  </div>
+			</div>
+		  <button id="reloadBtn" class="btn reload-btn" style="color: #ffffff; background-color: var(--mtr-blue);"><i class="fa fa-refresh"></i></button>
+		</div>
+
+		<hr>
+		
+
+		
+		<div class="tool-bar">
+			<div class="sort-tool">
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByTrainSet" class="hideCheckbox">
+					Sort by Train Set
+				</label>
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByTrainId" class="hideCheckbox">
+					Sort by Train ID
+				</label>
+				
+				<label class="btn-sort">
+					<input type="checkbox" id="sortByLastUpdate" class="hideCheckbox">
+					Sort by Last Update
+				</label>
+			</div>
+			<div class="extend-tool">
+				
+				<label class="btn btn-extend" style="color: #ffffff; background-color: var(--mtr-blue);">
+					<input type="checkbox" id="extendBtn" class="hideCheckbox">
+					Extend All
+				</label>
+			</div>
+		</div>
+
+		
+		
+		<!--Badge-->
+		<div id="badge"></div>
+		
+		<!--Table-->
+		<div id="dataTable" class="table-container">
+		
+		
+		
+		
+		
+		
+		</div>
+		
+		
+		<div class="bottom-bar">
+			<!--Update Version-->
+			<div class="updated-version">
+				<pre>version: 2024-05-02_16</pre>
+			</div>
+		
+			<!--Update Time-->
+			<div class="updated-time">
+				Updated: <span id="updatedTime"> </span>
+			</div>
+		</div>
+
+		
+	</div>
+  
+
+	  
+
+
+
+
+  <script>
+		
+	/*Global state and variable*/
+	let isOnTextState = false; //handleFilter function: check whether if text existing on search bar 
+	let isToggleColor = true;
+	let isToggleLanguage = true;
+	
+	let isShowPassengerCount = true; // show PassengerCount if true; show Floor Remaining Rate if False
+	
+	//Passenger Count
+	const lowerCuttingPoint = 105;
+	const upperCuttingPoint = 230;
+	
+	const lightLoadColor = "LightGreen";
+	const middleLoadColor = "Gold";
+	const heavyLoadColor = "Tomato";
+	const undefinedColor = "Gainsboro";
+	const columnPosition = [6, 7, 8];
+	
+	//Floor Remaining Rate
+	const lowerCuttingPoint_frr = 60;
+	const upperCuttingPoint_frr = 80;
+	const lightLoadColor_frr = "LightGreen";
+	const middleLoadColor_frr = "Gold";
+	const heavyLoadColor_frr = "Tomato";
+	const undefinedColor_frr = "Gainsboro";
+	const columnPosition_frr = [7, 8, 9];
+	const columnPositionTargetRow_frr = [2, 3, 4];
+	
+	let dir = "asc";
+	let sortOrder = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	let sortOrderIconType = ["fa fa-sort", "fa fa-sort-asc", "fa fa-sort-desc"];
+	
+	const mapPassengerCountArray = ["-","-","-","-","-","-","-","-","-","-",18,19,21,23,25,26,28,30,32,33,35,37,39,40,42,44,46,47,49,51,53,54,56,58,60,61,63,65,67,68,70,72,74,75,77,79,81,82,84,86,88,89,91,93,95,96,98,100,102,103,105,111,118,124,130,136,143,149,155,161,168,174,180,186,193,199,205,211,218,224,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,260,262,264,266,268,270];
+	
+	const colorTheme = { 
+		"light": {
+			"bodyBackgroundColor": "#F8F9FA", 
+			"textColor": "#000000",
+		},
+		"dark": {
+			"bodyBackgroundColor": "#212121",
+			"textColor": "#FFFFFF",
+		} 
+	};
+	const language = {
+		"en": {
+			"title": "SIL Train Load Viewer",
+			"tableHeader": ["Train Set", "Train ID", "Door", "Current Station", "Next Station", "Destination", "&emsp;", "Car 1", "Car 2", "Car 3", "Last Update"],
+		},
+		"zh":{
+			"title": "南港島綫列車客運量",
+			"tableHeader": ["列車合集", "列車編號", "車門", "目前車站", "下一車站", "終點站", "&emsp;", "車廂 1", "車廂 2", "車廂 3", "最後更新"],
+		}
+	}
+	
+
+
+	/* ON PAGE LOAD */
+	window.addEventListener("DOMContentLoaded", () => {
+	
+		
+		while(true){
+			let login = prompt("Password:");
+			if (window.btoa(login) == "ODc2Mg==") {
+				break;
+			} else {
+				continue;
+			}
+		}
+		
+	
+		renderTable(); //create the table 
+		renderBadge();
+		//alert("TEST");
+		
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, "desc", "time");
+				//showDataToTable(data);
+			}
+		);
+		
+	});
+	
+	/* Handle toggle show passenger data or frr */
+
+	document.getElementById("toggleDataBtn").addEventListener("click", () => {
+		isShowPassengerCount = !isShowPassengerCount;
+		var btnHTML = isShowPassengerCount?"Show Crowdedness Index":"Show Passenger Count";
+		document.getElementById("toggleDataBtn").innerHTML = btnHTML;
+		
+		// reload the indicator
+		renderBadge();
+		
+		//reload the table
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, "desc", "time");
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+		
+		resumeSortButton();
+	});
+	
+	/* CREATE TABLE */
+	function createTableHeader(){
+		let tableHeader = isToggleLanguage?language.en.tableHeader:language.zh.tableHeader;
+
+		const trElement = document.createElement("tr");
+		//create table header
+		for(item in tableHeader){
+			if(tableHeader[item] == "&emsp;"){
+				var thElement = document.createElement("th");
+				thElement.innerHTML = tableHeader[item];
+				trElement.appendChild(thElement);
+			}else if(tableHeader[item] == "Train Set"){
+				var thElement = document.createElement("th");
+				thElement.innerHTML = tableHeader[item] + " <i class='" + sortOrderIconType[sortOrder[item]] + "'></i>";
+				thElement.setAttribute("onclick", "clickSortByTrainSet()");
+				thElement.style.cursor = "pointer";
+				trElement.appendChild(thElement);
+			}else if(tableHeader[item] == "Train ID"){
+				var thElement = document.createElement("th");
+				thElement.innerHTML = tableHeader[item] + " <i class='" + sortOrderIconType[sortOrder[item]] + "'></i>";
+				thElement.setAttribute("onclick", "clickSortByTrainId()");
+				thElement.style.cursor = "pointer";
+				trElement.appendChild(thElement);
+			}else if(tableHeader[item] == "Last Update"){
+				var thElement = document.createElement("th");
+				thElement.innerHTML = tableHeader[item] + " <i class='" + sortOrderIconType[sortOrder[item]] + "'></i>";
+				thElement.setAttribute("onclick", "clickSortByLastUpdate()");
+				thElement.style.cursor = "pointer";
+				trElement.appendChild(thElement);
+			}else{
+				var thElement = document.createElement("th");
+				//thElement.innerHTML = tableHeader[item] + " <i class='" + sortOrderIconType[sortOrder[item]] + "'></i>";
+				thElement.innerHTML = tableHeader[item];
+				//console.log("TEST: "+item);
+				//thElement.setAttribute("onclick", `sortTable( ${item} )`);
+				trElement.appendChild(thElement);
+			}
+			
+		}
+		
+		return trElement;
+	}
+	
+	function renderTable(classNameForTable = ["table", "table-hover"]){
+		let dataTable = document.getElementById("dataTable");
+		
+		// create <table>
+		const tableElement = document.createElement("table");
+		
+		// add className to <table>
+		for(className in classNameForTable){
+			tableElement.classList.add(classNameForTable[className]);
+		}
+		
+		const theadElement = document.createElement("thead");
+		theadElement.appendChild(createTableHeader()); // create and add table headers
+		
+		tableElement.appendChild(theadElement);
+		
+		const tbodyElement = document.createElement("tbody");
+		
+		tableElement.appendChild(tbodyElement);
+		dataTable.appendChild(tableElement);
+		
+	}
+	
+	
+	
+	
+	
+	function renderBadge(){
+		let badge = document.getElementById("badge");
+		
+		// clear first
+		badge.innerHTML = '';
+		
+		const badgeName_2 = document.createElement("span");
+		
+		// new feature: determine show frr or PassengerCount
+		firstBadge_2_Content = isShowPassengerCount?("below " + lowerCuttingPoint + " People"):("below " + lowerCuttingPoint_frr + "%");
+		secondBadge_2_Content = isShowPassengerCount?("over " + lowerCuttingPoint + " People to " + upperCuttingPoint + " People"):("over " + lowerCuttingPoint_frr + "% to " + upperCuttingPoint_frr + "%");
+		thirdBadge_2_Content = isShowPassengerCount?("over " + upperCuttingPoint + " People"):("over " + upperCuttingPoint_frr + "%");
+		
+		const firstBadge_2 = document.createElement("span");
+		firstBadge_2.classList.add("badge");
+		firstBadge_2.style.backgroundColor = lightLoadColor_frr;
+		firstBadge_2.innerHTML = firstBadge_2_Content;
+		
+		const secondBadge_2 = document.createElement("span");
+		secondBadge_2.classList.add("badge");
+		secondBadge_2.style.backgroundColor = middleLoadColor_frr;
+		secondBadge_2.innerHTML = secondBadge_2_Content;
+		
+		const thirdBadge_2 = document.createElement("span");
+		thirdBadge_2.classList.add("badge");
+		thirdBadge_2.style.backgroundColor = heavyLoadColor_frr;
+		thirdBadge_2.innerHTML = thirdBadge_2_Content;
+		
+		
+		badge.appendChild(badgeName_2);
+		badge.appendChild(firstBadge_2);
+		badge.appendChild(secondBadge_2);
+		badge.appendChild(thirdBadge_2);
+		
+	}
+	
+	//Fetching data
+	const url = "https://az2yevl2wc.execute-api.ap-east-1.amazonaws.com/trainLoads";
+	//const url = "http://127.0.0.1:3000/data";
+
+	
+	async function fetchTrainLoadData(){
+		const response = await axios.get(url);
+		//console.log(response.data);
+		return response.data;
+	}
+	
+
+	/* INSERT the DATA TO TABLE CONTENT FROM API */
+	//this function updates the whole train load data included Train ID for web initial onload and clicking reload button
+	function showDataToTable(trainLoadDataObject){
+		//console.log(trainLoadDataObject);
+		
+		const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+		
+		// clear tbodyElement's context
+		tbodyElement.innerHTML = '';
+		
+		for (obj in trainLoadDataObject) {
+		  //console.log(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingAvg);
+		  //console.log(trainLoadDataObject[obj].ttl);
+		  var objDataList_first = [
+			checkReceivedNotNumberData((trainLoadDataObject[obj].trainSet==undefined)?(trainLoadDataObject[obj].trainId):(trainLoadDataObject[obj].trainSet)),
+			checkReceivedNotNumberData(trainLoadDataObject[obj].trainId),
+			(checkReceivedNotNumberData(trainLoadDataObject[obj]?.doorLastStatus)), 
+			mapStation(trainLoadDataObject[obj].currentStationCode), 
+			mapStation(trainLoadDataObject[obj].nextStationCode), 
+			mapStation(trainLoadDataObject[obj].destinationStationCode), 
+			"",
+			"<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject[obj]?.carLoads[0]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject[obj].receivedTime, checkReceivedData(trainLoadDataObject[obj]?.carLoads[0]?.floorRemainingAvg)) +"</span>",
+			"<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject[obj]?.carLoads[1]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject[obj].receivedTime, checkReceivedData(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingAvg)) +"</span>",
+			
+			"<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject[obj]?.carLoads[2]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject[obj].receivedTime, checkReceivedData(trainLoadDataObject[obj]?.carLoads[2]?.floorRemainingAvg))+"</span>",
+			convertTime(trainLoadDataObject[obj].receivedTime), 
+			//convertTime(trainLoadDataObject[obj].ttl)
+		  ];
+		  
+		  var objDataList_Car1 = [
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[0]?.floorRemainingA1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[0]?.floorRemainingA2), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[0]?.floorRemainingB1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[0]?.floorRemainingB2), 
+		  ];
+		  
+		  var objDataList_Car2 = [
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingA1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingA2), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingB1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[1]?.floorRemainingB2), 
+		  ];
+		  
+		  var objDataList_Car3 = [
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[2]?.floorRemainingA1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[2]?.floorRemainingA2), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[2]?.floorRemainingB1), 
+			checkReceivedData(trainLoadDataObject[obj]?.carLoads[2]?.floorRemainingB2), 
+		  ];
+		  
+		  var objDataList_second = [
+			objDataList_Car1, 
+			objDataList_Car2,
+			objDataList_Car3,
+		  ];
+		  
+		  
+		  // create a <tr> for clickRow
+		  var dataTrElement = document.createElement("tr");
+		  dataTrElement.classList.add("clickRow");
+		  
+		  // create a <tr> for targetRow
+		  var dataTrElement_2 = document.createElement("tr");
+		  dataTrElement_2.classList.add("targetRow","hiddenRow");
+		  
+		  // structuring the targetRow tr
+		  var colSpan_list = [6, 1, 1, 1, 1, 2];
+		  var cam_list = ["A1", "A2", "B1", "B2"];
+		  start_car_index = 0;
+		  for (let i = 0; i < colSpan_list.length; i++){
+		    
+			var tdElement = document.createElement("td");
+			tdElement.classList.add("hiddenRow");
+			tdElement.colSpan = colSpan_list[i];
+			// make A1A2B1B2 column
+			if(colSpan_list[i] == 1 && i == 1){
+				for (let j = 0; j < cam_list.length; j++){
+					var divElement = document.createElement("div");
+					divElement.innerHTML = cam_list[j];
+					divElement.style.fontWeight = 'bold';
+					tdElement.appendChild(divElement);
+				}
+			}else if(colSpan_list[i] == 1 && i != 1){
+				// insert data into every targetRow e.g. Car 1 A1 A2 B1 B2
+				for (let j = 0; j < objDataList_second[start_car_index].length; j++){
+					var divElement = document.createElement("div");
+					divElement.innerHTML = objDataList_second[start_car_index][j];
+					
+					tdElement.appendChild(divElement);
+					// console.log(start_car_index);
+				}
+				start_car_index += 1;
+				// console.log(start_car_index);
+			}
+			dataTrElement_2.appendChild(tdElement);
+		  }
+		  
+		  
+		  /**/
+		  
+		  // insert data into clickRow
+		  for(item in objDataList_first){
+			var el = document.createElement("td");
+			if(item == 0){
+				// console.log(item)
+				var checkboxElement = document.createElement("input");
+				checkboxElement.setAttribute("type", "checkbox");
+				checkboxElement.checked = true;
+				checkboxElement.classList.add("hideCheckbox");
+				el.appendChild(checkboxElement);
+				
+				var dFrag = document.createDocumentFragment();
+				dFrag.textContent = objDataList_first[item];
+				el.appendChild(dFrag);
+				
+			}else{
+				el.innerHTML = objDataList_first[item];
+			}
+			
+			dataTrElement.appendChild(el);
+		  }
+		  
+		 
+		  
+		  
+		  // append clickRow tr into tbody
+		  tbodyElement.appendChild(dataTrElement);
+		  // append targetRow tr into tbody
+		  tbodyElement.appendChild(dataTrElement_2);
+		}
+		
+		// add click to expand function to each clickRow
+		var clickRows = document.getElementsByClassName("clickRow");
+		// console.log(clickRows.length);
+		
+		for (let i = 0; i < clickRows.length; i++) {
+			// console.log("HAHA");
+			clickRows[i].addEventListener('click', collapseRow, false);
+		}
+		
+		//determinateTrainLoadFloorRemainingRateColor();
+		determinateTrainLoadPassengerCountColor();
+	
+	}
+	
+	// this function only updates the train load data except Train ID for "interval update"
+	function fetchAndMatch(trainLoadDataObject2){
+	
+		//get the Train ID column from dataTable
+		const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+		
+		for(i = 0; i < tbodyElement.children.length; i++){
+			//console.log("HERE: "+tbodyElement.children[i].children[0]);
+			for (obj in trainLoadDataObject2) {
+				//console.log(trainLoadDataObject2[obj].trainId);
+				//console.log(tbodyElement.children[i].children[0].textContent);
+				//console.log(trainLoadDataObject2[obj].trainId);
+				var trainSetOrId = checkReceivedNotNumberData((trainLoadDataObject2[obj].trainSet==undefined)?(trainLoadDataObject2[obj].trainId):(trainLoadDataObject2[obj].trainSet));
+				if(trainSetOrId == tbodyElement.children[i].children[0].textContent){
+					//console.log("msg");
+					// clickRow
+					tbodyElement.children[i].children[1].innerHTML = checkReceivedNotNumberData(trainLoadDataObject2[obj].trainId);
+					tbodyElement.children[i].children[2].innerHTML = (checkReceivedNotNumberData(trainLoadDataObject2[obj]?.doorLastStatus));
+					tbodyElement.children[i].children[3].innerHTML = mapStation(trainLoadDataObject2[obj].currentStationCode);
+					tbodyElement.children[i].children[4].innerHTML = mapStation(trainLoadDataObject2[obj].nextStationCode);
+					tbodyElement.children[i].children[5].innerHTML = mapStation(trainLoadDataObject2[obj].destinationStationCode);
+					tbodyElement.children[i].children[6].innerHTML = "";
+					tbodyElement.children[i].children[7].innerHTML = "<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject2[obj]?.carLoads[0]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject2[obj].receivedTime, checkReceivedData(trainLoadDataObject2[obj]?.carLoads[0]?.floorRemainingAvg)) +"</span>"
+					tbodyElement.children[i].children[8].innerHTML = "<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject2[obj]?.carLoads[1]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject2[obj].receivedTime, checkReceivedData(trainLoadDataObject2[obj]?.carLoads[1]?.floorRemainingAvg)) +"</span>"
+					tbodyElement.children[i].children[9].innerHTML = "<span class='pls-invisible'>"+checkReceivedDataForDetermineColor(trainLoadDataObject2[obj]?.carLoads[2]?.passengerCount)+"</span>" + "<span>"+ checkTimeStop(trainLoadDataObject2[obj].receivedTime, checkReceivedData(trainLoadDataObject2[obj]?.carLoads[2]?.floorRemainingAvg)) +"</span>"
+					tbodyElement.children[i].children[10].innerHTML = convertTime(trainLoadDataObject2[obj].receivedTime);
+					//tbodyElement.children[i].children[10].innerHTML = convertTime(trainLoadDataObject2[obj].ttl);
+					
+					// targetRow
+					tbodyElement.children[i+1].children[2].children[0].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[0]?.floorRemainingA1);
+					tbodyElement.children[i+1].children[2].children[1].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[0]?.floorRemainingA2);
+					tbodyElement.children[i+1].children[2].children[2].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[0]?.floorRemainingB1);
+					tbodyElement.children[i+1].children[2].children[3].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[0]?.floorRemainingB2);
+					
+					tbodyElement.children[i+1].children[3].children[0].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[1]?.floorRemainingA1);
+					tbodyElement.children[i+1].children[3].children[1].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[1]?.floorRemainingA2);
+					tbodyElement.children[i+1].children[3].children[2].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[1]?.floorRemainingB1);
+					tbodyElement.children[i+1].children[3].children[3].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[1]?.floorRemainingB2);
+					
+					tbodyElement.children[i+1].children[4].children[0].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[2]?.floorRemainingA1);
+					tbodyElement.children[i+1].children[4].children[1].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[2]?.floorRemainingA2);
+					tbodyElement.children[i+1].children[4].children[2].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[2]?.floorRemainingB1);
+					tbodyElement.children[i+1].children[4].children[3].innerHTML = checkReceivedData(trainLoadDataObject2[obj]?.carLoads[2]?.floorRemainingB2);
+				}
+			}
+		}
+		
+		determinateTrainLoadPassengerCountColor();
+		//determinateTrainLoadFloorRemainingRateColor();
+	}
+	
+	/* new Sort Function */
+	
+	// sort by train set
+	document.getElementById("sortByTrainSet").addEventListener("change", () => {
+		var order = "";
+		var isCheck = document.getElementById("sortByTrainSet").checked;
+		resumeSortButton();
+		
+		if (isCheck) {
+			document.getElementById("sortByTrainSet").checked = true;
+			document.getElementById("sortByTrainSet").parentElement.style.backgroundColor = "DodgerBlue";
+			order = "asc";
+		} else {
+			document.getElementById("sortByTrainSet").checked = false;
+			document.getElementById("sortByTrainSet").parentElement.style.backgroundColor = "MediumPurple";
+			order = "desc";
+		}
+		//console.log(order);
+		
+		// release other sort  conditiion
+		
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, order, "trainset");
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+	});
+	
+	
+	// sort by train id
+	document.getElementById("sortByTrainId").addEventListener("change", () => {
+		var order = "";
+		var isCheck = document.getElementById("sortByTrainId").checked;
+		resumeSortButton();
+		
+		if (isCheck) {
+			document.getElementById("sortByTrainId").checked = true;
+			document.getElementById("sortByTrainId").parentElement.style.backgroundColor = "DodgerBlue";
+			order = "asc";
+		} else {
+			document.getElementById("sortByTrainId").checked = false;
+			document.getElementById("sortByTrainId").parentElement.style.backgroundColor = "MediumPurple";
+			order = "desc";
+		}
+		//console.log(order);
+		
+		// release other sort  conditiion
+		
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, order, "trainid");
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+	});
+	
+	// sort by time
+	document.getElementById("sortByLastUpdate").addEventListener("change", () => {
+		var order = "";
+		var isCheck = document.getElementById("sortByLastUpdate").checked;
+		resumeSortButton();
+		
+		if (isCheck) {
+			document.getElementById("sortByLastUpdate").checked = true;
+			document.getElementById("sortByLastUpdate").parentElement.style.backgroundColor = "DodgerBlue";
+			order = "asc";
+		} else {
+			document.getElementById("sortByLastUpdate").checked = false;
+			document.getElementById("sortByLastUpdate").parentElement.style.backgroundColor = "MediumPurple";
+			order = "desc";
+		}
+		//console.log(order);
+		
+		// release other sort  conditiion
+		
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, order, "time");
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+	});
+	
+	
+	function clickSortByTrainSet(){
+		document.getElementById('sortByTrainSet').click();
+	}
+	
+	function clickSortByTrainId(){
+		document.getElementById('sortByTrainId').click();
+	}
+	
+	function clickSortByLastUpdate(){
+		document.getElementById('sortByLastUpdate').click();
+	}
+	
+	function resumeSortButton(){
+		var sortBtnCollection = document.querySelectorAll(".btn-sort");
+		for(let i = 0; i < sortBtnCollection.length; i++){
+			//console.log(sortBtnCollection[i]);
+			sortBtnCollection[i].children[0].checked = false;
+			sortBtnCollection[i].style.backgroundColor = "GhostWhite";
+		}
+	}
+	
+	function sortAndRender(trainLoadDataObject3, order, type=""){
+		// console.log("sortAndRender");
+		const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+		
+		// clear tbodyElement's context
+		tbodyElement.innerHTML = '';
+		
+		// sort the Data
+		if(type=="trainset"){
+			// console.log("sortAndRender: trainset");
+			// Sort by String trainSet
+			if(order == "asc"){
+			  trainLoadDataObject3.sort(function(a, b){
+				let x = ((a.trainSet==undefined)?(a.trainId):(a.trainSet)).toLowerCase();
+				let y = ((b.trainSet==undefined)?(b.trainId):(b.trainSet)).toLowerCase();
+				if (x < y) {return -1;}
+				if (x > y) {return 1;}
+				return 0;
+			  });
+			}else{
+			  trainLoadDataObject3.sort(function(a, b){
+				let x = ((a.trainSet==undefined)?(a.trainId):(a.trainSet)).toLowerCase();
+				let y = ((b.trainSet==undefined)?(b.trainId):(b.trainSet)).toLowerCase();
+				if (x > y) {return -1;}
+				if (x < y) {return 1;}
+				return 0;
+			  });
+			}
+		}else if(type=="trainid"){
+			// console.log("sortAndRender: trainid");
+			// Sort by String trainID
+			if(order == "asc"){
+			  trainLoadDataObject3.sort(function(a, b){
+				let x = a.trainId.toLowerCase();
+				let y = b.trainId.toLowerCase();
+				if (x < y) {return -1;}
+				if (x > y) {return 1;}
+				return 0;
+			  });
+			}else{
+			  trainLoadDataObject3.sort(function(a, b){
+				let x = a.trainId.toLowerCase();
+				let y = b.trainId.toLowerCase();
+				if (x > y) {return -1;}
+				if (x < y) {return 1;}
+				return 0;
+			  });
+			}
+		}else if(type=="time"){
+			// console.log("sortAndRender: time");
+			if(order == "asc"){
+			  trainLoadDataObject3.sort(function(a, b){
+				return parseInt(a.receivedTime) - parseInt(b.receivedTime);
+			  });
+			}else{
+			  trainLoadDataObject3.sort(function(a, b){
+				return parseInt(b.receivedTime) - parseInt(a.receivedTime);
+			  });
+			}
+		}
+		
+
+		
+		
+		//console.log(trainLoadDataObject3);
+		
+		
+		// render into table
+		showDataToTable(trainLoadDataObject3);
+		
+	}
+	
+	function determinateTrainLoadPassengerCountColor(){
+		const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+		for(i = 0; i < tbodyElement.children.length; i++){
+			if(i%2 !== 0){ // odd number: 1, 3, 5 ...
+				// targetRow
+				for(j = 0; j < columnPositionTargetRow_frr.length; j++){
+					// console.log(tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children);
+					
+					for(k = 0; k < tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children.length; k++){
+						
+						var k_value = tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].innerHTML;
+						
+						if(parseInt(k_value) == 0 || parseInt(k_value) == 1){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = "transparent";
+						}else if(parseInt(k_value) == 2){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = "transparent";
+						}else if(parseInt(k_value) == 3 || parseInt(k_value) == 4){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = "transparent";
+						}else{ // undefined
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = "transparent";
+						}
+					}
+				}
+			}else{ // even number: 0, 2, 4, 6 ...
+				// clickRow
+				for(j = 0; j < columnPosition_frr.length; j++){
+					//console.log(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML));
+					//console.log(tbodyElement.children[i].children[columnPosition_frr[j]].children[1].innerHTML);
+					
+					if((tbodyElement.children[i].children[columnPosition_frr[j]].children[1].innerHTML) == "&nbsp;"){
+						//console.log(tbodyElement.children[i]);
+						tbodyElement.children[i].classList.add('table-secondary');
+						//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.color = "red";
+						//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.fontWeight = "400";
+						//tbodyElement.children[i].children[columnPosition_frr[j]].children[1].style.fontSize = "x-large";
+					}else{
+						tbodyElement.children[i].classList.remove('table-secondary');
+						if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 0 || parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 1){
+							tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = lightLoadColor_frr;
+						}else if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 2){
+							tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = middleLoadColor_frr;
+						}else if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 3 || parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].children[0].innerHTML) == 4){
+							tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = heavyLoadColor_frr;
+						}else{ // undefined
+							tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = undefinedColor_frr;
+						}
+					}
+					
+
+				}
+
+			}
+			
+		}
+	}
+	
+	function determinateTrainLoadFloorRemainingRateColor(){
+		const tbodyElement = document.getElementById("dataTable").children[0].children[1]; //tbody collection
+		for(i = 0; i < tbodyElement.children.length; i++){
+			if(i%2 !== 0){ // odd number: 1, 3, 5 ...
+				// targetRow
+				for(j = 0; j < columnPositionTargetRow_frr.length; j++){
+					// console.log(tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children);
+					
+					for(k = 0; k < tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children.length; k++){
+						
+						var k_value = tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].innerHTML;
+						
+						if(parseInt(k_value) < lowerCuttingPoint_frr){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = lightLoadColor_frr;
+						}else if(parseInt(k_value) >= lowerCuttingPoint_frr && parseInt(k_value) <= upperCuttingPoint_frr){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = middleLoadColor_frr;
+						}else if(parseInt(k_value) > upperCuttingPoint_frr){
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = heavyLoadColor_frr;
+						}else{ // undefined
+							tbodyElement.children[i].children[columnPositionTargetRow_frr[j]].children[k].style.backgroundColor = undefinedColor_frr;
+						}
+					}
+				}
+			}else{ // even number: 0, 2, 4, 6 ...
+				// clickRow
+				for(j = 0; j < columnPosition_frr.length; j++){
+					if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].innerHTML) < lowerCuttingPoint_frr){
+						tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = lightLoadColor_frr;
+					}else if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].innerHTML) >= lowerCuttingPoint_frr && parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].innerHTML) <= upperCuttingPoint_frr){
+						tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = middleLoadColor_frr;
+					}else if(parseInt(tbodyElement.children[i].children[columnPosition_frr[j]].innerHTML) > upperCuttingPoint_frr){
+						tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = heavyLoadColor_frr;
+					}else{ // undefined
+						tbodyElement.children[i].children[columnPosition_frr[j]].style.backgroundColor = undefinedColor_frr;
+					}
+				}
+
+			}
+			
+		}
+	}
+	
+	
+	/* Train Load Data Handling */
+	
+	//1. Map Station to Code
+	function mapStation(code) {
+
+		code = (typeof code !== "number")?parseInt(code):code;
+		
+		switch (code) {
+			case 26: return 'ADM';
+			case 27: return 'ADM';
+			case 28: return 'OCP';
+			case 29: return 'OCP';
+			case 30: return 'WCH';
+			case 31: return 'WCH';
+			case 32: return 'LET';
+			case 33: return 'LET';
+			case 34: return 'SOH';
+			case 35: return 'SOH';
+
+			default: return '-';
+
+		}
+    }
+	
+	//2. Convert time
+	
+	function convertTime(time){ //receive number parameter
+		time = (typeof time !== "number")?parseInt(time):time;
+		//console.log(time);
+		var m = new Date(time*1000);
+		//console.log(m);
+		
+		
+		var dateString =
+			m.getFullYear() + "-" +
+			("0" + (m.getMonth()+1)).slice(-2) + "-" +
+			("0" + m.getDate()).slice(-2) + " " +
+			("0" + m.getHours()).slice(-2) + ":" +
+			("0" + m.getMinutes()).slice(-2) + ":" +
+			("0" + m.getSeconds()).slice(-2);
+		//console.log(dateString);
+		
+		returnValue = (time == 0)?"-":dateString;
+		
+		return returnValue;
+	}
+	
+	//3. convert error DATA
+	
+	function checkReceivedData(data){
+		if(data === undefined || data < 0){
+			return "-";
+		}else if(data > 100){
+			data = 100;
+			
+			// new feature: show frr or passengerCount
+			data = isShowPassengerCount?mapPassengerCount(data):data;
+			
+			return data;
+		}else{
+			// new feature: show frr or passengerCount
+			data = isShowPassengerCount?mapPassengerCount(data):data;
+			
+			return data;
+		}
+	}
+	
+	function checkReceivedDataForDetermineColor(data){
+		if(data === undefined || data < 0){
+			return "-";
+		}else if(data > 100){
+			data = 100;
+			
+			return data;
+		}else{
+			
+			return data;
+		}
+	}
+	
+	function checkReceivedNotNumberData(data){
+		if(data === undefined || data < 0){
+			return "-";
+		}else{
+			return data
+		}
+	}
+	
+	//4. check disconnection
+	
+	function checkTimeStop(time, data){
+		//var m = new Date(time*1000);
+		//console.log(time*1000);
+		//console.log(Date.now());
+		//console.log(Date.now() - (time*1000));
+		
+		// &#9760; ☠
+		// &times; ×
+		// &Cross; ⨯
+		// &#9888; ⚠
+		// &nbsp;
+		
+		const oneHour = 3600000
+		const tenMinute = 3600000/6
+		
+		var isStopOverTime = false;
+		if((Date.now() - (time*1000)) > tenMinute){
+			isStopOverTime = true;
+			return "&nbsp;";
+		}else{
+			return data;
+		}
+		
+	}
+
+	//5. subtract
+	function subtract(num1, num2) {
+		let r1, r2, m, n;
+		try {
+			r1 = num1.toString().split(".")[1].length
+		} catch (e) {
+			r1 = 0
+		}
+		try {
+			r2 = num2.toString().split(".")[1].length
+		} catch (e) {
+			r2 = 0
+		}
+		m = Math.pow(10, Math.max(r1, r2));
+		n = (r1 >= r2) ? r1 : r2;
+		return ((num1 * m - num2 * m) / m).toFixed(n);
+	}
+
+	//6. map frr to passengerCount
+	function mapPassengerCount(frr){
+		frr = (typeof frr !== "number")?parseInt(frr):frr;
+		
+		// convert float to int
+		frr = Math.round(frr);
+		
+		// mapPassengerCountArray = [0,2,4,5,7,9,11,12,14,16,18,19,21,23,25,26,28,30,32,33,35,37,39,40,42,44,46,47,49,51,53,54,56,58,60,61,63,65,67,68,70,72,74,75,77,79,81,82,84,86,88,89,91,93,95,96,98,100,102,103,105,111,118,124,130,136,143,149,155,161,168,174,180,186,193,199,205,211,218,224,230,232,234,236,238,240,242,244,246,248,250,252,254,256,258,260,262,264,266,268,270];
+		//console.log(mapPassengerCountArray[frr]);
+		return mapPassengerCountArray[frr]?mapPassengerCountArray[frr]:0;
+	}
+
+	/*Search and Filter*/
+	
+	function handleFilter(){
+		var x = (document.getElementById("trainFilter").value).trim();
+		//console.log(x.length);
+		//console.log(x);
+		isOnTextState = (x.length===0)?false:true;
+		document.getElementById("cancelBtn").style.visibility = isOnTextState?"visible":"hidden";
+		//document.getElementById("demo").innerHTML = x;
+	}
+
+	document.getElementById("trainFilter").addEventListener("keyup", () => {
+		handleFilter();
+		filterFunction();
+	});
+
+	document.getElementById("cancelBtn").addEventListener("click", () => {
+		document.getElementById("trainFilter").value = '';
+		handleFilter();
+		filterFunction();
+	});
+	
+	document.getElementById("reloadBtn").addEventListener("click", () => {
+		//console.log("Click reload button");
+		fetchTrainLoadData()
+			.then((data)=>{
+				sortAndRender(data, "desc", "time");
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+		document.getElementById("cancelBtn").click();
+		//restore the sort icons
+		var column = document.getElementById("dataTable").children[0].children[0].children[0].children;
+		//console.log("MSG: "+ column.length); //9
+		//console.log(column); 
+		for (i = 0; i < column.length; i++) {
+			if(column[i].children[0] == undefined){ // not have fa fa-sort
+				// no <i></i>
+			}else{ // has fa fa-sort
+				column[i].children[0].className = "fa fa-sort";
+			}
+			
+		}
+		
+		resumeSortButton();
+	});
+	
+	document.getElementById("extendBtn").addEventListener("change", () => {
+		var isExtend = document.getElementById("extendBtn").checked;
+		//console.log(isExtend);
+	
+		var checkboxCollection = document.querySelectorAll("tbody input[type='checkbox']");
+		var clickRowCollection = document.querySelectorAll("tbody tr.clickRow");
+		
+		//console.log(checkboxCollection);
+		for(let i = 0; i < checkboxCollection.length; i++){
+			//console.log(checkboxCollection[i]);
+			checkboxCollection[i].checked = isExtend;
+			//console.log(clickRowCollection[i]);
+			clickRowCollection[i].click();
+		}
+	});
+	
+	function filterFunction() {
+	  var input, filter, tbody, tr, td, i, txtValue, filterCriteria;
+	  input = document.getElementById("trainFilter");
+	  filter = input.value.trim().toUpperCase();
+	  tbody = document.getElementById("dataTable").children[0].children[1]; //tbody
+	  tr = tbody.getElementsByTagName("tr");
+	  
+	  
+	  
+	  for (i = 0; i < tr.length; i+=2) {
+		
+		td_ts = tr[i].getElementsByTagName("td")[0]; //train set column
+		
+		td_tid = tr[i].getElementsByTagName("td")[1]; //train id column
+		
+		//console.log(td_ts);
+		if (td_ts || td_id) {
+		  txtValue_ts = td_ts.textContent || td_ts.innerText; //TS04
+		  txtValue_tid = td_tid.textContent || td_tid.innerText; //A508
+		  
+		  txtValue = txtValue_ts.concat(txtValue_tid);
+		  
+		  //console.log(txtValue);
+		  //console.log(tr[i]);
+		  //console.log(tr[i+1]);
+		  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			tr[i].style.display = "";
+			tr[i+1].style.display = "";
+		  } else {
+			tr[i].style.display = "none";
+			tr[i+1].style.display = "none";
+		  }
+		}       
+	  }
+	}
+
+	
+	function sortTable(n) {
+	  var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+	  table = document.getElementById("dataTable").children[0];
+	  switching = true;
+	  // Set the sorting direction to ascending:
+	  dir = "asc";
+	  /* Make a loop that will continue until
+	  no switching has been done: */
+	  while (switching) {
+		// Start by saying: no switching is done:
+		switching = false;
+		rows = table.rows;
+		//console.log("Here: "+ rows[1].getElementsByTagName("TD")[n].innerHTML);
+		console.log(rows);
+		console.log(dir);
+		/* Loop through all table rows (except the
+		first, which contains table headers): */
+		for (i = 1; i < (rows.length - 1); i++) {
+		  // Start by saying there should be no switching:
+		  shouldSwitch = false;
+		  /* Get the two elements you want to compare,
+		  one from current row and one from the next: */
+		  x = rows[i].getElementsByTagName("TD")[n];
+		  y = rows[i + 1].getElementsByTagName("TD")[n];
+		  /* Check if the two rows should switch place,
+		  based on the direction, asc or desc: */
+		  //console.log("Test sort: "+dir);
+		  if (dir == "asc") {
+		  //console.log("Test 2 sort: "+dir);
+		  //console.log("Test 3 sort: "+ typeof x.innerHTML  + x.innerHTML);
+		  //console.log("Test 4 sort: "+ parseInt(x.innerHTML));
+			if(!(isNaN(x.innerHTML))){
+				if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+				  //console.log("Number ASC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}else if(isDate(x.innerHTML)){
+				if (Date.parse(x.innerHTML) > Date.parse(y.innerHTML)) {
+				  //console.log("Date ASC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}else{
+				if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+				  //console.log("String ASC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}
+			
+		  } else if (dir == "desc") {
+		  //console.log("Test 2 sort: "+dir);
+		  //console.log("Test 3 sort: "+ typeof x.innerHTML + x.innerHTML);
+			if(!(isNaN(x.innerHTML))){
+				if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) {
+				  //console.log("Number DESC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}else if(isDate(x.innerHTML)){
+				if (Date.parse(x.innerHTML) < Date.parse(y.innerHTML)) {
+				  //console.log("Date DESC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}else{
+				
+				if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+				  //console.log("String DESC");
+				  // If so, mark as a switch and break the loop:
+				  shouldSwitch = true;
+				  break;
+				}
+			}
+		  }
+		}
+		if (shouldSwitch) {
+		  /* If a switch has been marked, make the switch
+		  and mark that a switch has been done: */
+		  rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+		  switching = true;
+		  // Each time a switch is done, increase this count by 1:
+		  switchcount ++;
+		} else {
+		  /* If no switching has been done AND the direction is "asc",
+		  set the direction to "desc" and run the while loop again. */
+		  if (switchcount == 0 && dir == "asc") {
+			dir = "desc";
+			switching = true;
+		  }
+		}
+	  }
+	  //console.log(table.children[0].children[0].children[n]);
+	  //console.log(table.children[0].children[0].children[n].children[0]);
+	  
+	  //console.log("n: ", n);
+	  
+	  if(dir === "asc"){
+		sortOrder[n] = 1;
+	  }else if(dir === "desc"){
+		sortOrder[n] = 2;
+	  }else{
+		sortOrder[n] = 0;
+	  }
+	  
+	  table.children[0].children[0].children[n].children[0].className = sortOrderIconType[sortOrder[n]];
+	}
+	
+	function isDate(date) {
+		return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
+	}
+	
+	
+	
+	
+	
+	
+
+	// COLLAPSE ROWS
+	//var clickRows = document.getElementsByClassName("clickRow");
+	
+
+	/*
+	document.addEventListener("DOMContentLoaded", function(e) {
+      var clickRows = document.getElementsByClassName("clickRow");
+	  console.log(clickRows.length);
+    });
+	*/
+	
+	var collapseRow = function(event) {
+		elNext = event.currentTarget.nextElementSibling;
+		el = event.currentTarget.children[0].children[0];
+		el.checked = !el.checked
+		//console.log(el.checked)
+		
+		if(el.checked == true){
+			//console.log(elNext);
+			elNext.classList.remove('showRow');
+			elNext.classList.add('hiddenRow');
+			//console.log(elNext.children.length);
+			
+			for (var i = 0; i < elNext.children.length; i++) {
+				var child = elNext.children[i];
+				child.classList.remove('showRow');
+				child.classList.add('hiddenRow');
+				
+				for (var j = 0; j < child.children.length; j++) {
+					var childchild = child.children[j];
+					childchild.classList.remove('showRow');
+					childchild.classList.add('hiddenRow');
+				}
+			}
+			
+		}else{
+			elNext.classList.remove('hiddenRow');
+			elNext.classList.add('showRow');
+			//console.log(elNext.children.length);
+			
+			for (var i = 0; i < elNext.children.length; i++) {
+				var child = elNext.children[i];
+				child.classList.remove('hiddenRow');
+				child.classList.add('showRow');
+				
+				for (var j = 0; j < child.children.length; j++) {
+					var childchild = child.children[j];
+					childchild.classList.remove('hiddenRow');
+					childchild.classList.add('showRow');
+				}
+			}
+		}
+	};
+	
+	/* Show data last update time */
+	
+	function getNowDateTime(){
+		var m = new Date();
+		var dateString =
+			m.getFullYear() + "/" +
+			("0" + (m.getMonth()+1)).slice(-2) + "/" +
+			("0" + m.getDate()).slice(-2) + " " +
+			("0" + m.getHours()).slice(-2) + ":" +
+			("0" + m.getMinutes()).slice(-2) + ":" +
+			("0" + m.getSeconds()).slice(-2);
+		return dateString;
+	}
+	
+	
+	/* reload data per certain time */
+	
+	function reload(){
+		fetchTrainLoadData()
+			.then((data)=>{
+				fetchAndMatch(data);
+				document.getElementById('updatedTime').innerHTML = getNowDateTime();
+			}
+		);
+		console.log("run reload");
+		
+	}
+	
+	window.setInterval("reload()", 5000);
+	
+  </script>
+
+
+</body></html>
